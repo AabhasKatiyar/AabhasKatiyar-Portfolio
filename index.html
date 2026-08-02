@@ -1,43 +1,16 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Access - Portfolio</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-    <div class="login-wrapper">
-        <div class="login-box">
-            <h2 id="form-title" style="margin-bottom: 1.5rem;">Login</h2>
-            
-            <form onsubmit="handleAuth(event)">
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" id="email" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="password" required>
-                </div>
-
-                <button type="submit" id="submit-btn" class="btn" style="width: 100%;">Login</button>
-                
-                <p id="error-msg" class="error-msg"></p>
-                <p id="success-msg" style="color: #10b981; font-size: 0.8rem; margin-top: 1rem; display: none;"></p>
-            </form>
-            
-            <p style="margin-top: 1rem; font-size: 0.9rem; color: #64748b;">
-                <span id="toggle-text">New here?</span> 
-                <a href="#" onclick="toggleMode()" style="color: var(--primary); font-weight: 600;">
-                    <span id="toggle-link">Create an account</span>
-                </a>
-            </p>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📟</text></svg>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Portfolio of Aabhas Katiyar, B.Tech Information Technology student at KIET University. Crafting premium interactive web systems and IoT / physical computing projects with ESP32, Arduino, and React." />
+    <meta name="keywords" content="Aabhas Katiyar, Portfolio, Web Developer, IoT Developer, KIET University, B.Tech IT, ESP32, Arduino, React, TypeScript, C++" />
+    <meta name="author" content="Aabhas Katiyar" />
+    <title>Aabhas Katiyar | Silicon &amp; Syntax — IoT &amp; Web Engineer</title>
+  </head>
+  <body class="bg-[#070a13] text-slate-100 overflow-x-hidden">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
