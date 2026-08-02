@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 
-export const CustomCursor: React.FC = () => {
+export const CustomCursor = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   
-  // Coordinate values
+  // Coordinate values (centered on cursor)
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
   
@@ -16,8 +16,8 @@ export const CustomCursor: React.FC = () => {
 
   useEffect(() => {
     const moveCursor = (e: MouseEvent) => {
-      cursorX.set(e.clientX - 16);
-      cursorY.set(e.clientY - 16);
+      cursorX.set(e.clientX);
+      cursorY.set(e.clientY);
       if (!isVisible) setIsVisible(true);
     };
 
@@ -57,6 +57,8 @@ export const CustomCursor: React.FC = () => {
         style={{
           x: cursorXSpring,
           y: cursorYSpring,
+          translateX: '-50%',
+          translateY: '-50%',
           borderColor: isHovered ? '#f59e0b' : '#3b82f6',
           boxShadow: isHovered 
             ? '0 0 15px rgba(245, 158, 11, 0.4)' 
@@ -70,10 +72,10 @@ export const CustomCursor: React.FC = () => {
       <motion.div
         className="fixed top-0 left-0 w-2 h-2 rounded-full pointer-events-none z-50 mix-blend-screen hidden md:block"
         style={{
-          x: useMotionValue(0),
-          y: useMotionValue(0),
-          left: cursorX.get() + 12,
-          top: cursorY.get() + 12,
+          x: cursorX,
+          y: cursorY,
+          translateX: '-50%',
+          translateY: '-50%',
           backgroundColor: isHovered ? '#f59e0b' : '#3b82f6',
         }}
       />
