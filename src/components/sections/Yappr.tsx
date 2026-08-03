@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface Post {
@@ -53,8 +53,22 @@ export const Yappr = () => {
   const [posts, setPosts] = useState<Post[]>(SEED_POSTS);
   const [draft, setDraft] = useState('');
   const [charCount, setCharCount] = useState(0);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
 
+  const phoneRef = useRef<HTMLDivElement>(null);
   const MAX_CHARS = 280;
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!phoneRef.current) return;
+    const rect = phoneRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setTilt({ x: x * 20, y: -y * 20 });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
+  };
 
   const handleDraftChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const val = e.target.value.slice(0, MAX_CHARS);
@@ -104,7 +118,19 @@ export const Yappr = () => {
       }}
     >
       {/* Rose ambient glow */}
-      <div aria-hidden style={{ position: 'absolute', top: '10%', left: '-10%', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(255,61,110,0.05), transparent 70%)', pointerEvents: 'none' }} />
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          top: '10%',
+          left: '-10%',
+          width: 500,
+          height: 500,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(255,61,110,0.05), transparent 70%)',
+          pointerEvents: 'none',
+        }}
+      />
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4rem', alignItems: 'flex-start', position: 'relative', zIndex: 1 }}>
         {/* Left: context */}
@@ -116,7 +142,7 @@ export const Yappr = () => {
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] as const }}
             style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#ff3d6e' }}
           >
-            02 — Yappr
+            02 — Yappr 3D Experience
           </motion.span>
 
           <motion.h2
@@ -137,7 +163,7 @@ export const Yappr = () => {
             transition={{ delay: 0.25, duration: 0.6 }}
             style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
           >
-            <p style={{ maxWidth: '38ch', color: '#555', fontSize: '0.9375rem', lineHeight: 1.75 }}>
+            <p style={{ maxWidth: '38ch', color: '#666', fontSize: '0.9375rem', lineHeight: 1.75 }}>
               Yappr is built for high-velocity community interaction — instant
               post publishing, real-time WebSocket feed updates, optimistic UI
               like toggles, and threaded discussion replies.
@@ -149,38 +175,46 @@ export const Yappr = () => {
             ].map((note) => (
               <div key={note.title}>
                 <div style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '0.8125rem', color: '#ff3d6e', marginBottom: '0.375rem' }}>{note.title}</div>
-                <p style={{ fontSize: '0.8125rem', color: '#445', lineHeight: 1.65 }}>{note.body}</p>
+                <p style={{ fontSize: '0.8125rem', color: '#555', lineHeight: 1.65 }}>{note.body}</p>
               </div>
             ))}
           </motion.div>
         </div>
 
-        {/* Right: Phone frame with live Yappr UI */}
+        {/* Right: Phone shell with 3D Tilt perspective */}
         <motion.div
-          initial={{ scale: 0.92, opacity: 0, rotateY: -12 }}
-          whileInView={{ scale: 1, opacity: 1, rotateY: 0 }}
+          ref={phoneRef}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          initial={{ scale: 0.92, opacity: 0 }}
+          whileInView={{ scale: 1, opacity: 1 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as const }}
           style={{ flex: '0 0 320px', perspective: 1000 }}
         >
-          {/* Phone shell */}
-          <div
+          <motion.div
+            animate={{ rotateY: tilt.x, rotateX: tilt.y }}
+            transition={{ type: 'spring', damping: 20, stiffness: 150 }}
             style={{
               width: 320,
               borderRadius: 40,
               border: '1px solid rgba(255,61,110,0.2)',
               background: '#0f0609',
-              boxShadow: '0 0 0 6px rgba(255,255,255,0.03), 0 40px 100px rgba(0,0,0,0.7), 0 0 80px rgba(255,61,110,0.06)',
+              boxShadow: '0 0 0 6px rgba(255,255,255,0.03), 0 40px 100px rgba(0,0,0,0.7), 0 0 80px rgba(255,61,110,0.08)',
               overflow: 'hidden',
             }}
           >
-            {/* Notch bar */}
+            {/* Phone Top Notch */}
             <div style={{ background: '#130a0b', padding: '0.875rem 1.25rem 0.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', color: '#444' }}>9:41</span>
               <div style={{ width: 80, height: 10, borderRadius: 999, background: '#1a0d0f' }} />
               <div style={{ display: 'flex', gap: '0.2rem', alignItems: 'center' }}>
-                {[6, 4, 2].map((h) => <div key={h} style={{ width: 2.5, height: h, borderRadius: 1, background: '#444' }} />)}
-                <div style={{ width: 12, height: 6, borderRadius: 1.5, border: '1px solid #444', marginLeft: 3, position: 'relative', overflow: 'hidden' }}><div style={{ width: '80%', height: '100%', background: '#ff3d6e' }} /></div>
+                {[6, 4, 2].map((h) => (
+                  <div key={h} style={{ width: 2.5, height: h, borderRadius: 1, background: '#444' }} />
+                ))}
+                <div style={{ width: 12, height: 6, borderRadius: 1.5, border: '1px solid #444', marginLeft: 3, position: 'relative', overflow: 'hidden' }}>
+                  <div style={{ width: '80%', height: '100%', background: '#ff3d6e' }} />
+                </div>
               </div>
             </div>
 
@@ -188,7 +222,10 @@ export const Yappr = () => {
             <div style={{ background: '#100810', borderBottom: '1px solid rgba(255,61,110,0.1)', padding: '0.75rem 1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: '1.125rem', color: '#ff3d6e', letterSpacing: '-0.02em' }}>Yappr</span>
               <div style={{ position: 'relative' }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="1.8" strokeLinecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="1.8" strokeLinecap="round">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                </svg>
                 <div style={{ position: 'absolute', top: -2, right: -2, width: 6, height: 6, borderRadius: '50%', background: '#ff3d6e' }} />
               </div>
             </div>
@@ -198,12 +235,12 @@ export const Yappr = () => {
               <textarea
                 value={draft}
                 onChange={handleDraftChange}
-                placeholder="What's happening?"
+                placeholder="What are you building today?"
                 rows={2}
                 style={{ width: '100%', background: 'transparent', border: 'none', color: '#f0ede6', fontFamily: 'Inter, sans-serif', fontSize: '0.8125rem', lineHeight: 1.55, resize: 'none', outline: 'none', marginBottom: '0.5rem' }}
               />
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: charCount > MAX_CHARS * 0.85 ? '#ff3d6e' : '#333' }}>
+                <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: charCount > MAX_CHARS * 0.85 ? '#ff3d6e' : '#444' }}>
                   {charCount}/{MAX_CHARS}
                 </span>
                 <button
@@ -234,23 +271,23 @@ export const Yappr = () => {
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.25rem' }}>
                           <span style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '0.75rem', color: '#f0ede6' }}>{post.author}</span>
-                          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#333' }}>{post.time}</span>
+                          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#444' }}>{post.time}</span>
                         </div>
                         <p style={{ fontSize: '0.75rem', color: '#888', lineHeight: 1.55, marginBottom: '0.5rem' }}>{post.body}</p>
                         <div style={{ display: 'flex', gap: '1rem' }}>
                           <button
                             onClick={() => toggleLike(post.id)}
-                            style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: post.liked ? '#ff3d6e' : '#333', transition: 'color 0.15s' }}
+                            style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: post.liked ? '#ff3d6e' : '#444', transition: 'color 0.15s' }}
                           >
                             <motion.span
-                              animate={{ scale: post.liked ? [1, 1.4, 1] : 1 }}
+                              animate={{ scale: post.liked ? [1, 1.5, 1] : 1 }}
                               transition={{ duration: 0.2 }}
                             >
                               {post.liked ? '♥' : '♡'}
                             </motion.span>
                             {post.likes}
                           </button>
-                          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#333' }}>
+                          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#444' }}>
                             ↩ {post.replies}
                           </span>
                         </div>
@@ -260,7 +297,7 @@ export const Yappr = () => {
                 ))}
               </AnimatePresence>
             </div>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>

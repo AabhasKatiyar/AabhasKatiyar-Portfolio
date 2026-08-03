@@ -1,15 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
-/* ─── ESP32 Canvas Simulator ─────────────────────────────── */
+/* ─── ESP32 Canvas Simulator with Dust Physics ─────────────────────────────── */
 interface CarState { x: number; y: number; angle: number; speed: number; cmd: string }
+interface Particle { x: number; y: number; alpha: number; radius: number }
 
 const CarSimulator = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const keys = useRef({ w: false, a: false, s: false, d: false });
   const carRef = useRef<CarState>({ x: 140, y: 100, angle: 0, speed: 0, cmd: 'STANDBY' });
+  const particlesRef = useRef<Particle[]>([]);
   const rafRef = useRef<number | null>(null);
-  const [readout, setReadout] = useState({ speed: '0.0', heading: 0, cmd: 'STANDBY' });
+  const [readout, setReadout] = useState({ speed: '0.0', heading: 0, cmd: 'STANDBY', pwm: 0 });
   const [focused, setFocused] = useState(false);
 
   useEffect(() => {
@@ -28,15 +30,26 @@ const CarSimulator = () => {
     const loop = () => {
       const c = carRef.current;
       const k = keys.current;
+      let pwm = 0;
 
-      if (k.w) { c.speed = Math.min(c.speed + 0.12, 3); c.cmd = 'FWD_PWM_255'; }
-      else if (k.s) { c.speed = Math.max(c.speed - 0.12, -1.5); c.cmd = 'REV_PWM_180'; }
-      else { c.speed *= 0.93; if (Math.abs(c.speed) < 0.05) { c.speed = 0; c.cmd = 'STANDBY'; } }
+      if (k.w) { c.speed = Math.min(c.speed + 0.14, 3.4); c.cmd = 'FWD_PWM_255'; pwm = 255; }
+      else if (k.s) { c.speed = Math.max(c.speed - 0.14, -1.8); c.cmd = 'REV_PWM_180'; pwm = 180; }
+      else { c.speed *= 0.92; if (Math.abs(c.speed) < 0.05) { c.speed = 0; c.cmd = 'STANDBY'; pwm = 0; } }
 
       if (Math.abs(c.speed) > 0.05) {
         const dir = c.speed > 0 ? 1 : -1;
-        if (k.a) c.angle -= 3.2 * dir;
-        if (k.d) c.angle += 3.2 * dir;
+        if (k.a) c.angle -= 3.5 * dir;
+        if (k.d) c.angle += 3.5 * dir;
+
+        // Dust particle emitter
+        if (Math.random() > 0.4) {
+          particlesRef.current.push({
+            x: c.x - Math.cos((c.angle * Math.PI) / 180) * 10,
+            y: c.y - Math.sin((c.angle * Math.PI) / 180) * 10,
+            alpha: 0.6,
+            radius: Math.random() * 2 + 1,
+          });
+        }
       }
 
       c.angle = (c.angle + 360) % 360;
@@ -44,17 +57,29 @@ const CarSimulator = () => {
       c.x = Math.max(12, Math.min(268, c.x + Math.cos(rad) * c.speed));
       c.y = Math.max(12, Math.min(188, c.y + Math.sin(rad) * c.speed));
 
-      setReadout({ speed: Math.abs(c.speed).toFixed(1), heading: Math.round(c.angle), cmd: c.cmd });
+      setReadout({ speed: Math.abs(c.speed).toFixed(1), heading: Math.round(c.angle), cmd: c.cmd, pwm });
 
-      // Render
+      // Render Canvas Scene
       ctx.fillStyle = '#060d06';
       ctx.fillRect(0, 0, 280, 200);
 
-      ctx.strokeStyle = 'rgba(0,232,122,0.06)';
+      // Grid Lines
+      ctx.strokeStyle = 'rgba(0,232,122,0.05)';
       ctx.lineWidth = 1;
       for (let gx = 0; gx < 280; gx += 20) { ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, 200); ctx.stroke(); }
       for (let gy = 0; gy < 200; gy += 20) { ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(280, gy); ctx.stroke(); }
 
+      // Dust Particles Render
+      particlesRef.current.forEach((p, idx) => {
+        p.alpha -= 0.02;
+        ctx.fillStyle = `rgba(200, 255, 0, ${p.alpha})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fill();
+        if (p.alpha <= 0) particlesRef.current.splice(idx, 1);
+      });
+
+      // Render Vector Car
       ctx.save();
       ctx.translate(c.x, c.y);
       ctx.rotate(rad);
@@ -86,15 +111,16 @@ const CarSimulator = () => {
         tabIndex={0}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-        style={{ width: '100%', maxWidth: 320, borderRadius: 6, border: `1px solid ${focused ? 'rgba(0,232,122,0.3)' : 'rgba(255,255,255,0.05)'}`, display: 'block', cursor: 'crosshair', outline: 'none' }}
+        style={{ width: '100%', maxWidth: 320, borderRadius: 6, border: `1px solid ${focused ? 'rgba(0,232,122,0.4)' : 'rgba(255,255,255,0.05)'}`, display: 'block', cursor: 'crosshair', outline: 'none' }}
       />
-      <div style={{ display: 'flex', gap: '1.5rem', marginTop: '0.625rem', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', letterSpacing: '0.08em' }}>
-        <span style={{ color: '#333' }}>SPD <span style={{ color: '#f59e0b' }}>{readout.speed}</span></span>
-        <span style={{ color: '#333' }}>HDG <span style={{ color: '#f59e0b' }}>{readout.heading}°</span></span>
-        <span style={{ color: '#333' }}>CMD <span style={{ color: '#00e87a' }}>{readout.cmd}</span></span>
+      <div style={{ display: 'flex', gap: '1.25rem', marginTop: '0.625rem', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', letterSpacing: '0.08em' }}>
+        <span style={{ color: '#444' }}>SPD <span style={{ color: '#f59e0b' }}>{readout.speed}</span></span>
+        <span style={{ color: '#444' }}>HDG <span style={{ color: '#f59e0b' }}>{readout.heading}°</span></span>
+        <span style={{ color: '#444' }}>PWM <span style={{ color: '#00e87a' }}>{readout.pwm}</span></span>
+        <span style={{ color: '#444' }}>CMD <span style={{ color: '#00e87a' }}>{readout.cmd}</span></span>
       </div>
-      <div style={{ marginTop: '0.375rem', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#2a2a2a', letterSpacing: '0.06em' }}>
-        Click canvas then use WASD to steer
+      <div style={{ marginTop: '0.375rem', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#444', letterSpacing: '0.06em' }}>
+        Click canvas then use WASD to steer vector engine
       </div>
     </div>
   );
@@ -147,8 +173,6 @@ const Calculator = () => {
 
 /* ─── Main Archive Section ───────────────────────────────── */
 export const ProjectArchive = () => {
-
-
   return (
     <section
       id="archive"
@@ -163,13 +187,13 @@ export const ProjectArchive = () => {
         style={{ marginBottom: '3.5rem' }}
       >
         <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#444' }}>
-          04 — Archive
+          04 — Digital Museum
         </span>
         <h2 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: 'clamp(2rem, 5vw, 5rem)', letterSpacing: '-0.04em', lineHeight: 1, color: '#f0ede6', marginTop: '0.75rem' }}>
           Everything else<br />I built.
         </h2>
         <p style={{ marginTop: '1rem', color: '#444', fontSize: '0.9375rem', maxWidth: '44ch', lineHeight: 1.7 }}>
-          The projects that came before GymLane and Yappr. Each one taught me something specific.
+          The hardware prototypes and utility applications built before GymLane and Yappr.
         </p>
       </motion.div>
 
@@ -187,7 +211,7 @@ export const ProjectArchive = () => {
           <div>
             <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#00e87a' }}>Hardware · ESP32 · WiFi</span>
             <h3 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '1.125rem', color: '#f0ede6', marginTop: '0.375rem', letterSpacing: '-0.02em' }}>WiFi-Controlled RC Car</h3>
-            <p style={{ fontSize: '0.8125rem', color: '#444', lineHeight: 1.65, marginTop: '0.375rem' }}>
+            <p style={{ fontSize: '0.8125rem', color: '#666', lineHeight: 1.65, marginTop: '0.375rem' }}>
               ESP32 broadcasts a SoftAP WiFi network. Browser connects, sends HTTP requests.
               ESP32 parses endpoints and drives DC motors via L298N PWM control.
             </p>
@@ -221,7 +245,7 @@ export const ProjectArchive = () => {
           <h3 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '1.125rem', color: '#f0ede6', marginTop: '0.375rem', marginBottom: '0.5rem', letterSpacing: '-0.02em' }}>Bluetooth RC Car</h3>
           <p style={{ fontSize: '0.8125rem', color: '#555', lineHeight: 1.65, marginBottom: '1rem' }}>
             Arduino Uno + HC-05 Bluetooth module. A phone app sends single-char commands over serial.
-            The Arduino parses them and drives the motors. This is where C++ clicked.
+            The Arduino parses them and drives the motors.
           </p>
           <div style={{ background: '#0a0804', borderRadius: 6, padding: '0.75rem', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.6rem', lineHeight: 1.75, color: '#555' }}>
             <div><span style={{ color: '#333' }}>// Serial packet parser</span></div>
@@ -255,15 +279,15 @@ export const ProjectArchive = () => {
           style={{ background: '#0c0c0c', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 12, padding: '1.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '2rem' }}
         >
           <div>
-            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#333' }}>Meta · This site</span>
-            <h3 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '1.125rem', color: '#f0ede6', marginTop: '0.375rem', marginBottom: '0.5rem', letterSpacing: '-0.02em' }}>This Portfolio</h3>
-            <p style={{ fontSize: '0.8125rem', color: '#444', lineHeight: 1.65 }}>
-              Rebuilt from scratch to tell a story, not list credentials. Framer Motion for cinematic motion. Supabase-style engineering precision.
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#444' }}>Meta · System Specs</span>
+            <h3 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '1.125rem', color: '#f0ede6', marginTop: '0.375rem', marginBottom: '0.5rem', letterSpacing: '-0.02em' }}>This Experience</h3>
+            <p style={{ fontSize: '0.8125rem', color: '#555', lineHeight: 1.65 }}>
+              Engineered with Three.js WebGL shaders, Lenis momentum scroll, and 3D perspective transforms.
             </p>
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.375rem' }}>
-            {['React 19', 'TypeScript', 'Vite', 'Tailwind v4', 'Framer Motion'].map((t) => (
-              <span key={t} style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', padding: '0.15rem 0.5rem', borderRadius: 3, border: '1px solid rgba(255,255,255,0.07)', color: '#333' }}>{t}</span>
+            {['Three.js', 'Lenis Scroll', 'React 19', 'TypeScript', 'Vite', 'Tailwind v4'].map((t) => (
+              <span key={t} style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', padding: '0.15rem 0.5rem', borderRadius: 3, border: '1px solid rgba(255,255,255,0.07)', color: '#444' }}>{t}</span>
             ))}
           </div>
         </motion.div>
