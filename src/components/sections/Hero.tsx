@@ -69,7 +69,7 @@ export const Hero = () => {
         }}
         transition={{ type: 'spring', damping: 25, stiffness: 200 }}
       >
-        {/* Top row */}
+        {/* Top Header Row */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <motion.div
             initial={{ opacity: 0, x: -10 }}
@@ -102,7 +102,7 @@ export const Hero = () => {
           </motion.span>
         </div>
 
-        {/* Centre: Kinetic Scramble Name + Role */}
+        {/* Centre: Kinetic Text Scramble Name */}
         <div style={{ paddingLeft: 'clamp(0rem, 2vw, 1.5rem)' }}>
           <h1
             className="display-2xl"
@@ -114,7 +114,7 @@ export const Hero = () => {
             <TextScramble text="KATIYAR" delay={480} speed={32} />
           </h1>
 
-          {/* Role switcher */}
+          {/* Dynamic Role Switcher */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '1.75rem' }}>
             <div style={{ width: 28, height: 1, background: '#c8ff00', flexShrink: 0 }} />
             <div style={{ height: '1.25rem', overflow: 'hidden', position: 'relative', minWidth: 240 }}>
@@ -186,7 +186,7 @@ export const Hero = () => {
             </a>
           </div>
 
-          {/* Scroll pulse */}
+          {/* Scroll Pulse Indicator */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
             <motion.div
               animate={{ scaleY: [0, 1, 0] }}
@@ -205,7 +205,7 @@ export const Hero = () => {
         </motion.div>
       </motion.div>
 
-      {/* Tech marquee strip */}
+      {/* Tech Marquee Strip */}
       <div
         style={{
           borderTop: '1px solid rgba(255,255,255,0.05)',
