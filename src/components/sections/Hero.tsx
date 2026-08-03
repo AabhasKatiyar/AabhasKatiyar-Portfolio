@@ -1,114 +1,289 @@
-import { motion } from 'framer-motion';
+import { useEffect, useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-export const Hero = () => {
+interface Node {
+  x: number;
+  y: number;
+  tx: number; // Target X coordinate for morphing
+  ty: number; // Target Y coordinate for morphing
+  size: number;
+}
+
+export const Hero = ({ onIntroComplete }: { onIntroComplete: () => void }) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [phase, setPhase] = useState<'idle' | 'type1' | 'pause1' | 'type2' | 'pause2' | 'type3' | 'morph' | 'done'>('idle');
+  const [text, setText] = useState('');
+  const [cursor, setCursor] = useState(true);
+
+  // Typewriter sequence coordination
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+
+    const runTypewriter = (sentence: string, delayBefore: number, onFinish: () => void) => {
+      let len = 0;
+      const tick = () => {
+        if (len < sentence.length) {
+          len++;
+          setText(sentence.slice(0, len));
+          timer = setTimeout(tick, 45 + Math.random() * 30);
+        } else {
+          onFinish();
+        }
+      };
+      timer = setTimeout(tick, delayBefore);
+    };
+
+    if (phase === 'idle') {
+      // 0.5s black screen pause
+      timer = setTimeout(() => setPhase('type1'), 500);
+    } else if (phase === 'type1') {
+      runTypewriter('Not every project deserves to exist.', 0, () => {
+        timer = setTimeout(() => setPhase('pause1'), 800);
+      });
+    } else if (phase === 'pause1') {
+      timer = setTimeout(() => {
+        setText('');
+        setPhase('type2');
+      }, 600);
+    } else if (phase === 'type2') {
+      runTypewriter('Every product starts with one problem.', 0, () => {
+        timer = setTimeout(() => setPhase('pause2'), 800);
+      });
+    } else if (phase === 'pause2') {
+      timer = setTimeout(() => {
+        setText('');
+        setPhase('type3');
+      }, 600);
+    } else if (phase === 'type3') {
+      runTypewriter('I build products that solve them.', 0, () => {
+        timer = setTimeout(() => setPhase('morph'), 1200);
+      });
+    } else if (phase === 'morph') {
+      timer = setTimeout(() => {
+        setPhase('done');
+        onIntroComplete();
+      }, 2000);
+    }
+
+    return () => clearTimeout(timer);
+  }, [phase]);
+
+  // Cursor blink interval
+  useEffect(() => {
+    if (phase === 'done') return;
+    const interval = setInterval(() => setCursor((c) => !c), 400);
+    return () => clearInterval(interval);
+  }, [phase]);
+
+  // Canvas Architectural Network rendering loop
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let animationId: number;
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    // Coordinate grid nodes
+    const nodes: Node[] = [];
+    const gridSpacing = 80;
+
+    const setupNodes = () => {
+      nodes.length = 0;
+      const cols = Math.ceil(width / gridSpacing);
+      const rows = Math.ceil(height / gridSpacing);
+
+      // Central seed database node
+      nodes.push({
+        x: width / 2,
+        y: height / 2,
+        tx: width / 2,
+        ty: height / 2,
+        size: 5,
+      });
+
+      // Branching grid coordinates
+      for (let c = 0; c < cols; c++) {
+        for (let r = 0; r < rows; r++) {
+          const nx = c * gridSpacing;
+          const ny = r * gridSpacing;
+          if (Math.abs(nx - width / 2) < 20 && Math.abs(ny - height / 2) < 20) continue;
+
+          nodes.push({
+            x: nx,
+            y: ny,
+            tx: nx + (Math.random() - 0.5) * 40,
+            ty: ny + (Math.random() - 0.5) * 40,
+            size: 2,
+          });
+        }
+      }
+    };
+
+    setupNodes();
+
+    const handleResize = () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      setupNodes();
+    };
+    window.addEventListener('resize', handleResize);
+
+    let progress = 0;
+    let pulseAngle = 0;
+
+    const tick = () => {
+      ctx.fillStyle = '#0c0c0c';
+      ctx.fillRect(0, 0, width, height);
+
+      // Scene 2: Faint grid lines become visible
+      if (phase === 'type2' || phase === 'pause2' || phase === 'type3' || phase === 'morph') {
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.015)';
+        ctx.lineWidth = 1;
+
+        // Draw horizontal grid lines
+        for (let y = 0; y < height; y += gridSpacing) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(width, y);
+          ctx.stroke();
+        }
+
+        // Draw vertical grid lines
+        for (let x = 0; x < width; x += gridSpacing) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, height);
+          ctx.stroke();
+        }
+      }
+
+      // Single green database node appears & pulses
+      if (phase === 'type2' || phase === 'pause2' || phase === 'type3' || phase === 'morph') {
+        pulseAngle += 0.08;
+        const pulseRadius = 8 + Math.sin(pulseAngle) * 3;
+
+        // Draw pulse ring
+        ctx.strokeStyle = 'rgba(0, 232, 122, 0.2)';
+        ctx.beginPath();
+        ctx.arc(width / 2, height / 2, pulseRadius, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Draw primary node
+        ctx.fillStyle = '#00e87a';
+        ctx.beginPath();
+        ctx.arc(width / 2, height / 2, 4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Network lines grow outward
+      if (phase === 'type3' || phase === 'morph') {
+        if (progress < 1) progress += 0.01;
+
+        ctx.strokeStyle = 'rgba(0, 232, 122, 0.08)';
+        ctx.lineWidth = 1;
+
+        nodes.forEach((node, i) => {
+          if (i === 0) return;
+          const dist = Math.hypot(node.x - width / 2, node.y - height / 2);
+          if (dist < 260) {
+            ctx.beginPath();
+            ctx.moveTo(width / 2, height / 2);
+            ctx.lineTo(
+              width / 2 + (node.x - width / 2) * progress,
+              height / 2 + (node.y - height / 2) * progress
+            );
+            ctx.stroke();
+
+            // Draw branch coordinate dots
+            ctx.fillStyle = 'rgba(0, 232, 122, 0.4)';
+            ctx.beginPath();
+            ctx.arc(
+              width / 2 + (node.x - width / 2) * progress,
+              height / 2 + (node.y - height / 2) * progress,
+              1.5,
+              0,
+              Math.PI * 2
+            );
+            ctx.fill();
+          }
+        });
+      }
+
+      // Accelerate camera & morph elements into outline dashboard boundaries
+      if (phase === 'morph') {
+        nodes.forEach((node) => {
+          node.x += (node.tx - node.x) * 0.08;
+          node.y += (node.ty - node.y) * 0.08;
+        });
+
+        // Draw visual schema frame morphing outward
+        ctx.strokeStyle = 'rgba(0, 232, 122, 0.12)';
+        ctx.lineWidth = 1.2;
+        const boxW = 320 * progress;
+        const boxH = 220 * progress;
+        ctx.strokeRect(width / 2 - boxW / 2, height / 2 - boxH / 2, boxW, boxH);
+      }
+
+      animationId = requestAnimationFrame(tick);
+    };
+
+    tick();
+
+    return () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [phase]);
+
   return (
-    <section
-      id="hero"
+    <div
       style={{
-        minHeight: '100svh',
+        position: 'fixed',
+        inset: 0,
+        zIndex: 99,
         background: '#0c0c0c',
-        display: 'flex',
+        display: phase === 'done' ? 'none' : 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        padding: 'clamp(2rem, 6vw, 6rem) clamp(1.5rem, 6vw, 7rem)',
-        position: 'relative',
+        alignItems: 'center',
         overflow: 'hidden',
       }}
     >
-      <div style={{ maxWidth: 840, position: 'relative', zIndex: 2 }}>
-        {/* Top tag */}
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2.5rem' }}
-        >
-          <span style={{ display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: '#c8ff00' }} />
-          <span className="label-overline" style={{ color: '#c8ff00' }}>PRODUCT ENGINEERING DOCUMENTARY</span>
-        </motion.div>
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 1,
+          pointerEvents: 'none',
+        }}
+      />
 
-        {/* Philosophy statements */}
-        <motion.h1
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15, duration: 0.6 }}
-          style={{
-            fontFamily: 'Syne, sans-serif',
-            fontSize: 'clamp(2rem, 4.5vw, 4.5rem)',
-            fontWeight: 800,
-            letterSpacing: '-0.04em',
-            lineHeight: 1.05,
-            color: '#f0ede6',
-            marginBottom: '1.5rem',
-          }}
-        >
-          Not every project deserves to exist.
-        </motion.h1>
-
-        <motion.h2
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.6 }}
-          style={{
-            fontFamily: 'Syne, sans-serif',
-            fontSize: 'clamp(1.5rem, 3.2vw, 3rem)',
-            fontWeight: 700,
-            letterSpacing: '-0.03em',
-            lineHeight: 1.1,
-            color: '#666',
-            marginBottom: '2.5rem',
-          }}
-        >
-          I build systems that solve real operational problems.
-        </motion.h2>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.45, duration: 0.6 }}
-          style={{
-            fontFamily: 'Inter, sans-serif',
-            fontSize: '1.0625rem',
-            color: '#888',
-            lineHeight: 1.75,
-            maxWidth: '52ch',
-            marginBottom: '3rem',
-          }}
-        >
-          I am Aabhas Katiyar. I design software architecture starting from the customer problem, down to database security rules and microcontroller firmware.
-        </motion.p>
-
-        {/* Call to Case Studies */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6, duration: 0.6 }}
-          style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}
-        >
-          <a href="#gymlane" className="world-link">
-            GymLane: Revenue Leakage
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ marginLeft: 4 }}>
-              <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4.5M9.5 2.5V7.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </a>
-          <a href="#yappr" className="world-link">
-            Yappr: Real-time PubSub
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ marginLeft: 4 }}>
-              <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4.5M9.5 2.5V7.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </a>
-        </motion.div>
+      <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', padding: '1rem' }}>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={phase}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            style={{
+              fontFamily: 'JetBrains Mono, monospace',
+              fontSize: 'clamp(0.9375rem, 1.6vw, 1.35rem)',
+              color: '#f0ede6',
+              letterSpacing: '-0.02em',
+            }}
+          >
+            {text}
+            {cursor && (
+              <span style={{ display: 'inline-block', width: 2, height: 16, background: '#fff', marginLeft: 4 }} />
+            )}
+          </motion.div>
+        </AnimatePresence>
       </div>
-
-      {/* Decorative vertical guide */}
-      <div style={{ position: 'absolute', right: 'clamp(2rem, 6vw, 6rem)', bottom: '4rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-        <motion.div
-          animate={{ scaleY: [0, 1, 0] }}
-          transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
-          style={{ width: 1, height: 48, background: 'linear-gradient(to bottom, transparent, #c8ff00, transparent)', transformOrigin: 'top' }}
-        />
-        <span className="label-overline" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)', color: '#333' }}>scroll</span>
-      </div>
-    </section>
+    </div>
   );
 };
