@@ -6,7 +6,7 @@ import { Hero } from './components/sections/Hero';
 import { GymLane } from './components/sections/GymLane';
 import { Yappr } from './components/sections/Yappr';
 import { Journey } from './components/sections/Journey';
-import { ProjectArchive } from './components/sections/ProjectArchive';
+import { EngineeringLab } from './components/sections/EngineeringLab';
 import { Contact } from './components/sections/Contact';
 
 function App() {
@@ -26,7 +26,7 @@ function App() {
           <GymLane />
           <Yappr />
           <Journey />
-          <ProjectArchive />
+          <EngineeringLab />
           <Contact />
         </main>
       </div>

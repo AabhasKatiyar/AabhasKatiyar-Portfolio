@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 /* ─── ESP32 Canvas Simulator with Dust Physics ─────────────────────────────── */
 interface CarState { x: number; y: number; angle: number; speed: number; cmd: string }
@@ -41,7 +41,6 @@ const CarSimulator = () => {
         if (k.a) c.angle -= 3.5 * dir;
         if (k.d) c.angle += 3.5 * dir;
 
-        // Dust particle emitter
         if (Math.random() > 0.4) {
           particlesRef.current.push({
             x: c.x - Math.cos((c.angle * Math.PI) / 180) * 10,
@@ -59,17 +58,14 @@ const CarSimulator = () => {
 
       setReadout({ speed: Math.abs(c.speed).toFixed(1), heading: Math.round(c.angle), cmd: c.cmd, pwm });
 
-      // Render Canvas Scene
       ctx.fillStyle = '#060d06';
       ctx.fillRect(0, 0, 280, 200);
 
-      // Grid Lines
       ctx.strokeStyle = 'rgba(0,232,122,0.05)';
       ctx.lineWidth = 1;
       for (let gx = 0; gx < 280; gx += 20) { ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, 200); ctx.stroke(); }
       for (let gy = 0; gy < 200; gy += 20) { ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(280, gy); ctx.stroke(); }
 
-      // Dust Particles Render
       particlesRef.current.forEach((p, idx) => {
         p.alpha -= 0.02;
         ctx.fillStyle = `rgba(200, 255, 0, ${p.alpha})`;
@@ -79,7 +75,6 @@ const CarSimulator = () => {
         if (p.alpha <= 0) particlesRef.current.splice(idx, 1);
       });
 
-      // Render Vector Car
       ctx.save();
       ctx.translate(c.x, c.y);
       ctx.rotate(rad);
@@ -120,7 +115,7 @@ const CarSimulator = () => {
         <span style={{ color: '#444' }}>CMD <span style={{ color: '#00e87a' }}>{readout.cmd}</span></span>
       </div>
       <div style={{ marginTop: '0.375rem', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#444', letterSpacing: '0.06em' }}>
-        Click canvas then use WASD to steer vector engine
+        Click canvas then steer car with WASD
       </div>
     </div>
   );
@@ -171,126 +166,118 @@ const Calculator = () => {
   );
 };
 
-/* ─── Main Archive Section ───────────────────────────────── */
-export const ProjectArchive = () => {
+/* ─── Main Sandbox Layout ────────────────────────────────── */
+export const EngineeringLab = () => {
+  const [mistakeTab, setMistakeTab] = useState<'gym' | 'yappr'>('gym');
+
   return (
     <section
       id="archive"
-      style={{ background: '#0c0c0c', padding: 'clamp(3rem, 8vw, 6rem) clamp(1.5rem, 4vw, 3.5rem)', minHeight: '100svh' }}
+      style={{ background: '#0c0c0c', padding: 'clamp(4rem, 8vw, 8rem) clamp(1.5rem, 6vw, 6rem)', minHeight: '100svh' }}
     >
-      {/* Header */}
+      {/* Section Header */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
-        style={{ marginBottom: '3.5rem' }}
+        style={{ marginBottom: '4rem' }}
       >
-        <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#444' }}>
-          04 — Digital Museum
+        <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#888' }}>
+          04 — Engineering Lab
         </span>
-        <h2 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: 'clamp(2rem, 5vw, 5rem)', letterSpacing: '-0.04em', lineHeight: 1, color: '#f0ede6', marginTop: '0.75rem' }}>
-          Everything else<br />I built.
+        <h2 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: 'clamp(2rem, 5vw, 4.5rem)', letterSpacing: '-0.04em', lineHeight: 1, color: '#f0ede6', marginTop: '0.75rem' }}>
+          Tactile prototypes & retrospectives.
         </h2>
-        <p style={{ marginTop: '1rem', color: '#444', fontSize: '0.9375rem', maxWidth: '44ch', lineHeight: 1.7 }}>
-          The hardware prototypes and utility applications built before GymLane and Yappr.
-        </p>
       </motion.div>
 
-      {/* Bento layout */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem', maxWidth: 1000 }}>
-
-        {/* ESP32 car — large card */}
+      {/* Grid of Sandboxes */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2.5rem', maxWidth: 1100, margin: '0 auto' }}>
+        
+        {/* ESP32 WASD Sandbox */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
-          style={{ gridColumn: 'span 2', background: '#0a120b', border: '1px solid rgba(0,232,122,0.1)', borderRadius: 12, padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}
+          style={{ background: '#0a100b', border: '1px solid rgba(0,232,122,0.12)', borderRadius: 12, padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}
         >
           <div>
-            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#00e87a' }}>Hardware · ESP32 · WiFi</span>
-            <h3 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '1.125rem', color: '#f0ede6', marginTop: '0.375rem', letterSpacing: '-0.02em' }}>WiFi-Controlled RC Car</h3>
-            <p style={{ fontSize: '0.8125rem', color: '#666', lineHeight: 1.65, marginTop: '0.375rem' }}>
-              ESP32 broadcasts a SoftAP WiFi network. Browser connects, sends HTTP requests.
-              ESP32 parses endpoints and drives DC motors via L298N PWM control.
-            </p>
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#00e87a', letterSpacing: '0.12em' }}>SANDBOX 01 // HARDWARE DRIVER</span>
+            <h3 style={{ fontFamily: 'Syne, sans-serif', fontSize: '1.125rem', fontWeight: 700, color: '#fff', marginTop: '0.25rem' }}>ESP32 Vector Simulation</h3>
           </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', alignItems: 'flex-start' }}>
-            <CarSimulator />
-            <div style={{ flex: 1, minWidth: 160 }}>
-              <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#2a4a2e', marginBottom: '0.5rem' }}>HTTP Endpoint Logic</div>
-              <div style={{ background: '#060d06', borderRadius: 6, padding: '0.75rem', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', lineHeight: 1.7, color: '#3a6040' }}>
-                <div><span style={{ color: '#555' }}>// C++ ESP32 firmware</span></div>
-                <div>server.on(<span style={{ color: '#f59e0b' }}>"/fwd"</span>, []() {'{'}</div>
-                <div style={{ paddingLeft: '1rem' }}>setMotorPWM(<span style={{ color: '#00e87a' }}>255</span>);</div>
-                <div>{'}'});</div>
-                <div style={{ marginTop: '0.5rem' }}>server.on(<span style={{ color: '#f59e0b' }}>"/stop"</span>, []() {'{'}</div>
-                <div style={{ paddingLeft: '1rem' }}>setMotorPWM(<span style={{ color: '#00e87a' }}>0</span>);</div>
-                <div>{'}'});</div>
-              </div>
-            </div>
-          </div>
+          <CarSimulator />
         </motion.div>
 
-        {/* RC Car — medium card */}
+        {/* Dynamic Calculator */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
-          style={{ background: '#0c0a04', border: '1px solid rgba(245,158,11,0.1)', borderRadius: 12, padding: '1.5rem' }}
+          transition={{ delay: 0.1 }}
+          style={{ background: '#0a0903', border: '1px solid rgba(245,158,11,0.08)', borderRadius: 12, padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}
         >
-          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#f59e0b' }}>Hardware · Arduino · Bluetooth</span>
-          <h3 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '1.125rem', color: '#f0ede6', marginTop: '0.375rem', marginBottom: '0.5rem', letterSpacing: '-0.02em' }}>Bluetooth RC Car</h3>
-          <p style={{ fontSize: '0.8125rem', color: '#555', lineHeight: 1.65, marginBottom: '1rem' }}>
-            Arduino Uno + HC-05 Bluetooth module. A phone app sends single-char commands over serial.
-            The Arduino parses them and drives the motors.
-          </p>
-          <div style={{ background: '#0a0804', borderRadius: 6, padding: '0.75rem', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.6rem', lineHeight: 1.75, color: '#555' }}>
-            <div><span style={{ color: '#333' }}>// Serial packet parser</span></div>
-            <div>if (Serial.available()) {'{'}</div>
-            <div style={{ paddingLeft: '1rem' }}>char c = Serial.read();</div>
-            <div style={{ paddingLeft: '1rem' }}>if (c == <span style={{ color: '#f59e0b' }}>'F'</span>) forward();</div>
-            <div style={{ paddingLeft: '1rem' }}>if (c == <span style={{ color: '#f59e0b' }}>'B'</span>) reverse();</div>
-            <div>{'}'}</div>
+          <div>
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#f59e0b', letterSpacing: '0.12em' }}>SANDBOX 02 // REACTIVE STATE</span>
+            <h3 style={{ fontFamily: 'Syne, sans-serif', fontSize: '1.125rem', fontWeight: 700, color: '#fff', marginTop: '0.25rem' }}>Discount Price Calculator</h3>
           </div>
-        </motion.div>
-
-        {/* Calculator — medium card */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.15, duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
-          style={{ background: '#0a0903', border: '1px solid rgba(245,158,11,0.08)', borderRadius: 12, padding: '1.5rem' }}
-        >
-          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#f59e0b' }}>Utility · Vanilla JS</span>
-          <h3 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '1.125rem', color: '#f0ede6', marginTop: '0.375rem', marginBottom: '0.875rem', letterSpacing: '-0.02em' }}>Discount Calculator</h3>
           <Calculator />
         </motion.div>
 
-        {/* This portfolio */}
+        {/* Retrospectives & Failures */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.2, duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
-          style={{ background: '#0c0c0c', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 12, padding: '1.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '2rem' }}
+          transition={{ delay: 0.2 }}
+          style={{ background: '#0d0d0f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 12, padding: '1.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '1rem' }}
         >
           <div>
-            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#444' }}>Meta · System Specs</span>
-            <h3 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '1.125rem', color: '#f0ede6', marginTop: '0.375rem', marginBottom: '0.5rem', letterSpacing: '-0.02em' }}>This Experience</h3>
-            <p style={{ fontSize: '0.8125rem', color: '#555', lineHeight: 1.65 }}>
-              Engineered with Three.js WebGL shaders, Lenis momentum scroll, and 3D perspective transforms.
-            </p>
-          </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.375rem' }}>
-            {['Three.js', 'Lenis Scroll', 'React 19', 'TypeScript', 'Vite', 'Tailwind v4'].map((t) => (
-              <span key={t} style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', padding: '0.15rem 0.5rem', borderRadius: 3, border: '1px solid rgba(255,255,255,0.07)', color: '#444' }}>{t}</span>
-            ))}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#888', letterSpacing: '0.12em' }}>RETROSPECTIVE // FAILURES</span>
+              <div style={{ display: 'flex', gap: '0.25rem' }}>
+                <button onClick={() => setMistakeTab('gym')} style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', background: mistakeTab === 'gym' ? 'rgba(255,255,255,0.08)' : 'transparent', color: '#fff', border: 'none', padding: '0.15rem 0.35rem', borderRadius: 3, cursor: 'pointer' }}>Gym</button>
+                <button onClick={() => setMistakeTab('yappr')} style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', background: mistakeTab === 'yappr' ? 'rgba(255,255,255,0.08)' : 'transparent', color: '#fff', border: 'none', padding: '0.15rem 0.35rem', borderRadius: 3, cursor: 'pointer' }}>Yappr</button>
+              </div>
+            </div>
+            <h3 style={{ fontFamily: 'Syne, sans-serif', fontSize: '1.125rem', fontWeight: 700, color: '#fff', marginTop: '0.375rem', marginBottom: '0.5rem' }}>Mistakes I Made</h3>
+            
+            <AnimatePresence mode="wait">
+              {mistakeTab === 'gym' ? (
+                <motion.div key="gym" initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ fontSize: '0.75rem', color: '#666', lineHeight: 1.6 }}>
+                  <div style={{ color: '#ff3d6e', marginBottom: '0.25rem' }}>❌ Error: Client-side subscription checks</div>
+                  <p>Initially verified active plan status solely in client-side widgets. Exposed gym revenue data to local DOM script manipulation.</p>
+                  <div style={{ color: '#00e87a', marginTop: '0.5rem', marginBottom: '0.25rem' }}>✓ Rebuilt: Strict Postgres RLS policy</div>
+                  <p>Shifted security filters directly into Postgres using Supabase Auth JWT matches. Safe, tamper-proof isolation.</p>
+                </motion.div>
+              ) : (
+                <motion.div key="yappr" initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ fontSize: '0.75rem', color: '#666', lineHeight: 1.6 }}>
+                  <div style={{ color: '#ff3d6e', marginBottom: '0.25rem' }}>❌ Error: Heavy network updates on post updates</div>
+                  <p>Initially re-fetched the entire timeline feed on every new post mutation. Created massive network lag on mobile browsers.</p>
+                  <div style={{ color: '#00e87a', marginTop: '0.5rem', marginBottom: '0.25rem' }}>✓ Rebuilt: Local optimistic state array insertion</div>
+                  <p>Prepended draft data to timeline state memory, executing DB mutations asynchronously in the background. Lag feels zero.</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </motion.div>
+
+        {/* AI Collaboration Statement */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.25 }}
+          style={{ background: '#0c0c0c', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 12, padding: '1.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '1rem' }}
+        >
+          <div>
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#c8ff00', letterSpacing: '0.12em' }}>COLLEAGUE STATEMENT // AI COLLAB</span>
+            <h3 style={{ fontFamily: 'Syne, sans-serif', fontSize: '1.125rem', fontWeight: 700, color: '#fff', marginTop: '0.25rem', marginBottom: '0.5rem' }}>Honest AI Engineering</h3>
+            <p style={{ fontSize: '0.75rem', color: '#666', lineHeight: 1.6 }}>
+              AI accelerated implementation, boilerplate setup, and component layout iterations. Architectural decisions, system design patterns, firmware interfaces, and security validation rules were directed and verified by me.
+            </p>
+          </div>
+        </motion.div>
+
       </div>
     </section>
   );
