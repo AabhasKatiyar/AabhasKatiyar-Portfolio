@@ -1,173 +1,226 @@
-import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 interface Stage {
+  num: string;
   period: string;
-  title: string;
-  description: string;
+  heading: string;
+  body: string;
   tech: string[];
-  status: 'past' | 'present' | 'future';
+  accent: string;
+  bgTint: string;
 }
 
 const STAGES: Stage[] = [
   {
-    period: '2023 – 2024',
-    title: 'Embedded Systems & Microcontrollers',
-    description:
-      'Started with Arduino Uno. Learned C/C++ to control physical things: motors, sensors, LEDs. Built a Bluetooth RC car and then an ESP32 WiFi car with a local web server controlling DC gear motors through an L298N motor driver.',
-    tech: ['C/C++', 'Arduino', 'ESP32', 'SoftAP', 'PWM', 'L298N'],
-    status: 'past',
+    num: '01',
+    period: '2023 — Early 2024',
+    heading: 'Arduino, C++, and making things move.',
+    body: 'My first line of code controlled a servo motor, not a webpage. Learning C++ on an Arduino Uno — reading sensors, blinking LEDs, writing firmware — gave me something most web developers don\'t have: an understanding of what happens below the abstraction layers.',
+    tech: ['C/C++', 'Arduino IDE', 'PWM', 'GPIO', 'Sensors', 'Servos'],
+    accent: '#f59e0b',
+    bgTint: '#0f0b04',
   },
   {
-    period: 'Early 2025',
-    title: 'HTML, CSS & JavaScript Fundamentals',
-    description:
-      'Moved to web development by going deep on fundamentals — not skipping them. Built static pages from scratch to understand exactly how the browser renders things. Wrote JavaScript for DOM manipulation before ever touching a framework.',
-    tech: ['HTML5', 'CSS Grid', 'Flexbox', 'Vanilla JS', 'DOM APIs'],
-    status: 'past',
+    num: '02',
+    period: 'Mid 2024',
+    heading: 'ESP32, SoftAP, and a car I drove from my phone.',
+    body: 'The ESP32 WiFi car project was the first time I built a complete system: a microcontroller serving an HTTP endpoint, controlling DC motors through an L298N driver via PWM. My phone was the client. The car was the server response. It taught me client–server architecture before I knew what that meant.',
+    tech: ['ESP32', 'SoftAP', 'HTTP Server', 'L298N', 'DC Motors', 'PWM Control'],
+    accent: '#fb923c',
+    bgTint: '#0f0903',
   },
   {
+    num: '03',
+    period: 'Late 2024 — Early 2025',
+    heading: 'HTML, CSS, and JavaScript. Properly. Not quickly.',
+    body: 'Before React, I went deep on how browsers actually work. What the cascade in CSS means. How the event loop works. How the DOM is constructed and updated. This foundation made everything that came after faster and less confusing — I wasn\'t fighting the browser, I understood it.',
+    tech: ['HTML5', 'CSS Grid', 'Flexbox', 'Vanilla JS', 'DOM APIs', 'Async/Await'],
+    accent: '#2dd4bf',
+    bgTint: '#030f0d',
+  },
+  {
+    num: '04',
     period: 'Mid 2025',
-    title: 'React, TypeScript & Modern Frontend',
-    description:
-      'Learned React properly — hooks, component architecture, state management, performance. Added TypeScript because type safety matters at scale. Built the foundations that made GymLane and Yappr possible.',
-    tech: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Framer Motion'],
-    status: 'past',
+    heading: 'React, TypeScript, and learning to think in components.',
+    body: 'React clicked when I stopped thinking about pages and started thinking about state. TypeScript made me a more careful engineer — having to name your data shapes forces you to think about them before you write the code. Vite replaced webpack confusion with actual speed.',
+    tech: ['React 19', 'TypeScript', 'Vite', 'Tailwind CSS', 'Framer Motion', 'ESLint'],
+    accent: '#60a5fa',
+    bgTint: '#03060f',
   },
   {
-    period: 'Late 2025 – Now',
-    title: 'Full Stack & SaaS Founder',
-    description:
-      'Integrated Supabase and PostgreSQL to build real backends. Learned Row Level Security for bulletproof multi-tenant data access. Shipped GymLane (gym management SaaS) and Yappr (social platform) — both live, both real.',
-    tech: ['Supabase', 'PostgreSQL', 'RLS', 'Supabase Auth', 'Realtime DB', 'Cloudflare Pages'],
-    status: 'present',
-  },
-  {
-    period: 'Currently Learning',
-    title: 'Next.js, System Design & Mobile',
-    description:
-      'Studying server-side rendering, API routes, and edge functions with Next.js. Learning System Design to think about scale and architecture before building. Picking up Kotlin and React Native to extend my products to mobile.',
-    tech: ['Next.js', 'System Design', 'Kotlin', 'React Native', 'AI APIs', 'Node.js'],
-    status: 'future',
+    num: '05',
+    period: 'Late 2025 — Now',
+    heading: 'Supabase, PostgreSQL, and two live products.',
+    body: 'GymLane and Yappr are real products I built from zero — backend, auth, database schema, Row Level Security, and deployment. I learned more from shipping these two apps than from any tutorial. The hard parts were real: multi-tenant isolation, realtime subscriptions, optimistic UI. This is where I am now.',
+    tech: ['Supabase', 'PostgreSQL', 'Row Level Security', 'Supabase Auth', 'Cloudflare Pages', 'Git'],
+    accent: '#c8ff00',
+    bgTint: '#070f03',
   },
 ];
 
-const statusColor: Record<Stage['status'], string> = {
-  past: 'var(--color-text-tertiary)',
-  present: 'var(--color-blue)',
-  future: 'var(--color-amber)',
-};
-
-const TimelineNode = ({ status }: { status: Stage['status'] }) => (
-  <div className="relative flex-shrink-0 w-8 flex flex-col items-center">
-    <div
-      className="w-3 h-3 rounded-full border-2 mt-0.5 flex-shrink-0"
-      style={{
-        borderColor: statusColor[status],
-        background: status === 'present' ? 'var(--color-blue)' : 'var(--color-ink)',
-        boxShadow: status === 'present' ? '0 0 12px rgba(59,123,252,0.5)' : 'none',
-      }}
-    />
-  </div>
-);
-
-const StageCard = ({ stage, index }: { stage: Stage; index: number }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-60px' });
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, x: -16 }}
-      animate={isInView ? { opacity: 1, x: 0 } : {}}
-      transition={{ duration: 0.6, delay: index * 0.07, ease: [0.16, 1, 0.3, 1] as const }}
-      className="flex gap-4"
-    >
-      <TimelineNode status={stage.status} />
-
-      <div className="pb-10 flex-1 min-w-0">
-        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-3">
-          <span
-            className="label-mono"
-            style={{ color: statusColor[stage.status] }}
-          >
-            {stage.period}
-          </span>
-          {stage.status === 'present' && (
-            <span
-              className="inline-flex items-center gap-1.5 text-[0.65rem] font-mono font-medium tracking-wider"
-              style={{ color: 'var(--color-blue)' }}
-            >
-              <span
-                className="status-dot"
-                style={{ background: 'var(--color-blue)' }}
-              />
-              Active
-            </span>
-          )}
-        </div>
-
-        <h3
-          className="font-display font-semibold text-white mb-3"
-          style={{ fontSize: '1.0625rem', letterSpacing: '-0.015em' }}
-        >
-          {stage.title}
-        </h3>
-
-        <p className="body-sm mb-4">{stage.description}</p>
-
-        <div className="flex flex-wrap gap-1.5">
-          {stage.tech.map((t) => (
-            <span
-              key={t}
-              className="pill"
-              style={stage.status === 'present' ? { borderColor: 'rgba(59,123,252,0.25)', color: 'rgba(59,123,252,0.9)' } : {}}
-            >
-              {t}
-            </span>
-          ))}
-        </div>
-      </div>
-    </motion.div>
-  );
-};
-
 export const Journey = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end end'],
+  });
+
+  // Translate 5 stages horizontally: 0% → -80% of the 500vw strip
+  const x = useTransform(scrollYProgress, [0, 1], ['0%', '-80%']);
+  const progressWidth = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
+
   return (
-    <section id="journey" className="section-padding section-divider">
-      <div className="container-md">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] as const }}
-          className="mb-14"
-        >
-          <p className="section-eyebrow mb-3">How I got here</p>
-          <h2 className="heading-lg text-white max-w-xl">
-            From soldering wires to shipping SaaS
-          </h2>
-          <p className="body-lg mt-4 max-w-lg">
-            A real account of how I learned — what I built at each stage,
-            what clicked, and what I'm working on next.
-          </p>
-        </motion.div>
+    <div ref={containerRef} id="journey" style={{ height: '400vh', position: 'relative' }}>
+      {/* Sticky viewport */}
+      <div style={{ position: 'sticky', top: 0, height: '100svh', overflow: 'hidden', background: '#07070f' }}>
 
-        {/* Timeline */}
-        <div className="relative">
-          {/* Vertical line */}
-          <div
-            className="absolute left-[15px] top-0 bottom-0 w-px"
-            style={{ background: 'var(--color-border)' }}
+        {/* Progress bar */}
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'rgba(255,255,255,0.04)', zIndex: 10 }}>
+          <motion.div
+            style={{ height: '100%', background: '#9b6dff', width: progressWidth }}
           />
+        </div>
 
-          <div>
-            {STAGES.map((stage, i) => (
-              <StageCard key={i} stage={stage} index={i} />
-            ))}
+        {/* Section label — fixed upper-left */}
+        <div style={{ position: 'absolute', top: 'clamp(2rem, 4vw, 3.5rem)', left: 'clamp(1.5rem, 4vw, 3.5rem)', zIndex: 10 }}>
+          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#9b6dff' }}>
+            03 — Journey
+          </span>
+          <div style={{ marginTop: '0.25rem', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#333', letterSpacing: '0.1em' }}>
+            Scroll to walk the timeline →
           </div>
         </div>
+
+        {/* Horizontal strip */}
+        <motion.div
+          style={{
+            display: 'flex',
+            width: `${STAGES.length * 100}vw`,
+            height: '100%',
+            x,
+          }}
+        >
+          {STAGES.map((stage, i) => (
+            <div
+              key={i}
+              style={{
+                width: '100vw',
+                height: '100%',
+                flexShrink: 0,
+                background: stage.bgTint,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                padding: 'clamp(2rem, 6vw, 6rem) clamp(1.5rem, 6vw, 7rem)',
+                position: 'relative',
+                borderRight: i < STAGES.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
+              }}
+            >
+              {/* Stage number — giant, decorative */}
+              <div
+                aria-hidden
+                style={{
+                  position: 'absolute',
+                  right: 'clamp(1rem, 4vw, 4rem)',
+                  bottom: '2rem',
+                  fontFamily: 'Syne, sans-serif',
+                  fontWeight: 800,
+                  fontSize: 'clamp(8rem, 20vw, 22rem)',
+                  color: 'rgba(255,255,255,0.02)',
+                  letterSpacing: '-0.06em',
+                  lineHeight: 1,
+                  userSelect: 'none',
+                  pointerEvents: 'none',
+                }}
+              >
+                {stage.num}
+              </div>
+
+              {/* Content */}
+              <div style={{ position: 'relative', zIndex: 1, maxWidth: 640 }}>
+                <span
+                  style={{
+                    fontFamily: 'JetBrains Mono, monospace',
+                    fontSize: '0.625rem',
+                    letterSpacing: '0.14em',
+                    textTransform: 'uppercase',
+                    color: stage.accent,
+                    display: 'block',
+                    marginBottom: '0.75rem',
+                  }}
+                >
+                  {stage.period}
+                </span>
+
+                <h2
+                  style={{
+                    fontFamily: 'Syne, sans-serif',
+                    fontWeight: 800,
+                    fontSize: 'clamp(1.75rem, 3.5vw, 3.5rem)',
+                    letterSpacing: '-0.035em',
+                    lineHeight: 1.1,
+                    color: '#f0ede6',
+                    marginBottom: '1.5rem',
+                  }}
+                >
+                  {stage.heading}
+                </h2>
+
+                <p
+                  style={{
+                    fontSize: 'clamp(0.875rem, 1.1vw, 1rem)',
+                    color: '#666',
+                    lineHeight: 1.75,
+                    marginBottom: '2rem',
+                    maxWidth: '52ch',
+                  }}
+                >
+                  {stage.body}
+                </p>
+
+                {/* Tech tags */}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.375rem' }}>
+                  {stage.tech.map((t) => (
+                    <span
+                      key={t}
+                      style={{
+                        fontFamily: 'JetBrains Mono, monospace',
+                        fontSize: '0.5625rem',
+                        letterSpacing: '0.08em',
+                        padding: '0.2rem 0.6rem',
+                        borderRadius: 3,
+                        border: `1px solid ${stage.accent}30`,
+                        color: stage.accent,
+                        background: `${stage.accent}0a`,
+                      }}
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Stage indicator dots */}
+                <div style={{ display: 'flex', gap: '0.375rem', marginTop: '2.5rem' }}>
+                  {STAGES.map((_, idx) => (
+                    <div
+                      key={idx}
+                      style={{
+                        width: idx === i ? 20 : 5,
+                        height: 5,
+                        borderRadius: 999,
+                        background: idx === i ? stage.accent : 'rgba(255,255,255,0.08)',
+                        transition: 'width 0.3s, background 0.3s',
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </motion.div>
       </div>
-    </section>
+    </div>
   );
 };

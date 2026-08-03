@@ -1,12 +1,6 @@
-import { motion } from 'framer-motion';
-import { ArrowDown, Mail } from 'lucide-react';
-import { MagneticButton } from '../ui/MagneticButton';
-
-const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.65, delay, ease: [0.16, 1, 0.3, 1] as const },
-});
+import { useEffect, useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { TextScramble } from '../ui/TextScramble';
 
 const ROLES = [
   'Full Stack Developer',
@@ -15,141 +9,220 @@ const ROLES = [
   'Startup Builder',
 ];
 
-const STATS = [
-  { value: '2', label: 'SaaS platforms launched' },
-  { value: '4+', label: 'Real projects shipped' },
-  { value: '3rd yr', label: 'B.Tech IT, KIET' },
-  { value: '∞', label: 'Problems left to solve' },
+const STACK = [
+  'React', 'TypeScript', 'Supabase', 'PostgreSQL', 'Vite',
+  'Tailwind CSS', 'Framer Motion', 'C/C++', 'Arduino', 'ESP32',
+  'Row Level Security', 'Cloudflare Pages', 'Node.js', 'Git',
+  'React', 'TypeScript', 'Supabase', 'PostgreSQL', 'Vite',
+  'Tailwind CSS', 'Framer Motion', 'C/C++', 'Arduino', 'ESP32',
+  'Row Level Security', 'Cloudflare Pages', 'Node.js', 'Git',
 ];
 
 export const Hero = () => {
+  const [roleIdx, setRoleIdx] = useState(0);
+  const [mouse, setMouse]     = useState({ x: 0, y: 0 });
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const id = setInterval(() => setRoleIdx((i) => (i + 1) % ROLES.length), 2800);
+    return () => clearInterval(id);
+  }, []);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => setMouse({ x: e.clientX, y: e.clientY });
+    window.addEventListener('mousemove', handler, { passive: true });
+    return () => window.removeEventListener('mousemove', handler);
+  }, []);
+
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex flex-col justify-center pt-28 pb-20 bg-grid-subtle overflow-hidden"
+      ref={sectionRef}
+      style={{
+        minHeight: '100svh',
+        background: '#0c0c0c',
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
     >
-      {/* Ambient light — one, subtle, centered */}
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-        <div
-          className="w-[600px] h-[600px] rounded-full"
-          style={{
-            background: 'radial-gradient(circle, rgba(59,123,252,0.06) 0%, transparent 70%)',
-          }}
-        />
-      </div>
+      {/* Mouse-reactive lime spotlight */}
+      <div
+        aria-hidden
+        style={{
+          position: 'fixed',
+          inset: 0,
+          pointerEvents: 'none',
+          zIndex: 0,
+          background: `radial-gradient(700px circle at ${mouse.x}px ${mouse.y}px, rgba(200,255,0,0.045), transparent 75%)`,
+          transition: 'background 0.08s',
+        }}
+      />
 
-      <div className="container-md relative z-10">
-        {/* Eyebrow */}
-        <motion.div {...fadeUp(0)} className="mb-8">
-          <span className="section-eyebrow">Aabhas Katiyar</span>
-        </motion.div>
+      {/* Content wrapper */}
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 1,
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          padding: 'clamp(1.5rem, 4vw, 3.5rem)',
+          paddingTop: 'clamp(4rem, 8vw, 7rem)',
+        }}
+      >
+        {/* Top row */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+            className="label-overline"
+          >
+            B.Tech IT · KIET Group of Institutions, UP
+          </motion.span>
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+            className="label-overline"
+          >
+            Portfolio 2026
+          </motion.span>
+        </div>
 
-        {/* Headline */}
-        <motion.h1 {...fadeUp(0.1)} className="heading-xl mb-6 max-w-3xl">
-          Building products from{' '}
-          <span className="text-white">idea to deployment.</span>
-        </motion.h1>
+        {/* Centre: Name + role */}
+        <div style={{ paddingLeft: 'clamp(0rem, 2vw, 1.5rem)' }}>
+          <h1
+            className="display-2xl"
+            style={{ lineHeight: 0.92 }}
+            aria-label="Aabhas Katiyar"
+          >
+            <TextScramble text="AABHAS" delay={180} speed={32} />
+            <br />
+            <TextScramble text="KATIYAR" delay={480} speed={32} />
+          </h1>
 
-        {/* Description — specific, honest */}
-        <motion.p {...fadeUp(0.2)} className="body-lg max-w-xl mb-8">
-          B.Tech Information Technology student at KIET Group of Institutions.
-          I build real SaaS platforms — GymLane and Yappr are live.
-          My stack spans React, TypeScript, Supabase, and PostgreSQL. I care
-          about how systems work, not just how they look.
-        </motion.p>
+          {/* Cycling role */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '1.75rem' }}>
+            <div style={{ width: 28, height: 1, background: '#c8ff00', flexShrink: 0 }} />
+            <div style={{ height: '1.25rem', overflow: 'hidden', position: 'relative', minWidth: 220 }}>
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={roleIdx}
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -20, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] as const }}
+                  style={{
+                    position: 'absolute',
+                    fontFamily: 'JetBrains Mono, monospace',
+                    fontSize: '0.8125rem',
+                    letterSpacing: '0.04em',
+                    color: '#888',
+                  }}
+                >
+                  {ROLES[roleIdx]}
+                </motion.span>
+              </AnimatePresence>
+            </div>
+          </div>
 
-        {/* Roles — inline, clean */}
-        <motion.div {...fadeUp(0.28)} className="flex flex-wrap gap-2 mb-10">
-          {ROLES.map((role) => (
-            <span key={role} className="pill">{role}</span>
-          ))}
-        </motion.div>
+          {/* Description */}
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.4, duration: 0.7, ease: [0.16, 1, 0.3, 1] as const }}
+            style={{
+              maxWidth: '38ch',
+              fontSize: '1rem',
+              color: '#555',
+              lineHeight: 1.7,
+              marginTop: '2rem',
+            }}
+          >
+            I build real SaaS products — not side projects that never ship.
+            GymLane and Yappr are live. My stack starts at PostgreSQL and
+            goes all the way down to C++ firmware on Arduino.
+          </motion.p>
+        </div>
 
-        {/* CTAs */}
-        <motion.div {...fadeUp(0.35)} className="flex flex-wrap items-center gap-3 mb-16">
-          <MagneticButton>
-            <a href="#projects" className="btn-primary">
-              See what I've built
+        {/* Bottom row */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.8, duration: 0.6 }}
+          style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}
+        >
+          <div style={{ display: 'flex', gap: '2.5rem' }}>
+            <a href="#gymlane" className="world-link">
+              GymLane
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4.5M9.5 2.5V7.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </a>
-          </MagneticButton>
-          <MagneticButton>
-            <a href="#contact" className="btn-ghost">
+            <a href="#yappr" className="world-link">
+              Yappr
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4.5M9.5 2.5V7.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </a>
+            <a href="#contact" className="world-link">
               Get in touch
-            </a>
-          </MagneticButton>
-
-          {/* Social links */}
-          <div className="flex items-center gap-1 ml-2">
-            <a
-              href="https://github.com/abhas-katiyar"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="GitHub"
-              className="p-2 rounded-lg text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] transition-colors duration-200"
-            >
-              <svg className="w-[18px] h-[18px]" fill="currentColor" viewBox="0 0 24 24">
-                <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4.5M9.5 2.5V7.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
-            </a>
-            <a
-              href="https://linkedin.com/in/abhas-katiyar"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="LinkedIn"
-              className="p-2 rounded-lg text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] transition-colors duration-200"
-            >
-              <svg className="w-[18px] h-[18px]" fill="currentColor" viewBox="0 0 24 24">
-                <path fillRule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clipRule="evenodd" />
-              </svg>
-            </a>
-            <a
-              href="mailto:abhas.katiyar.dev@gmail.com"
-              aria-label="Email"
-              className="p-2 rounded-lg text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] transition-colors duration-200"
-            >
-              <Mail size={18} />
             </a>
           </div>
-        </motion.div>
 
-        {/* Stats row */}
-        <motion.div
-          {...fadeUp(0.42)}
-          className="grid grid-cols-2 md:grid-cols-4 gap-px border border-[var(--color-border)] rounded-xl overflow-hidden"
-        >
-          {STATS.map((stat, i) => (
-            <div
-              key={i}
-              className="bg-[var(--color-surface)] px-5 py-4 flex flex-col gap-1"
-            >
-              <span
-                className="font-display font-bold text-2xl text-white"
-                style={{ letterSpacing: '-0.03em' }}
-              >
-                {stat.value}
-              </span>
-              <span className="label-mono">{stat.label}</span>
-            </div>
-          ))}
+          {/* Scroll indicator */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+            <motion.div
+              animate={{ scaleY: [0, 1, 0] }}
+              transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
+              style={{
+                width: 1,
+                height: 48,
+                background: 'linear-gradient(to bottom, transparent, #c8ff00, transparent)',
+                transformOrigin: 'top',
+              }}
+            />
+            <span className="label-overline" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>
+              scroll
+            </span>
+          </div>
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
-      <motion.a
-        href="#projects"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 0.6 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)] transition-colors duration-200"
-        aria-label="Scroll down"
+      {/* Tech stack marquee strip */}
+      <div
+        style={{
+          borderTop: '1px solid rgba(255,255,255,0.05)',
+          overflow: 'hidden',
+          padding: '0.75rem 0',
+        }}
       >
-        <motion.div
-          animate={{ y: [0, 5, 0] }}
-          transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
-        >
-          <ArrowDown size={16} />
-        </motion.div>
-      </motion.a>
+        <div className="marquee-track">
+          {STACK.map((tech, i) => (
+            <span
+              key={i}
+              style={{
+                fontFamily: 'JetBrains Mono, monospace',
+                fontSize: '0.625rem',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: '#333',
+                flexShrink: 0,
+              }}
+            >
+              {tech}
+              <span style={{ marginLeft: '3rem', color: '#222' }}>·</span>
+            </span>
+          ))}
+        </div>
+      </div>
     </section>
   );
 };

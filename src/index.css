@@ -1,71 +1,64 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @import "tailwindcss";
 
 @theme {
+  --font-display: 'Syne', system-ui, sans-serif;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-display: 'Outfit', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-mono: 'JetBrains Mono', monospace;
 
-  /* Brand Colors */
-  --color-ink: #05050a;
-  --color-surface: #0c0c14;
-  --color-surface-2: #111119;
-  --color-border: rgba(255, 255, 255, 0.06);
-  --color-border-hover: rgba(255, 255, 255, 0.12);
+  /* Accent colors — each world owns one */
+  --lime:    #c8ff00;
+  --emerald: #00e87a;
+  --rose:    #ff3d6e;
+  --violet:  #9b6dff;
+  --amber:   #f59e0b;
+  --bone:    #f0ede6;
 
-  /* Text Hierarchy */
-  --color-text-primary: #f0f0f5;
-  --color-text-secondary: #8b8ba0;
-  --color-text-tertiary: #4a4a5e;
+  /* World backgrounds */
+  --bg-landing:  #0c0c0c;
+  --bg-gymlane:  #060d08;
+  --bg-yappr:    #0d0609;
+  --bg-journey:  #07070f;
+  --bg-archive:  #0c0c0c;
+  --bg-contact:  #080808;
 
-  /* Accent */
-  --color-blue: #3b7bfc;
-  --color-blue-dim: rgba(59, 123, 252, 0.12);
-  --color-amber: #f59e0b;
-  --color-amber-dim: rgba(245, 158, 11, 0.10);
-  --color-green: #34d399;
-  --color-green-dim: rgba(52, 211, 153, 0.10);
-  --color-red: #f87171;
+  /* UI surfaces */
+  --surface:       rgba(255,255,255,0.04);
+  --surface-hover: rgba(255,255,255,0.07);
+  --border:        rgba(255,255,255,0.07);
+  --border-hover:  rgba(255,255,255,0.14);
 
-  /* Animation easing */
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  /* Text hierarchy */
+  --text-1: #f0ede6;
+  --text-2: #888888;
+  --text-3: #444444;
 
-  @keyframes fade-up {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
   }
-  @keyframes fade-in {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-8px); }
   }
-  @keyframes draw-line {
-    from { stroke-dashoffset: 1; }
-    to   { stroke-dashoffset: 0; }
+  @keyframes scan {
+    from { top: -2px; }
+    to   { top: 100%; }
   }
-  @keyframes blink {
+  @keyframes blink-cursor {
     0%, 100% { opacity: 1; }
     50%       { opacity: 0; }
   }
-  @keyframes shimmer {
-    0%   { background-position: -200% center; }
-    100% { background-position: 200% center; }
+  @keyframes pop-in {
+    0%   { transform: scale(0.92) translateY(8px); opacity: 0; }
+    100% { transform: scale(1) translateY(0);    opacity: 1; }
   }
-  @keyframes pulse-dot {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50%       { transform: scale(1.4); opacity: 0.7; }
-  }
-
-  --animate-fade-up: fade-up 0.6s var(--ease-out-expo) both;
-  --animate-fade-in: fade-in 0.5s ease both;
-  --animate-blink: blink 1s step-end infinite;
-  --animate-pulse-dot: pulse-dot 2s ease-in-out infinite;
 }
 
-/* =============================================
-   GLOBAL BASE
-   ============================================= */
+/* ================================================
+   GLOBAL RESET & BASE
+   ================================================ */
 @layer base {
   *, *::before, *::after {
     box-sizing: border-box;
@@ -74,238 +67,144 @@
   }
 
   html {
-    background-color: var(--color-ink);
-    color: var(--color-text-primary);
+    background: var(--bg-landing);
+    color: var(--text-1);
     font-family: var(--font-sans);
-    font-feature-settings: 'cv11', 'ss01';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
     scroll-behavior: smooth;
-    overflow-x: hidden;
   }
 
-  body {
-    background-color: var(--color-ink);
-    overflow-x: hidden;
-  }
+  body { overflow-x: hidden; }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1, h2, h3, h4 {
     font-family: var(--font-display);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1.15;
-    color: var(--color-text-primary);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    color: var(--text-1);
   }
 
-  p {
-    line-height: 1.7;
-    color: var(--color-text-secondary);
-  }
+  p { color: var(--text-2); line-height: 1.75; }
+  a { color: inherit; text-decoration: none; }
 
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  ::selection {
-    background: rgba(59, 123, 252, 0.25);
-    color: #fff;
-  }
-
-  /* Hide scrollbar chrome (preserve functionality) */
-  ::-webkit-scrollbar { width: 4px; }
+  ::selection { background: rgba(200,255,0,0.2); color: #fff; }
+  ::-webkit-scrollbar { width: 3px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 999px; }
 }
 
-/* =============================================
-   LAYOUT UTILITIES
-   ============================================= */
-@utility container-md {
-  width: 100%;
-  max-width: 896px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-}
-
-@utility container-lg {
-  width: 100%;
-  max-width: 1100px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-}
-
-@utility section-padding {
-  padding-top: 7rem;
-  padding-bottom: 7rem;
-}
-
-@utility section-divider {
-  border-top: 1px solid var(--color-border);
-}
-
-/* =============================================
+/* ================================================
    TYPOGRAPHY UTILITIES
-   ============================================= */
-@utility label-mono {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-text-tertiary);
-}
-
-@utility section-eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-blue);
-}
-
-@utility heading-xl {
+   ================================================ */
+@utility display-2xl {
   font-family: var(--font-display);
-  font-size: clamp(2.25rem, 5vw, 4rem);
+  font-size: clamp(3.5rem, 11vw, 12rem);
   font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  color: var(--text-1);
+}
+
+@utility display-xl {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 7rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  color: var(--text-1);
+}
+
+@utility display-lg {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3.5vw, 3.5rem);
+  font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.1;
+  color: var(--text-1);
 }
 
-@utility heading-lg {
-  font-family: var(--font-display);
-  font-size: clamp(1.75rem, 4vw, 2.75rem);
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  line-height: 1.15;
+@utility label-overline {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-3);
 }
 
-@utility heading-md {
-  font-family: var(--font-display);
-  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-}
-
-@utility body-lg {
-  font-size: 1.0625rem;
+@utility body-copy {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 400;
   line-height: 1.75;
-  color: var(--color-text-secondary);
+  color: var(--text-2);
 }
 
-@utility body-sm {
-  font-size: 0.875rem;
-  line-height: 1.65;
-  color: var(--color-text-secondary);
-}
-
-/* =============================================
-   CARD & SURFACE UTILITIES
-   ============================================= */
-@utility card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  padding: 1.5rem;
-}
-
-@utility card-hover {
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-.card-hover:hover {
-  border-color: var(--color-border-hover);
-  box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 8px 32px rgba(0,0,0,0.4);
-}
-
-@utility pill {
+/* ================================================
+   INTERACTIVE UTILITIES
+   ================================================ */
+@utility world-link {
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
-  padding: 0.25rem 0.625rem;
-  border-radius: 999px;
   font-family: var(--font-mono);
   font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  transition: color 0.2s;
+}
+.world-link:hover { color: var(--lime); }
+
+@utility tech-tag {
+  display: inline-flex;
+  padding: 0.2rem 0.6rem;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
   font-weight: 500;
-  letter-spacing: 0.04em;
-  border: 1px solid var(--color-border);
-  color: var(--color-text-secondary);
+  letter-spacing: 0.06em;
+  border: 1px solid var(--border);
+  color: var(--text-3);
   background: transparent;
 }
 
-/* =============================================
-   INTERACTIVE UTILITIES
-   ============================================= */
-@utility btn-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.625rem 1.25rem;
-  border-radius: 8px;
-  font-family: var(--font-sans);
-  font-size: 0.875rem;
-  font-weight: 500;
-  background: var(--color-blue);
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  transition: opacity 0.2s ease, transform 0.15s ease;
-}
-.btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
-.btn-primary:active { transform: translateY(0); }
-
-@utility btn-ghost {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.625rem 1.25rem;
-  border-radius: 8px;
-  font-family: var(--font-sans);
-  font-size: 0.875rem;
-  font-weight: 500;
-  background: transparent;
-  color: var(--color-text-primary);
-  border: 1px solid var(--color-border);
-  cursor: pointer;
-  transition: border-color 0.2s ease, background 0.2s ease;
-}
-.btn-ghost:hover {
-  border-color: var(--color-border-hover);
+/* ================================================
+   WORLD-SPECIFIC SURFACE CLASSES
+   ================================================ */
+@utility glass-dark {
   background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 8px;
 }
 
-/* =============================================
-   STATUS INDICATORS
-   ============================================= */
-@utility status-dot {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  animation: var(--animate-pulse-dot);
+@utility glass-dark-hover {
+  transition: border-color 0.2s, background 0.2s;
+}
+.glass-dark-hover:hover {
+  border-color: var(--border-hover);
+  background: rgba(255,255,255,0.05);
 }
 
-/* =============================================
-   GRID BACKGROUND (subtle, optional)
-   ============================================= */
-@utility bg-grid-subtle {
-  background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 48px 48px;
+/* ================================================
+   ANIMATED MARQUEE
+   ================================================ */
+@utility marquee-track {
+  display: flex;
+  gap: 3rem;
+  animation: marquee 20s linear infinite;
+  white-space: nowrap;
 }
 
-/* =============================================
+/* ================================================
    REDUCED MOTION
-   ============================================= */
+   ================================================ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
   }
 }
