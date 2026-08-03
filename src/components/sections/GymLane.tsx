@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface Member {
@@ -23,46 +23,6 @@ const statusStyle: Record<Member['status'], React.CSSProperties> = {
   active: { color: '#00e87a', background: 'rgba(0,232,122,0.1)', border: '1px solid rgba(0,232,122,0.2)' },
   expiring: { color: '#f59e0b', background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.2)' },
   expired: { color: '#ff3d6e', background: 'rgba(255,61,110,0.1)', border: '1px solid rgba(255,61,110,0.2)' },
-};
-
-const AnalyticsChart = ({ members }: { members: Member[] }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    const data = [12, 18, 15, 24, 28, 32, members.length * 8];
-    const max = 40;
-
-    ctx.beginPath();
-    ctx.strokeStyle = '#00e87a';
-    ctx.lineWidth = 2;
-
-    const step = canvas.width / (data.length - 1);
-    data.forEach((val, i) => {
-      const x = i * step;
-      const y = canvas.height - (val / max) * canvas.height * 0.8 - 10;
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    });
-    ctx.stroke();
-
-    ctx.lineTo(canvas.width, canvas.height);
-    ctx.lineTo(0, canvas.height);
-    ctx.closePath();
-    const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-    grad.addColorStop(0, 'rgba(0,232,122,0.15)');
-    grad.addColorStop(1, 'rgba(0,232,122,0.0)');
-    ctx.fillStyle = grad;
-    ctx.fill();
-  }, [members]);
-
-  return <canvas ref={canvasRef} width={280} height={50} style={{ width: '100%', height: 50, display: 'block' }} />;
 };
 
 export const GymLane = () => {
@@ -336,11 +296,6 @@ export const GymLane = () => {
                           ))}
                         </tbody>
                       </table>
-                    </div>
-
-                    <div style={{ marginTop: '0.5rem' }}>
-                      <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#444' }}>REVENUE GAIN INSIGHT TREND</span>
-                      <AnalyticsChart members={members} />
                     </div>
                   </motion.div>
                 )}

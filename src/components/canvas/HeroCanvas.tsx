@@ -1,149 +1,101 @@
 import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
 
 export const HeroCanvas = () => {
-  const mountRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const container = mountRef.current;
-    if (!container) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-    // Scene, Camera, Renderer Setup
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-      65,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    );
-    camera.position.z = 28;
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
 
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    container.appendChild(renderer.domElement);
-
-    // Particle Grid Geometry Setup
-    const cols = 50;
-    const rows = 50;
-    const numParticles = cols * rows;
-    const positions = new Float32Array(numParticles * 3);
-    const initialY = new Float32Array(numParticles);
-    const colors = new Float32Array(numParticles * 3);
-
-    let idx = 0;
-    for (let x = 0; x < cols; x++) {
-      for (let z = 0; z < rows; z++) {
-        const posX = (x - cols / 2) * 1.5;
-        const posZ = (z - rows / 2) * 1.5;
-        const posY = Math.sin(posX * 0.25) * Math.cos(posZ * 0.25) * 2;
-
-        positions[idx * 3] = posX;
-        positions[idx * 3 + 1] = posY;
-        positions[idx * 3 + 2] = posZ;
-
-        initialY[idx] = posY;
-
-        // Color transition: Electric Lime to Teal Green
-        const ratio = x / cols;
-        colors[idx * 3] = 0.78 * (1 - ratio);       // R
-        colors[idx * 3 + 1] = 1.0;                   // G
-        colors[idx * 3 + 2] = 0.2 + ratio * 0.8;     // B
-
-        idx++;
-      }
-    }
-
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-    const material = new THREE.PointsMaterial({
-      size: 0.28,
-      vertexColors: true,
-      transparent: true,
-      opacity: 0.6,
-      blending: THREE.AdditiveBlending,
-    });
-
-    const particleSystem = new THREE.Points(geometry, material);
-    particleSystem.rotation.x = 0.55;
-    scene.add(particleSystem);
-
-    // Mouse interactive coordinates
-    let targetX = 0;
-    let targetY = 0;
-    let mouseX = 0;
-    let mouseY = 0;
+    let mouse = { x: width / 2, y: height / 2 };
+    let target = { x: width / 2, y: height / 2 };
 
     const handleMouseMove = (e: MouseEvent) => {
-      mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-      mouseY = -(e.clientY / window.innerHeight - 0.5) * 2;
+      target.x = e.clientX;
+      target.y = e.clientY;
     };
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
     const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
     };
-
     window.addEventListener('resize', handleResize);
 
-    const clock = new THREE.Clock();
-    let animId: number;
+    let animationId: number;
 
-    const animate = () => {
-      animId = requestAnimationFrame(animate);
-      const time = clock.getElapsedTime();
+    const render = () => {
+      ctx.fillStyle = '#050507';
+      ctx.fillRect(0, 0, width, height);
 
-      // Smooth inertia wave rotation
-      targetX += (mouseX - targetX) * 0.05;
-      targetY += (mouseY - targetY) * 0.05;
+      // Smooth mouse tracking interpolation (inertia)
+      mouse.x += (target.x - mouse.x) * 0.08;
+      mouse.y += (target.y - mouse.y) * 0.08;
 
-      particleSystem.rotation.y = time * 0.04 + targetX * 0.35;
-      particleSystem.rotation.x = 0.55 + targetY * 0.25;
+      // Draw subtle coordinate grid lines
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.015)';
+      ctx.lineWidth = 1;
 
-      const posAttr = geometry.attributes.position as THREE.BufferAttribute;
-      const array = posAttr.array as Float32Array;
+      const gridSize = 60;
+      const shiftX = (mouse.x - width / 2) * 0.06;
+      const shiftY = (mouse.y - height / 2) * 0.06;
 
-      for (let i = 0; i < numParticles; i++) {
-        const px = array[i * 3];
-        const pz = array[i * 3 + 2];
-        array[i * 3 + 1] =
-          initialY[i] +
-          Math.sin(time * 2.2 + px * 0.4) * 0.9 +
-          Math.cos(time * 1.8 + pz * 0.4) * 0.9;
+      // Vertical lines
+      for (let x = shiftX % gridSize; x < width; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
       }
-      posAttr.needsUpdate = true;
 
-      renderer.render(scene, camera);
+      // Horizontal lines
+      for (let y = shiftY % gridSize; y < height; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+
+      // Small crosshairs at intersections for architectural technical style
+      ctx.strokeStyle = 'rgba(0, 232, 122, 0.04)';
+      const crossSize = 4;
+      for (let x = shiftX % gridSize; x < width; x += gridSize * 2) {
+        for (let y = shiftY % gridSize; y < height; y += gridSize * 2) {
+          ctx.beginPath();
+          ctx.moveTo(x - crossSize, y);
+          ctx.lineTo(x + crossSize, y);
+          ctx.moveTo(x, y - crossSize);
+          ctx.lineTo(x, y + crossSize);
+          ctx.stroke();
+        }
+      }
+
+      animationId = requestAnimationFrame(render);
     };
 
-    animate();
+    render();
 
     return () => {
-      cancelAnimationFrame(animId);
+      cancelAnimationFrame(animationId);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('resize', handleResize);
-      if (container.contains(renderer.domElement)) {
-        container.removeChild(renderer.domElement);
-      }
-      geometry.dispose();
-      material.dispose();
     };
   }, []);
 
   return (
-    <div
-      ref={mountRef}
+    <canvas
+      ref={canvasRef}
       style={{
         position: 'fixed',
         inset: 0,
         pointerEvents: 'none',
         zIndex: 0,
-        opacity: 0.65,
       }}
     />
   );
