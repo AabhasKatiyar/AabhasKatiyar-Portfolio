@@ -1,249 +1,153 @@
-import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Cpu, Code2, ArrowDown } from 'lucide-react';
+import { ArrowDown, Mail } from 'lucide-react';
 import { MagneticButton } from '../ui/MagneticButton';
 
+const fadeUp = (delay = 0) => ({
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.65, delay, ease: [0.16, 1, 0.3, 1] as const },
+});
+
+const ROLES = [
+  'Full Stack Developer',
+  'SaaS Founder',
+  'Product Engineer',
+  'Startup Builder',
+];
+
+const STATS = [
+  { value: '2', label: 'SaaS platforms launched' },
+  { value: '4+', label: 'Real projects shipped' },
+  { value: '3rd yr', label: 'B.Tech IT, KIET' },
+  { value: '∞', label: 'Problems left to solve' },
+];
+
 export const Hero = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  
-  // Mouse coordinates relative to card centers for 3D tilt
-  const card1Ref = useRef<HTMLDivElement>(null);
-  const card2Ref = useRef<HTMLDivElement>(null);
-
-  const [tilt1, setTilt1] = useState({ x: 0, y: 0 });
-  const [tilt2, setTilt2] = useState({ x: 0, y: 0 });
-
-  const handleCardMouseMove = (e: React.MouseEvent, cardNum: number, ref: React.RefObject<HTMLDivElement | null>) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
-    // Convert mouse position to coordinates from -1 to 1 relative to center
-    const xPct = (x / rect.width) - 0.5;
-    const yPct = (y / rect.height) - 0.5;
-
-    // Scale up rotation to max 15 degrees
-    if (cardNum === 1) {
-      setTilt1({ x: xPct * 20, y: -yPct * 20 });
-    } else {
-      setTilt2({ x: xPct * 20, y: -yPct * 20 });
-    }
-  };
-
-  const handleCardMouseLeave = (cardNum: number) => {
-    if (cardNum === 1) {
-      setTilt1({ x: 0, y: 0 });
-    } else {
-      setTilt2({ x: 0, y: 0 });
-    }
-  };
-
-  // Split titles for letter-reveal
-  const title1 = "BRIDGING THE GAP BETWEEN";
-  const title2 = "SILICON & SYNTAX";
-
   return (
-    <section 
-      ref={containerRef}
-      className="relative min-h-screen flex flex-col items-center justify-center pt-28 pb-20 px-6 overflow-hidden bg-grid"
+    <section
       id="hero"
+      className="relative min-h-screen flex flex-col justify-center pt-28 pb-20 bg-grid-subtle overflow-hidden"
     >
-      {/* Dynamic ambient background blobs */}
-      <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-brand-cobalt/10 rounded-full blur-[140px] pointer-events-none animate-pulse-slow" />
-      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-brand-gold/5 rounded-full blur-[140px] pointer-events-none animate-pulse-slow" />
+      {/* Ambient light — one, subtle, centered */}
+      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+        <div
+          className="w-[600px] h-[600px] rounded-full"
+          style={{
+            background: 'radial-gradient(circle, rgba(59,123,252,0.06) 0%, transparent 70%)',
+          }}
+        />
+      </div>
 
-      {/* Main Core Tag */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="mb-6 px-4 py-1.5 rounded-full border border-white/5 bg-white/5 backdrop-blur-md text-[10px] md:text-xs font-mono tracking-[0.25em] text-brand-gold uppercase shadow-[0_0_15px_rgba(245,158,11,0.05)]"
-      >
-        🛰️ SYSTEM LAUNCH // v2026.08
-      </motion.div>
+      <div className="container-md relative z-10">
+        {/* Eyebrow */}
+        <motion.div {...fadeUp(0)} className="mb-8">
+          <span className="section-eyebrow">Aabhas Katiyar</span>
+        </motion.div>
 
-      {/* Headline Title */}
-      <div className="text-center max-w-5xl space-y-4 select-none">
-        <h1 className="text-4xl md:text-7xl font-extrabold tracking-tight leading-none">
-          <span className="block text-slate-400 font-display font-medium text-2xl md:text-4xl tracking-wider mb-2">
-            {title1.split(" ").map((word, i) => (
-              <motion.span
-                key={i}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 + i * 0.08, duration: 0.6 }}
-                className="inline-block mr-3"
-              >
-                {word}
-              </motion.span>
-            ))}
-          </span>
-          <span className="block bg-gradient-to-r from-brand-cobalt via-white to-brand-gold bg-clip-text text-transparent py-2">
-            {title2.split(" ").map((word, i) => (
-              <motion.span
-                key={i}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.4 + i * 0.12, duration: 0.8, type: "spring" }}
-                className="inline-block mr-4 text-glow-cobalt"
-              >
-                {word}
-              </motion.span>
-            ))}
-          </span>
-        </h1>
+        {/* Headline */}
+        <motion.h1 {...fadeUp(0.1)} className="heading-xl mb-6 max-w-3xl">
+          Building products from{' '}
+          <span className="text-white">idea to deployment.</span>
+        </motion.h1>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 1 }}
-          className="text-sm md:text-lg text-slate-400 max-w-2xl mx-auto font-sans font-light leading-relaxed"
-        >
-          A B.Tech IT scholar at KIET University crafting premium software interfaces and interactive hardware integrations with microcontrollers.
+        {/* Description — specific, honest */}
+        <motion.p {...fadeUp(0.2)} className="body-lg max-w-xl mb-8">
+          B.Tech Information Technology student at KIET Group of Institutions.
+          I build real SaaS platforms — GymLane and Yappr are live.
+          My stack spans React, TypeScript, Supabase, and PostgreSQL. I care
+          about how systems work, not just how they look.
         </motion.p>
-      </div>
 
-      {/* Hero CTA Button */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.2, duration: 0.8 }}
-        className="mt-10 flex gap-4 z-10"
-      >
-        <MagneticButton>
-          <a
-            href="#projects"
-            className="px-8 py-3.5 rounded-lg font-display text-xs font-semibold uppercase tracking-widest text-[#070a13] bg-gradient-to-r from-brand-cobalt to-brand-gold hover:opacity-90 transition-all duration-300 shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(245,158,11,0.5)] cursor-pointer"
-          >
-            Access Projects
-          </a>
-        </MagneticButton>
-      </motion.div>
-
-      {/* Dual 3D Tilt Graphics Cards */}
-      <div className="w-full max-w-5xl mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 px-4 z-10">
-        {/* Hardware Core Card */}
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 1.4, duration: 1 }}
-          className="w-full"
-        >
-          <motion.div
-            ref={card1Ref}
-            onMouseMove={(e) => handleCardMouseMove(e, 1, card1Ref)}
-            onMouseLeave={() => handleCardMouseLeave(1)}
-            style={{
-              transformStyle: 'preserve-3d',
-            }}
-            animate={{
-              rotateX: tilt1.y,
-              rotateY: tilt1.x,
-            }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="relative group border border-white/5 bg-slate-950/40 backdrop-blur-md rounded-2xl p-6 h-64 overflow-hidden shadow-2xl cursor-pointer"
-          >
-            {/* Subtle Glow Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            
-            <div style={{ transform: 'translateZ(50px)' }} className="transition-transform duration-300 flex flex-col justify-between h-full">
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-xl bg-brand-gold/10 border border-brand-gold/20 text-brand-gold shadow-[0_0_15px_rgba(245,158,11,0.1)]">
-                  <Cpu size={24} />
-                </div>
-                <div>
-                  <h3 className="font-display font-bold text-lg text-white">Silicon Module</h3>
-                  <span className="text-[9px] font-mono text-slate-500">MCU EMBEDDED CONSOLE</span>
-                </div>
-              </div>
-              
-              {/* Embedded Microcontroller Vector Graphic representation */}
-              <div className="my-4 border border-brand-gold/10 rounded-lg p-3 bg-black/30 font-mono text-[10px] text-brand-gold/75 space-y-1.5">
-                <div>#include &lt;WiFi.h&gt;</div>
-                <div>ESP32WebServer server(80);</div>
-                <div>void setup() &#123;</div>
-                <div className="pl-4 text-slate-400">pinMode(MOTOR_PIN, OUTPUT);</div>
-                <div className="pl-4 text-slate-400">WiFi.softAP("ESP32_CAR");</div>
-                <div>&#125;</div>
-              </div>
-
-              <div className="flex justify-between items-center text-[10px] font-mono text-slate-500 border-t border-white/5 pt-3">
-                <span>BOARD: ESP32-WROOM-32D</span>
-                <span className="text-brand-gold text-glow-amber animate-pulse">● PIN_G23 (TX)</span>
-              </div>
-            </div>
-          </motion.div>
+        {/* Roles — inline, clean */}
+        <motion.div {...fadeUp(0.28)} className="flex flex-wrap gap-2 mb-10">
+          {ROLES.map((role) => (
+            <span key={role} className="pill">{role}</span>
+          ))}
         </motion.div>
 
-        {/* Software Syntax Card */}
+        {/* CTAs */}
+        <motion.div {...fadeUp(0.35)} className="flex flex-wrap items-center gap-3 mb-16">
+          <MagneticButton>
+            <a href="#projects" className="btn-primary">
+              See what I've built
+            </a>
+          </MagneticButton>
+          <MagneticButton>
+            <a href="#contact" className="btn-ghost">
+              Get in touch
+            </a>
+          </MagneticButton>
+
+          {/* Social links */}
+          <div className="flex items-center gap-1 ml-2">
+            <a
+              href="https://github.com/abhas-katiyar"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="GitHub"
+              className="p-2 rounded-lg text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] transition-colors duration-200"
+            >
+              <svg className="w-[18px] h-[18px]" fill="currentColor" viewBox="0 0 24 24">
+                <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
+              </svg>
+            </a>
+            <a
+              href="https://linkedin.com/in/abhas-katiyar"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="LinkedIn"
+              className="p-2 rounded-lg text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] transition-colors duration-200"
+            >
+              <svg className="w-[18px] h-[18px]" fill="currentColor" viewBox="0 0 24 24">
+                <path fillRule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clipRule="evenodd" />
+              </svg>
+            </a>
+            <a
+              href="mailto:abhas.katiyar.dev@gmail.com"
+              aria-label="Email"
+              className="p-2 rounded-lg text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] transition-colors duration-200"
+            >
+              <Mail size={18} />
+            </a>
+          </div>
+        </motion.div>
+
+        {/* Stats row */}
         <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 1.4, duration: 1 }}
-          className="w-full"
+          {...fadeUp(0.42)}
+          className="grid grid-cols-2 md:grid-cols-4 gap-px border border-[var(--color-border)] rounded-xl overflow-hidden"
         >
-          <motion.div
-            ref={card2Ref}
-            onMouseMove={(e) => handleCardMouseMove(e, 2, card2Ref)}
-            onMouseLeave={() => handleCardMouseLeave(2)}
-            style={{
-              transformStyle: 'preserve-3d',
-            }}
-            animate={{
-              rotateX: tilt2.y,
-              rotateY: tilt2.x,
-            }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="relative group border border-white/5 bg-slate-950/40 backdrop-blur-md rounded-2xl p-6 h-64 overflow-hidden shadow-2xl cursor-pointer"
-          >
-            {/* Subtle Glow Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-brand-cobalt/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            
-            <div style={{ transform: 'translateZ(50px)' }} className="transition-transform duration-300 flex flex-col justify-between h-full">
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-xl bg-brand-cobalt/10 border border-brand-cobalt/20 text-brand-cobalt shadow-[0_0_15px_rgba(59,130,246,0.1)]">
-                  <Code2 size={24} />
-                </div>
-                <div>
-                  <h3 className="font-display font-bold text-lg text-white">Syntax Router</h3>
-                  <span className="text-[9px] font-mono text-slate-500">REACT ARCHITECTURE</span>
-                </div>
-              </div>
-
-              {/* Web Component representation */}
-              <div className="my-4 border border-brand-cobalt/10 rounded-lg p-3 bg-black/30 font-mono text-[10px] text-brand-cobalt/75 space-y-1.5">
-                <div>const ProjectCard = (&#123; name &#125;) =&gt; &#123;</div>
-                <div className="pl-4">const [hover, setHover] = useState(false);</div>
-                <div className="pl-4 text-slate-400">return (</div>
-                <div className="pl-8 text-slate-400">&lt;motion.div whileHover=&#123;&#123; scale: 1.05 &#125;&#125; /&gt;</div>
-                <div className="pl-4 text-slate-400">);</div>
-                <div>&#125;</div>
-              </div>
-
-              <div className="flex justify-between items-center text-[10px] font-mono text-slate-500 border-t border-white/5 pt-3">
-                <span>STACK: REACT 19 / TS / TAILWIND 4</span>
-                <span className="text-brand-cobalt text-glow-cobalt animate-pulse">● PORT: 5173 (UP)</span>
-              </div>
+          {STATS.map((stat, i) => (
+            <div
+              key={i}
+              className="bg-[var(--color-surface)] px-5 py-4 flex flex-col gap-1"
+            >
+              <span
+                className="font-display font-bold text-2xl text-white"
+                style={{ letterSpacing: '-0.03em' }}
+              >
+                {stat.value}
+              </span>
+              <span className="label-mono">{stat.label}</span>
             </div>
-          </motion.div>
+          ))}
         </motion.div>
       </div>
 
-      {/* Down Indicator */}
+      {/* Scroll indicator */}
       <motion.a
-        href="#about"
+        href="#projects"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2, duration: 1 }}
-        className="absolute bottom-6 flex flex-col items-center text-[10px] font-mono tracking-widest text-slate-500 hover:text-white cursor-pointer"
+        transition={{ delay: 1.2, duration: 0.6 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)] transition-colors duration-200"
+        aria-label="Scroll down"
       >
-        <span className="mb-2">SYSTEM_ENTRY</span>
         <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+          animate={{ y: [0, 5, 0] }}
+          transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
         >
-          <ArrowDown size={14} className="text-brand-cobalt" />
+          <ArrowDown size={16} />
         </motion.div>
       </motion.a>
     </section>
