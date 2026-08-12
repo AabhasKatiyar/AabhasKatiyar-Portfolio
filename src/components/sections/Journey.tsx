@@ -82,7 +82,7 @@ export const Journey = () => {
       style={{
         minHeight: '100svh',
         background: stage.bgTint,
-        transition: 'background 0.5s ease',
+        transition: 'background 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
         padding: 'clamp(3rem, 6vw, 6rem) clamp(1.5rem, 6vw, 7rem)',
         position: 'relative',
         display: 'flex',
@@ -91,6 +91,22 @@ export const Journey = () => {
         overflow: 'hidden',
       }}
     >
+      {/* Ambient glow that follows accent color */}
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          top: '30%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 800,
+          height: 800,
+          borderRadius: '50%',
+          background: `radial-gradient(circle, ${stage.accent}08, transparent 60%)`,
+          pointerEvents: 'none',
+          transition: 'background 0.8s ease',
+        }}
+      />
       {/* Top Header Row */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
         <div>
@@ -103,21 +119,37 @@ export const Journey = () => {
         </div>
 
         {/* Timeline Node Selector Pills */}
-        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
           {STAGES.map((s, idx) => (
             <button
               key={s.num}
               onClick={() => setActiveIdx(idx)}
               style={{
                 fontFamily: 'JetBrains Mono, monospace',
-                fontSize: '0.5625rem',
-                padding: '0.35rem 0.75rem',
+                fontSize: '0.5rem',
+                padding: '0.35rem 0.8rem',
                 borderRadius: 999,
-                border: idx === activeIdx ? `1px solid ${s.accent}` : '1px solid rgba(255,255,255,0.08)',
-                background: idx === activeIdx ? `${s.accent}20` : 'rgba(255,255,255,0.02)',
+                border: idx === activeIdx ? `1px solid ${s.accent}` : '1px solid rgba(255,255,255,0.07)',
+                background: idx === activeIdx ? `${s.accent}18` : 'rgba(255,255,255,0.02)',
                 color: idx === activeIdx ? s.accent : '#555',
                 cursor: 'pointer',
-                transition: 'all 0.25s',
+                transition: 'all 0.45s cubic-bezier(0.16, 1, 0.3, 1)',
+                boxShadow: idx === activeIdx ? `0 0 12px ${s.accent}30` : 'none',
+                backdropFilter: 'blur(8px)',
+              }}
+              onMouseEnter={(e) => {
+                if (idx !== activeIdx) {
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.18)';
+                  e.currentTarget.style.color = '#aaa';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (idx !== activeIdx) {
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)';
+                  e.currentTarget.style.color = '#555';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                }
               }}
             >
               {s.num} · {s.period.split(' ')[0]}
@@ -152,11 +184,22 @@ export const Journey = () => {
         <AnimatePresence mode="wait">
           <motion.div
             key={stage.num}
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -30 }}
-            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] as const }}
-            style={{ position: 'relative', zIndex: 2, maxWidth: 720 }}
+            exit={{ opacity: 0, x: -40 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] as const }}
+            style={{
+              position: 'relative',
+              zIndex: 2,
+              maxWidth: 720,
+              background: 'rgba(15, 15, 15, 0.55)',
+              border: `1px solid ${stage.accent}20`,
+              borderRadius: 16,
+              padding: 'clamp(1.5rem, 3vw, 2.5rem)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+              boxShadow: `0 8px 48px rgba(0,0,0,0.5), 0 0 40px ${stage.accent}08, inset 0 1px 0 rgba(255,255,255,0.04)`,
+            }}
           >
             <span
               style={{
@@ -236,6 +279,18 @@ export const Journey = () => {
               fontFamily: 'JetBrains Mono, monospace',
               fontSize: '0.625rem',
               cursor: 'pointer',
+              backdropFilter: 'blur(8px)',
+              transition: 'all 0.45s cubic-bezier(0.16, 1, 0.3, 1)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)';
+              e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)';
+              e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
+              e.currentTarget.style.transform = 'translateY(0)';
             }}
           >
             ← Previous Era
@@ -252,6 +307,21 @@ export const Journey = () => {
               fontSize: '0.625rem',
               cursor: 'pointer',
               fontWeight: 600,
+              backdropFilter: 'blur(8px)',
+              transition: 'all 0.45s cubic-bezier(0.16, 1, 0.3, 1)',
+              boxShadow: `0 0 0 ${stage.accent}00`,
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = stage.accent;
+              e.currentTarget.style.color = '#070707';
+              e.currentTarget.style.boxShadow = `0 0 20px ${stage.accent}50`;
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = `${stage.accent}15`;
+              e.currentTarget.style.color = stage.accent;
+              e.currentTarget.style.boxShadow = 'none';
+              e.currentTarget.style.transform = 'translateY(0)';
             }}
           >
             Next Era →

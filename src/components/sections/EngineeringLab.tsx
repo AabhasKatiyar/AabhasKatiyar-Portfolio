@@ -196,10 +196,25 @@ export const EngineeringLab = () => {
         
         {/* ESP32 WASD Sandbox */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          style={{ background: '#0a100b', border: '1px solid rgba(0,232,122,0.12)', borderRadius: 12, padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}
+          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          whileHover={{ y: -6, scale: 1.01 }}
+          style={{
+            background: 'rgba(10, 16, 11, 0.75)',
+            border: '1px solid rgba(0,232,122,0.14)',
+            borderRadius: 14,
+            padding: '1.5rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem',
+            backdropFilter: 'blur(20px)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+            transition: 'box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+          }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 20px rgba(0,232,122,0.15), 0 24px 64px rgba(0,0,0,0.55)'; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 32px rgba(0,0,0,0.4)'; }}
         >
           <div>
             <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#00e87a', letterSpacing: '0.12em' }}>SANDBOX 01 // HARDWARE DRIVER</span>
@@ -210,11 +225,25 @@ export const EngineeringLab = () => {
 
         {/* Dynamic Calculator */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
-          style={{ background: '#0a0903', border: '1px solid rgba(245,158,11,0.08)', borderRadius: 12, padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}
+          transition={{ delay: 0.1, duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          whileHover={{ y: -6, scale: 1.01 }}
+          style={{
+            background: 'rgba(10, 9, 3, 0.75)',
+            border: '1px solid rgba(245,158,11,0.1)',
+            borderRadius: 14,
+            padding: '1.5rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem',
+            backdropFilter: 'blur(20px)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+            transition: 'box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+          }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 20px rgba(245,158,11,0.12), 0 24px 64px rgba(0,0,0,0.55)'; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 32px rgba(0,0,0,0.4)'; }}
         >
           <div>
             <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#f59e0b', letterSpacing: '0.12em' }}>SANDBOX 02 // REACTIVE STATE</span>
@@ -225,11 +254,26 @@ export const EngineeringLab = () => {
 
         {/* Retrospectives & Failures */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          style={{ background: '#0d0d0f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 12, padding: '1.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '1rem' }}
+          transition={{ delay: 0.2, duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          whileHover={{ y: -6, scale: 1.01 }}
+          style={{
+            background: 'rgba(13, 13, 15, 0.75)',
+            border: '1px solid rgba(255,255,255,0.06)',
+            borderRadius: 14,
+            padding: '1.5rem',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            gap: '1rem',
+            backdropFilter: 'blur(20px)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+            transition: 'box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+          }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 20px rgba(200,255,0,0.08), 0 24px 64px rgba(0,0,0,0.55)'; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 32px rgba(0,0,0,0.4)'; }}
         >
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -263,11 +307,26 @@ export const EngineeringLab = () => {
 
         {/* AI Collaboration Statement */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.25 }}
-          style={{ background: '#0c0c0c', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 12, padding: '1.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '1rem' }}
+          transition={{ delay: 0.25, duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          whileHover={{ y: -6, scale: 1.01 }}
+          style={{
+            background: 'rgba(12, 12, 12, 0.75)',
+            border: '1px solid rgba(200,255,0,0.08)',
+            borderRadius: 14,
+            padding: '1.5rem',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            gap: '1rem',
+            backdropFilter: 'blur(20px)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+            transition: 'box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+          }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 20px rgba(200,255,0,0.12), 0 24px 64px rgba(0,0,0,0.55)'; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 32px rgba(0,0,0,0.4)'; }}
         >
           <div>
             <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#c8ff00', letterSpacing: '0.12em' }}>COLLEAGUE STATEMENT // AI COLLAB</span>

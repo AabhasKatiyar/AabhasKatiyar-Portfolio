@@ -19,10 +19,16 @@ const INITIAL_MEMBERS: Member[] = [
 
 const PLANS = ['Monthly', 'Quarterly', 'Annual'];
 
-const statusStyle: Record<Member['status'], React.CSSProperties> = {
-  active: { color: '#00e87a', background: 'rgba(0,232,122,0.1)', border: '1px solid rgba(0,232,122,0.2)' },
-  expiring: { color: '#f59e0b', background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.2)' },
-  expired: { color: '#ff3d6e', background: 'rgba(255,61,110,0.1)', border: '1px solid rgba(255,61,110,0.2)' },
+const DOT_COLOR: Record<Member['status'], string> = {
+  active:   '#00e87a',
+  expiring: '#f59e0b',
+  expired:  '#ff3d6e',
+};
+
+const STATUS_CLASS: Record<Member['status'], string> = {
+  active:   'status-badge-active',
+  expiring: 'status-badge-expiring',
+  expired:  'status-badge-expired',
 };
 
 export const GymLane = () => {
@@ -44,9 +50,7 @@ export const GymLane = () => {
   const addMember = (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name.trim()) return;
-
     setPulseText('INSERT INTO members...');
-
     const newMember: Member = {
       id: `GYM-00${members.length + 1}`,
       name: form.name.trim(),
@@ -55,7 +59,6 @@ export const GymLane = () => {
       daysLeft: form.plan === 'Monthly' ? 30 : form.plan === 'Quarterly' ? 90 : 365,
       checkin: 'Just enrolled',
     };
-
     setTimeout(() => {
       setMembers([newMember, ...members]);
       setForm({ name: '', plan: 'Monthly' });
@@ -68,9 +71,7 @@ export const GymLane = () => {
     const activeMembers = members.filter((m) => m.status !== 'expired');
     if (!activeMembers.length) return;
     const target = activeMembers[Math.floor(Math.random() * activeMembers.length)];
-
     setPulseText(`Scan trigger for ${target.id}`);
-
     setTimeout(() => {
       const timeNow = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       setMembers((prev) =>
@@ -91,57 +92,106 @@ export const GymLane = () => {
         overflow: 'hidden',
       }}
     >
+      {/* Ambient glow */}
       <div
         aria-hidden
         style={{
           position: 'absolute',
-          top: '30%',
-          left: '5%',
+          top: '20%',
+          left: '-5%',
+          width: 700,
+          height: 700,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(0,232,122,0.06), transparent 65%)',
+          pointerEvents: 'none',
+        }}
+      />
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          bottom: '10%',
+          right: '-10%',
           width: 500,
           height: 500,
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(0,232,122,0.04), transparent 70%)',
+          background: 'radial-gradient(circle, rgba(0,232,122,0.04), transparent 65%)',
           pointerEvents: 'none',
         }}
       />
 
-      {/* Header Context */}
-      <div style={{ maxWidth: 800, marginBottom: '3.5rem' }}>
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        style={{ maxWidth: 800, marginBottom: '3.5rem' }}
+      >
         <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#00e87a', display: 'block', marginBottom: '0.75rem' }}>
           01 — GymLane: Operational Case Study
         </span>
         <h2 style={{ fontFamily: 'Syne, sans-serif', fontSize: 'clamp(2rem, 5vw, 4rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1, color: '#f0ede6' }}>
-          Visualizing data security and <span style={{ color: '#00e87a' }}>real-time operations</span>.
+          Visualizing data security and{' '}
+          <span style={{ color: '#00e87a', textShadow: '0 0 30px rgba(0,232,122,0.4)' }}>
+            real-time operations
+          </span>
+          .
         </h2>
-      </div>
+      </motion.div>
 
       <AnimatePresence mode="wait">
         {viewState === 'problem' ? (
-          /* Operational Problem Cascading Screen */
           <motion.div
             key="problem-screen"
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.4 }}
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
             style={{ maxWidth: 640, display: 'flex', flexDirection: 'column', gap: '2rem' }}
           >
-            <div style={{ borderLeft: '2px solid #ff3d6e', paddingLeft: '1.25rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <h3 style={{ fontFamily: 'Syne, sans-serif', fontSize: '1.25rem', color: '#ff3d6e', fontWeight: 700 }}>The Traditional Friction</h3>
+            <div
+              style={{
+                background: 'rgba(255,61,110,0.04)',
+                border: '1px solid rgba(255,61,110,0.15)',
+                borderRadius: 12,
+                padding: '1.5rem',
+                backdropFilter: 'blur(16px)',
+              }}
+            >
+              <h3 style={{ fontFamily: 'Syne, sans-serif', fontSize: '1.25rem', color: '#ff3d6e', fontWeight: 700, marginBottom: '0.75rem' }}>
+                The Traditional Friction
+              </h3>
               <p style={{ fontSize: '0.9375rem', color: '#888', lineHeight: 1.7 }}>
                 Gym owners lose revenue when members access facilities on expired plans because checking registers manually is error-prone. Keeping track of hundreds of renewals via spreadsheets leads to leakages.
               </p>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.6875rem' }}>
-              <div style={{ background: 'rgba(255,61,110,0.04)', border: '1px solid rgba(255,61,110,0.15)', borderRadius: 8, padding: '1rem', color: '#ff3d6e' }}>
-                <div>❌ Expired plan unnoticed</div>
-                <div style={{ color: '#555', marginTop: '0.25rem' }}>Members continue workout entries without billing detection.</div>
-              </div>
-              <div style={{ background: 'rgba(255,61,110,0.04)', border: '1px solid rgba(255,61,110,0.15)', borderRadius: 8, padding: '1rem', color: '#ff3d6e' }}>
-                <div>❌ Manual Spreadsheet Logs</div>
-                <div style={{ color: '#555', marginTop: '0.25rem' }}>TEDIOUS call lists and timing checks.</div>
-              </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              {[
+                { icon: '❌', title: 'Expired plan unnoticed', desc: 'Members continue workout entries without billing detection.' },
+                { icon: '❌', title: 'Manual Spreadsheet Logs', desc: 'Tedious call lists and timing checks.' },
+              ].map((item) => (
+                <motion.div
+                  key={item.title}
+                  whileHover={{ scale: 1.02, translateY: -4 }}
+                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  style={{
+                    background: 'rgba(255,61,110,0.04)',
+                    border: '1px solid rgba(255,61,110,0.15)',
+                    borderRadius: 10,
+                    padding: '1rem',
+                    fontFamily: 'JetBrains Mono, monospace',
+                    fontSize: '0.6875rem',
+                    backdropFilter: 'blur(12px)',
+                    cursor: 'default',
+                    transition: 'box-shadow 0.4s ease',
+                  }}
+                >
+                  <div style={{ color: '#ff3d6e', marginBottom: '0.3rem' }}>{item.icon} {item.title}</div>
+                  <div style={{ color: '#555', lineHeight: 1.5 }}>{item.desc}</div>
+                </motion.div>
+              ))}
             </div>
 
             <button
@@ -150,87 +200,71 @@ export const GymLane = () => {
                 alignSelf: 'flex-start',
                 fontFamily: 'JetBrains Mono, monospace',
                 fontSize: '0.6875rem',
-                padding: '0.5rem 1rem',
+                padding: '0.55rem 1.2rem',
                 borderRadius: 6,
-                border: '1px solid #00e87a',
+                border: '1px solid rgba(0,232,122,0.5)',
                 background: 'rgba(0,232,122,0.08)',
                 color: '#00e87a',
                 cursor: 'pointer',
                 fontWeight: 600,
                 letterSpacing: '0.04em',
+                transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#00e87a';
+                e.currentTarget.style.color = '#060d08';
+                e.currentTarget.style.boxShadow = '0 0 24px rgba(0,232,122,0.4)';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(0,232,122,0.08)';
+                e.currentTarget.style.color = '#00e87a';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.transform = 'translateY(0)';
               }}
             >
               Assemble GymLane Solution →
             </button>
           </motion.div>
         ) : (
-          /* Reassembled Product Architecture Screen */
           <motion.div
             key="solution-screen"
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.5 }}
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '3rem', alignItems: 'center' }}
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '3rem', alignItems: 'start' }}
           >
-            {/* Left Graphic Exploded Layers Stack */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-              {/* Layer 1 */}
-              <div
-                onClick={() => setActiveLayer('ui')}
-                style={{
-                  cursor: 'pointer',
-                  borderRadius: 8,
-                  border: activeLayer === 'ui' ? '1px solid #00e87a' : '1px solid rgba(255,255,255,0.08)',
-                  background: 'rgba(255,255,255,0.02)',
-                  padding: '1rem 1.25rem',
-                  transition: 'all 0.25s',
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                  <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#00e87a' }}>LAYER 01 // INTERACTIVE DASHBOARD</span>
-                  <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#444' }}>React 19</span>
-                </div>
-                <h4 style={{ fontFamily: 'Syne, sans-serif', fontSize: '0.875rem', color: '#fff', fontWeight: 700 }}>Client Dashboard View</h4>
-              </div>
-
-              {/* Layer 2 */}
-              <div
-                onClick={() => setActiveLayer('jwt')}
-                style={{
-                  cursor: 'pointer',
-                  borderRadius: 8,
-                  border: activeLayer === 'jwt' ? '1px solid #00e87a' : '1px solid rgba(255,255,255,0.08)',
-                  background: 'rgba(255,255,255,0.02)',
-                  padding: '1rem 1.25rem',
-                  transition: 'all 0.25s',
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                  <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#00e87a' }}>LAYER 02 // SECURITY JWT CHECK</span>
-                  <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#444' }}>Supabase Auth</span>
-                </div>
-                <h4 style={{ fontFamily: 'Syne, sans-serif', fontSize: '0.875rem', color: '#fff', fontWeight: 700 }}>Middleware Validation</h4>
-              </div>
-
-              {/* Layer 3 */}
-              <div
-                onClick={() => setActiveLayer('postgres')}
-                style={{
-                  cursor: 'pointer',
-                  borderRadius: 8,
-                  border: activeLayer === 'postgres' ? '1px solid #00e87a' : '1px solid rgba(255,255,255,0.08)',
-                  background: 'rgba(255,255,255,0.02)',
-                  padding: '1rem 1.25rem',
-                  transition: 'all 0.25s',
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                  <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#00e87a' }}>LAYER 03 // DATA ISOLATION</span>
-                  <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#444' }}>PostgreSQL</span>
-                </div>
-                <h4 style={{ fontFamily: 'Syne, sans-serif', fontSize: '0.875rem', color: '#fff', fontWeight: 700 }}>Row Level Security (RLS)</h4>
-              </div>
+            {/* Left: Layer Stack */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
+              {[
+                { key: 'ui' as const, label: 'LAYER 01 // INTERACTIVE DASHBOARD', tech: 'React 19', title: 'Client Dashboard View' },
+                { key: 'jwt' as const, label: 'LAYER 02 // SECURITY JWT CHECK', tech: 'Supabase Auth', title: 'Middleware Validation' },
+                { key: 'postgres' as const, label: 'LAYER 03 // DATA ISOLATION', tech: 'PostgreSQL', title: 'Row Level Security (RLS)' },
+              ].map((layer) => (
+                <motion.div
+                  key={layer.key}
+                  onClick={() => setActiveLayer(layer.key)}
+                  whileHover={{ x: 6 }}
+                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  style={{
+                    cursor: 'pointer',
+                    borderRadius: 10,
+                    border: activeLayer === layer.key ? '1px solid #00e87a' : '1px solid rgba(255,255,255,0.07)',
+                    background: activeLayer === layer.key ? 'rgba(0,232,122,0.06)' : 'rgba(15,15,15,0.65)',
+                    padding: '1rem 1.25rem',
+                    backdropFilter: 'blur(16px)',
+                    boxShadow: activeLayer === layer.key ? '0 0 20px rgba(0,232,122,0.12), inset 0 0 30px rgba(0,232,122,0.03)' : 'none',
+                    transition: 'all 0.45s cubic-bezier(0.16, 1, 0.3, 1)',
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                    <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#00e87a', letterSpacing: '0.1em' }}>{layer.label}</span>
+                    <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.45rem', color: '#444' }}>{layer.tech}</span>
+                  </div>
+                  <h4 style={{ fontFamily: 'Syne, sans-serif', fontSize: '0.875rem', color: '#fff', fontWeight: 700 }}>{layer.title}</h4>
+                </motion.div>
+              ))}
 
               <button
                 onClick={() => setViewState('problem')}
@@ -242,58 +276,194 @@ export const GymLane = () => {
                   background: 'transparent',
                   border: 'none',
                   cursor: 'pointer',
+                  transition: 'color 0.3s ease',
+                  marginTop: '0.5rem',
                 }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#888')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = '#444')}
               >
                 ← View Problem Statement
               </button>
             </div>
 
-            {/* Right Sandbox Screen */}
-            <div style={{ background: '#0a100b', borderRadius: 12, border: '1px solid rgba(0,232,122,0.12)', padding: '1.5rem', minHeight: 380, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            {/* Right: Sandbox Screen */}
+            <div
+              style={{
+                background: 'rgba(10, 16, 11, 0.8)',
+                borderRadius: 14,
+                border: '1px solid rgba(0,232,122,0.14)',
+                padding: '1.5rem',
+                minHeight: 400,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                backdropFilter: 'blur(20px)',
+                boxShadow: '0 8px 48px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04)',
+              }}
+            >
               <AnimatePresence mode="wait">
                 {activeLayer === 'ui' && (
-                  <motion.div key="ui" initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.5rem' }}>
-                      <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', color: '#888' }}>Live Dashboard Preview</span>
-                      <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', color: '#00e87a' }}>MRR: ₹{totalMRR.toLocaleString('en-IN')}</span>
-                    </div>
-
-                    <div style={{ display: 'flex', gap: '0.5rem' }}>
-                      <button onClick={() => setShowForm(!showForm)} style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', padding: '0.3rem 0.6rem', borderRadius: 4, border: '1px solid rgba(0,232,122,0.3)', background: 'rgba(0,232,122,0.06)', color: '#00e87a', cursor: 'pointer' }}>+ Enroll Member</button>
-                      <button onClick={simulateScan} style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', padding: '0.3rem 0.6rem', borderRadius: 4, border: '1px solid rgba(255,255,255,0.08)', background: 'transparent', color: '#666', cursor: 'pointer' }}>Simulate QR Check-in</button>
-                    </div>
-
-                    {showForm && (
-                      <div style={{ display: 'flex', gap: '0.5rem', background: 'rgba(255,255,255,0.01)', border: '1px solid rgba(255,255,255,0.04)', padding: '0.5rem', borderRadius: 6 }}>
-                        <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Name" style={{ flex: 1, background: 'transparent', border: '1px solid rgba(255,255,255,0.08)', padding: '0.25rem 0.5rem', borderRadius: 4, color: '#fff', fontSize: '0.625rem', fontFamily: 'JetBrains Mono, monospace', outline: 'none' }} />
-                        <select value={form.plan} onChange={(e) => setForm({ ...form, plan: e.target.value })} style={{ background: '#0a100b', border: '1px solid rgba(255,255,255,0.08)', color: '#888', fontSize: '0.625rem', fontFamily: 'JetBrains Mono, monospace', outline: 'none' }}>
-                          {PLANS.map((p) => <option key={p} value={p}>{p}</option>)}
-                        </select>
-                        <button onClick={addMember} style={{ background: '#00e87a', color: '#060d08', border: 'none', padding: '0.25rem 0.5rem', borderRadius: 4, fontSize: '0.625rem', fontFamily: 'JetBrains Mono, monospace', cursor: 'pointer', fontWeight: 600 }}>Enroll</button>
+                  <motion.div key="ui" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.6rem' }}>
+                      <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#888' }}>Live Dashboard Preview</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                        <span style={{ display: 'block', width: 5, height: 5, borderRadius: '50%', background: '#00e87a', boxShadow: '0 0 6px #00e87a', animation: 'pulse-dot 2s ease-in-out infinite' }} />
+                        <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#00e87a' }}>MRR: ₹{totalMRR.toLocaleString('en-IN')}</span>
                       </div>
-                    )}
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                      <button
+                        onClick={() => setShowForm(!showForm)}
+                        style={{
+                          fontFamily: 'JetBrains Mono, monospace',
+                          fontSize: '0.5625rem',
+                          padding: '0.3rem 0.7rem',
+                          borderRadius: 5,
+                          border: '1px solid rgba(0,232,122,0.4)',
+                          background: 'rgba(0,232,122,0.07)',
+                          color: '#00e87a',
+                          cursor: 'pointer',
+                          transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = '#00e87a';
+                          e.currentTarget.style.color = '#060d08';
+                          e.currentTarget.style.boxShadow = '0 0 16px rgba(0,232,122,0.35)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = 'rgba(0,232,122,0.07)';
+                          e.currentTarget.style.color = '#00e87a';
+                          e.currentTarget.style.boxShadow = 'none';
+                        }}
+                      >
+                        + Enroll Member
+                      </button>
+                      <button
+                        onClick={simulateScan}
+                        style={{
+                          fontFamily: 'JetBrains Mono, monospace',
+                          fontSize: '0.5625rem',
+                          padding: '0.3rem 0.7rem',
+                          borderRadius: 5,
+                          border: '1px solid rgba(255,255,255,0.08)',
+                          background: 'transparent',
+                          color: '#666',
+                          cursor: 'pointer',
+                          transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)';
+                          e.currentTarget.style.color = '#f0ede6';
+                          e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                          e.currentTarget.style.color = '#666';
+                          e.currentTarget.style.background = 'transparent';
+                        }}
+                      >
+                        Simulate QR Check-in
+                      </button>
+                    </div>
+
+                    <AnimatePresence>
+                      {showForm && (
+                        <motion.form
+                          onSubmit={addMember}
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          style={{ display: 'flex', gap: '0.4rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', padding: '0.5rem', borderRadius: 7, overflow: 'hidden' }}
+                        >
+                          <input
+                            value={form.name}
+                            onChange={(e) => setForm({ ...form, name: e.target.value })}
+                            placeholder="Name"
+                            style={{
+                              flex: 1,
+                              background: 'rgba(10,10,10,0.6)',
+                              border: '1px solid rgba(255,255,255,0.08)',
+                              padding: '0.25rem 0.5rem',
+                              borderRadius: 4,
+                              color: '#fff',
+                              fontSize: '0.625rem',
+                              fontFamily: 'JetBrains Mono, monospace',
+                              outline: 'none',
+                              transition: 'border-color 0.3s ease',
+                            }}
+                            onFocus={(e) => {
+                              e.currentTarget.style.borderColor = 'rgba(0,232,122,0.5)';
+                              e.currentTarget.style.boxShadow = '0 0 12px rgba(0,232,122,0.12)';
+                            }}
+                            onBlur={(e) => {
+                              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                              e.currentTarget.style.boxShadow = 'none';
+                            }}
+                          />
+                          <select
+                            value={form.plan}
+                            onChange={(e) => setForm({ ...form, plan: e.target.value })}
+                            style={{ background: '#0a100b', border: '1px solid rgba(255,255,255,0.08)', color: '#888', fontSize: '0.625rem', fontFamily: 'JetBrains Mono, monospace', outline: 'none', borderRadius: 4, padding: '0.25rem 0.3rem' }}
+                          >
+                            {PLANS.map((p) => <option key={p} value={p}>{p}</option>)}
+                          </select>
+                          <button
+                            type="submit"
+                            style={{ background: '#00e87a', color: '#060d08', border: 'none', padding: '0.25rem 0.6rem', borderRadius: 4, fontSize: '0.625rem', fontFamily: 'JetBrains Mono, monospace', cursor: 'pointer', fontWeight: 700, transition: 'all 0.3s ease' }}
+                            onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 0 12px rgba(0,232,122,0.4)'; }}
+                            onMouseLeave={(e) => { e.currentTarget.style.boxShadow = 'none'; }}
+                          >
+                            Enroll
+                          </button>
+                        </motion.form>
+                      )}
+                    </AnimatePresence>
 
                     <div style={{ overflowX: 'auto' }}>
-                      <table style={{ width: '100%', fontSize: '0.625rem', fontFamily: 'JetBrains Mono, monospace' }}>
+                      <table style={{ width: '100%', fontSize: '0.5625rem', fontFamily: 'JetBrains Mono, monospace', borderCollapse: 'collapse' }}>
                         <thead>
                           <tr style={{ color: '#444', textAlign: 'left', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                            <th style={{ padding: '0.25rem' }}>ID</th>
-                            <th style={{ padding: '0.25rem' }}>NAME</th>
-                            <th style={{ padding: '0.25rem' }}>PLAN</th>
-                            <th style={{ padding: '0.25rem' }}>STATUS</th>
+                            {['ID', 'NAME', 'PLAN', 'STATUS'].map((h) => (
+                              <th key={h} style={{ padding: '0.3rem 0.4rem', letterSpacing: '0.08em' }}>{h}</th>
+                            ))}
                           </tr>
                         </thead>
                         <tbody>
-                          {members.map((m) => (
-                            <tr key={m.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.02)' }}>
-                              <td style={{ padding: '0.25rem', color: '#2a4a2e' }}>{m.id}</td>
-                              <td style={{ padding: '0.25rem', color: '#fff' }}>{m.name}</td>
-                              <td style={{ padding: '0.25rem', color: '#555' }}>{m.plan}</td>
-                              <td style={{ padding: '0.25rem' }}>
-                                <span style={{ ...statusStyle[m.status], padding: '0.1rem 0.35rem', borderRadius: 2, fontSize: '0.5rem' }}>{m.status}</span>
-                              </td>
-                            </tr>
-                          ))}
+                          <AnimatePresence>
+                            {members.map((m) => (
+                              <motion.tr
+                                key={m.id}
+                                initial={{ opacity: 0, x: -8 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: 8 }}
+                                transition={{ duration: 0.3 }}
+                                style={{ borderBottom: '1px solid rgba(255,255,255,0.02)' }}
+                              >
+                                <td style={{ padding: '0.3rem 0.4rem', color: '#2a4a2e' }}>{m.id}</td>
+                                <td style={{ padding: '0.3rem 0.4rem', color: '#f0ede6' }}>{m.name}</td>
+                                <td style={{ padding: '0.3rem 0.4rem', color: '#555' }}>{m.plan}</td>
+                                <td style={{ padding: '0.3rem 0.4rem' }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                                    {/* Pulsing status dot */}
+                                    <span
+                                      style={{
+                                        display: 'inline-block',
+                                        width: 5,
+                                        height: 5,
+                                        borderRadius: '50%',
+                                        background: DOT_COLOR[m.status],
+                                        boxShadow: `0 0 6px ${DOT_COLOR[m.status]}`,
+                                        animation: m.status === 'active' ? 'pulse-dot 2s ease-in-out infinite' : 'none',
+                                        flexShrink: 0,
+                                      }}
+                                    />
+                                    <span className={STATUS_CLASS[m.status]}>{m.status}</span>
+                                  </div>
+                                </td>
+                              </motion.tr>
+                            ))}
+                          </AnimatePresence>
                         </tbody>
                       </table>
                     </div>
@@ -301,32 +471,56 @@ export const GymLane = () => {
                 )}
 
                 {activeLayer === 'jwt' && (
-                  <motion.div key="jwt" initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', color: '#888', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.5rem' }}>JWT Token Decode</span>
-                    <div style={{ background: '#070c08', border: '1px solid rgba(0,232,122,0.1)', padding: '0.75rem', borderRadius: 6, fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', lineHeight: 1.6, color: '#a0c0a0' }}>
+                  <motion.div key="jwt" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#888', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.5rem', display: 'block' }}>JWT Token Decode</span>
+                    <div
+                      style={{
+                        background: 'rgba(7, 12, 8, 0.9)',
+                        border: '1px solid rgba(0,232,122,0.12)',
+                        padding: '1rem',
+                        borderRadius: 8,
+                        fontFamily: 'JetBrains Mono, monospace',
+                        fontSize: '0.625rem',
+                        lineHeight: 1.7,
+                        color: '#a0c0a0',
+                        boxShadow: 'inset 0 0 20px rgba(0,232,122,0.03)',
+                      }}
+                    >
                       <div>{'{'}</div>
                       <div style={{ paddingLeft: '1rem' }}><span style={{ color: '#555' }}>"iss"</span>: <span style={{ color: '#00e87a' }}>"supabase_auth"</span>,</div>
                       <div style={{ paddingLeft: '1rem' }}><span style={{ color: '#555' }}>"role"</span>: <span style={{ color: '#00e87a' }}>"authenticated"</span>,</div>
                       <div style={{ paddingLeft: '1rem' }}><span style={{ color: '#555' }}>"gym_id"</span>: <span style={{ color: '#f59e0b' }}>"gym_81bf28ac"</span></div>
                       <div>{'}'}</div>
                     </div>
-                    <p style={{ fontSize: '0.75rem', color: '#555', lineHeight: 1.6 }}>
+                    <p style={{ fontSize: '0.75rem', color: '#555', lineHeight: 1.65 }}>
                       JWT keys verify who is calling the endpoints. This isolates data parameters seamlessly.
                     </p>
                   </motion.div>
                 )}
 
                 {activeLayer === 'postgres' && (
-                  <motion.div key="postgres" initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', color: '#888', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.5rem' }}>Postgres RLS Policy SQL</span>
-                    <div style={{ background: '#050a06', border: '1px solid rgba(0,232,122,0.1)', padding: '0.75rem', borderRadius: 6, fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', lineHeight: 1.6, color: '#00e87a' }}>
+                  <motion.div key="postgres" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#888', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.5rem', display: 'block' }}>Postgres RLS Policy SQL</span>
+                    <div
+                      style={{
+                        background: 'rgba(5, 10, 6, 0.95)',
+                        border: '1px solid rgba(0,232,122,0.12)',
+                        padding: '1rem',
+                        borderRadius: 8,
+                        fontFamily: 'JetBrains Mono, monospace',
+                        fontSize: '0.625rem',
+                        lineHeight: 1.8,
+                        color: '#00e87a',
+                        boxShadow: 'inset 0 0 20px rgba(0,232,122,0.03)',
+                      }}
+                    >
                       <span style={{ color: '#ff3d6e' }}>CREATE POLICY</span> tenant_isolation<br />
                       <span style={{ color: '#ff3d6e' }}>ON</span> public.members<br />
                       <span style={{ color: '#ff3d6e' }}>FOR SELECT USING</span> (<br />
                       &nbsp;&nbsp;gym_id = auth.jwt() -&gt;&gt; <span style={{ color: '#f59e0b' }}>'gym_id'</span><br />
                       );
                     </div>
-                    <p style={{ fontSize: '0.75rem', color: '#555', lineHeight: 1.6 }}>
+                    <p style={{ fontSize: '0.75rem', color: '#555', lineHeight: 1.65 }}>
                       Enforces multi-tenant separation right at the database layer. Gym owner A cannot read Gym owner B's records under any circumstance.
                     </p>
                   </motion.div>
@@ -336,7 +530,19 @@ export const GymLane = () => {
               {/* Status bar */}
               <div style={{ borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '0.5rem', display: 'flex', justifyContent: 'space-between', marginTop: '1rem', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#333' }}>
                 <span>SQL PIPE TRANSACTIONS</span>
-                <span style={{ color: '#00e87a' }}>{pulseText}</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                  <span
+                    style={{
+                      display: 'inline-block',
+                      width: 4,
+                      height: 4,
+                      borderRadius: '50%',
+                      background: '#00e87a',
+                      animation: 'pulse-dot 2s ease-in-out infinite',
+                    }}
+                  />
+                  <span style={{ color: '#00e87a' }}>{pulseText}</span>
+                </div>
               </div>
             </div>
           </motion.div>
