@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const GYMLANE_TECH = ['React 19', 'TypeScript', 'Supabase', 'PostgreSQL', 'Row Level Security', 'Supabase Auth'];
+
 interface Member {
   id: string;
   name: string;
@@ -32,6 +34,7 @@ const STATUS_CLASS: Record<Member['status'], string> = {
 };
 
 export const GymLane = () => {
+  const [sandboxOpen, setSandboxOpen] = useState(false);
   const [viewState, setViewState] = useState<'problem' | 'solution'>('problem');
   const [members, setMembers] = useState<Member[]>(INITIAL_MEMBERS);
   const [form, setForm] = useState({ name: '', plan: 'Monthly' });
@@ -85,61 +88,106 @@ export const GymLane = () => {
     <section
       id="gymlane"
       style={{
-        minHeight: '110svh',
         background: '#060d08',
-        padding: 'clamp(4rem, 8vw, 8rem) clamp(1.5rem, 6vw, 6rem)',
+        padding: 'clamp(5rem, 10vw, 8rem) clamp(1.5rem, 6vw, 5rem)',
         position: 'relative',
         overflow: 'hidden',
       }}
     >
       {/* Ambient glow */}
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute',
-          top: '20%',
-          left: '-5%',
-          width: 700,
-          height: 700,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(0,232,122,0.06), transparent 65%)',
-          pointerEvents: 'none',
-        }}
-      />
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute',
-          bottom: '10%',
-          right: '-10%',
-          width: 500,
-          height: 500,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(0,232,122,0.04), transparent 65%)',
-          pointerEvents: 'none',
-        }}
-      />
+      <div aria-hidden style={{ position: 'absolute', top: '20%', left: '-5%', width: 600, height: 600, borderRadius: '50%', background: 'radial-gradient(circle, rgba(0,232,122,0.05), transparent 65%)', pointerEvents: 'none' }} />
 
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        style={{ maxWidth: 800, marginBottom: '3.5rem' }}
-      >
-        <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#00e87a', display: 'block', marginBottom: '0.75rem' }}>
-          04 — GymLane: Operational Case Study
-        </span>
-        <h2 style={{ fontFamily: 'Syne, sans-serif', fontSize: 'clamp(2rem, 5vw, 4rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1, color: '#f0ede6' }}>
-          Visualizing data security and{' '}
-          <span style={{ color: '#00e87a', textShadow: '0 0 30px rgba(0,232,122,0.4)' }}>
-            real-time operations
-          </span>
-          .
-        </h2>
-      </motion.div>
+      <div style={{ maxWidth: 1050, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
 
+        {/* ── Case Study Card ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          style={{
+            background: 'rgba(15,15,15,0.6)',
+            border: '1px solid rgba(255,255,255,0.07)',
+            borderRadius: 16,
+            padding: 'clamp(1.5rem, 4vw, 2.5rem)',
+            backdropFilter: 'blur(20px)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1.5rem',
+          }}
+        >
+          {/* Top: label + title */}
+          <div>
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#00e87a', display: 'block', marginBottom: '0.5rem' }}>
+              04 — Projects · GymLane
+            </span>
+            <h2 style={{ fontFamily: 'Syne, sans-serif', fontSize: 'clamp(1.75rem, 4vw, 3rem)', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.05, color: '#f0ede6', margin: 0 }}>
+              Multi-tenant Gym Management SaaS
+            </h2>
+          </div>
+
+          {/* Case study grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#ff3d6e' }}>Problem</span>
+              <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.875rem', color: '#666', lineHeight: 1.6, margin: 0 }}>
+                Gym owners lose revenue when members access facilities on expired plans — manual registers are error-prone and don't scale.
+              </p>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#00e87a' }}>Solution</span>
+              <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.875rem', color: '#666', lineHeight: 1.6, margin: 0 }}>
+                Real-time dashboard with QR check-in simulation, live MRR tracking, and PostgreSQL Row Level Security enforcing true multi-tenant data isolation at the database layer.
+              </p>
+            </div>
+          </div>
+
+          {/* Tech stack */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', alignItems: 'center' }}>
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#333', letterSpacing: '0.1em', textTransform: 'uppercase', marginRight: '0.25rem' }}>Stack</span>
+            {GYMLANE_TECH.map((t) => (
+              <span key={t} style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#555', border: '1px solid rgba(0,232,122,0.15)', background: 'rgba(0,232,122,0.04)', padding: '0.2rem 0.6rem', borderRadius: 4 }}>{t}</span>
+            ))}
+          </div>
+
+          {/* Launch sandbox button */}
+          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+            <button
+              onClick={() => setSandboxOpen((v) => !v)}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+                fontFamily: 'JetBrains Mono, monospace', fontSize: '0.6875rem', fontWeight: 700,
+                padding: '0.65rem 1.4rem', borderRadius: 7, cursor: 'pointer',
+                border: sandboxOpen ? '1px solid rgba(0,232,122,0.5)' : '1px solid rgba(0,232,122,0.4)',
+                background: sandboxOpen ? '#00e87a' : 'rgba(0,232,122,0.08)',
+                color: sandboxOpen ? '#060d08' : '#00e87a',
+                transition: 'all 0.3s cubic-bezier(0.16,1,0.3,1)',
+                boxShadow: sandboxOpen ? '0 4px 20px rgba(0,232,122,0.3)' : 'none',
+              }}
+              onMouseEnter={(e) => { if (!sandboxOpen) { e.currentTarget.style.background = 'rgba(0,232,122,0.15)'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
+              onMouseLeave={(e) => { if (!sandboxOpen) { e.currentTarget.style.background = 'rgba(0,232,122,0.08)'; e.currentTarget.style.transform = 'translateY(0)'; } }}
+            >
+              {sandboxOpen ? '↑ Close Sandbox' : '⚡ Launch Sandbox'}
+            </button>
+            {!sandboxOpen && (
+              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#2a2a2a', letterSpacing: '0.08em' }}>
+                Interactive member management demo
+              </span>
+            )}
+          </div>
+        </motion.div>
+
+        {/* ── Collapsible Sandbox (existing code) ── */}
+        <AnimatePresence>
+          {sandboxOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              style={{ overflow: 'hidden' }}
+            >
+        <div style={{ paddingTop: '0.5rem' }}>
       <AnimatePresence mode="wait">
         {viewState === 'problem' ? (
           <motion.div
@@ -548,6 +596,12 @@ export const GymLane = () => {
           </motion.div>
         )}
       </AnimatePresence>
+        </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+      </div>
     </section>
   );
 };

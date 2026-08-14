@@ -5,7 +5,7 @@ import { CustomCursor } from './components/ui/CustomCursor';
 import { FloatingNav } from './components/ui/FloatingNav';
 import { VerticalThread } from './components/ui/VerticalThread';
 import { ResumeModal } from './components/ui/ResumeModal';
-import { SystemPreloader } from './components/ui/SystemPreloader';
+import { Hero } from './components/sections/Hero';
 
 import { HeroLanding } from './components/sections/HeroLanding';
 import { About } from './components/sections/About';
@@ -22,25 +22,25 @@ function App() {
 
   return (
     <LenisProvider>
-      <div style={{ background: '#040508', overflowX: 'hidden', minHeight: '100vh', position: 'relative' }}>
-        {/* Subtle coordinate grid backdrop */}
+      <div style={{ background: '#0c0c0c', overflowX: 'hidden', minHeight: '100vh', position: 'relative' }}>
+        {/* Canvas background — only after intro */}
         {introDone && <HeroCanvas />}
 
-        {/* Global Magnet Cursor & Navigation Dock */}
+        {/* Global cursor & navigation */}
         <CustomCursor />
         {introDone && <FloatingNav />}
         {introDone && <VerticalThread />}
 
-        {/* Resume Modal overlay */}
+        {/* Resume Modal */}
         <ResumeModal isOpen={resumeOpen} onClose={() => setResumeOpen(false)} />
 
-        {/* System Diagnostics Preloader */}
-        {!introDone && <SystemPreloader onComplete={() => setIntroDone(true)} />}
+        {/* Typewriter intro — original Hero with skip */}
+        <Hero onIntroComplete={() => setIntroDone(true)} />
 
-        {/* Main page content sections */}
+        {/* Main content — shown after intro */}
         <main style={{ position: 'relative', zIndex: 1 }}>
           {introDone && (
-            <div style={{ animation: 'pop-in 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards' }}>
+            <div style={{ animation: 'pop-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards' }}>
               <HeroLanding onViewResume={() => setResumeOpen(true)} />
               <About />
               <Skills />

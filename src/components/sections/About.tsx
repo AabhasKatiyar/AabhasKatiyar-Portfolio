@@ -1,37 +1,37 @@
 import { motion } from 'framer-motion';
-import { ShieldCheck, Cpu, Lightbulb, GraduationCap, Eye } from 'lucide-react';
+import { Code2, Cpu, Rocket, Database } from 'lucide-react';
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 20 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: '-80px' },
-  transition: { duration: 0.65, delay, ease: [0.16, 1, 0.3, 1] as const },
+  viewport: { once: true, margin: '-60px' },
+  transition: { duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] as const },
 });
 
 const TRAITS = [
   {
-    label: 'BUILDER MINDSET // EXECUTION',
-    desc: 'GymLane and Yappr are fully functional SaaS environments, proving execution beyond source scripts.',
-    icon: <ShieldCheck size={18} />,
+    icon: <Code2 size={18} />,
+    title: 'Full-Stack Builder',
+    desc: 'Production SaaS from database schema to deployed UI — not just tutorials.',
     color: '#00e87a',
   },
   {
-    label: 'HARDWARE LOGIC // DIRECT CONTROL',
-    desc: 'Arduino and ESP32 nodes taught me registry management, pin configurations, and low-level data buses.',
     icon: <Cpu size={18} />,
+    title: 'Hardware + Software',
+    desc: 'C++ firmware on ESP32/Arduino alongside React frontends — both layers.',
     color: '#f59e0b',
   },
   {
-    label: 'PRODUCT INTUITION // UTILITY',
-    desc: 'I resolve structural needs: who uses the system, why, and how to minimize execution latency.',
-    icon: <Lightbulb size={18} />,
-    color: '#ff3d6e',
+    icon: <Database size={18} />,
+    title: 'Security First',
+    desc: 'PostgreSQL Row Level Security for true multi-tenant data isolation.',
+    color: '#9b6dff',
   },
   {
-    label: 'LEARNING SPEED // PARALLEL COMPILATION',
-    desc: 'Pivoting from microcontroller registers to full-stack websocket tables and database-level multi-tenancy.',
-    icon: <GraduationCap size={18} />,
-    color: '#9b6dff',
+    icon: <Rocket size={18} />,
+    title: 'Ships Real Products',
+    desc: 'GymLane and Yappr are live, working SaaS products — not demos.',
+    color: '#ff3d6e',
   },
 ];
 
@@ -41,169 +41,216 @@ export const About = () => {
       id="about"
       style={{
         minHeight: '100vh',
-        background: '#040508',
+        background: '#0c0c0c',
+        padding: 'clamp(5rem, 10vw, 8rem) clamp(1.5rem, 6vw, 5rem)',
         position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        padding: 'clamp(4rem, 8vw, 8rem) clamp(1.5rem, 6vw, 6rem)',
         overflow: 'hidden',
       }}
     >
-      {/* HUD scan grids */}
+      {/* Subtle ambient glow */}
       <div
+        aria-hidden
         style={{
           position: 'absolute',
-          left: '5%',
-          top: '10%',
-          width: '300px',
-          height: '300px',
+          top: '30%',
+          right: '-10%',
+          width: 500,
+          height: 500,
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(155,109,255,0.015), transparent 70%)',
+          background: 'radial-gradient(circle, rgba(155,109,255,0.04), transparent 65%)',
           pointerEvents: 'none',
         }}
       />
 
-      <div style={{ maxWidth: '1080px', width: '100%', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '4rem' }}>
-        
-        {/* Section title */}
+      <div style={{ maxWidth: 1050, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '4rem' }}>
+
+        {/* Section label + heading */}
         <motion.div {...fadeUp(0)}>
-          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#9b6dff', display: 'block', marginBottom: '0.75rem' }}>
-            01 — BIOMETRIC DOSSIER
+          <span
+            style={{
+              fontFamily: 'JetBrains Mono, monospace',
+              fontSize: '0.625rem',
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              color: '#9b6dff',
+              display: 'block',
+              marginBottom: '0.75rem',
+            }}
+          >
+            01 — About
           </span>
-          <h2 style={{ fontFamily: 'Syne, sans-serif', fontSize: 'clamp(2rem, 5vw, 4.1rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1, color: '#fff' }}>
-            Core builder profile{' '}
-            <span style={{ color: '#9b6dff', textShadow: '0 0 30px rgba(155,109,255,0.2)' }}>
-              details
+          <h2
+            style={{
+              fontFamily: 'Syne, sans-serif',
+              fontSize: 'clamp(2rem, 5vw, 3.75rem)',
+              fontWeight: 800,
+              letterSpacing: '-0.04em',
+              lineHeight: 1.05,
+              color: '#f0ede6',
+              margin: 0,
+              maxWidth: '14ch',
+            }}
+          >
+            Who I am &amp;{' '}
+            <span style={{ color: '#9b6dff', textShadow: '0 0 30px rgba(155,109,255,0.25)' }}>
+              how I build.
             </span>
-            .
           </h2>
         </motion.div>
 
-        {/* Console layout grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '4.5rem', alignItems: 'start' }}>
-          
-          {/* Left Column: dossier layout */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-            
-            {/* Holographic identity scan card */}
-            <motion.div
-              {...fadeUp(0.08)}
-              style={{
-                background: 'rgba(10, 11, 20, 0.6)',
-                border: '1px solid rgba(155, 109, 255, 0.15)',
-                borderRadius: '16px',
-                padding: '1.5rem',
-                display: 'flex',
-                gap: '1.5rem',
-                alignItems: 'center',
-                position: 'relative',
-                overflow: 'hidden',
-                backdropFilter: 'blur(20px)',
-              }}
-            >
-              {/* Scan sweep line */}
-              <div style={{ position: 'absolute', left: 0, right: 0, height: '1px', background: 'rgba(155, 109, 255, 0.4)', animation: 'scan 4s linear infinite', pointerEvents: 'none' }} />
-
-              {/* Scanning visual box */}
-              <div style={{ width: '80px', height: '80px', background: 'rgba(155,109,255,0.05)', border: '1px dashed rgba(155,109,255,0.3)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifySelf: 'center', justifyContent: 'center', color: '#9b6dff', position: 'relative' }}>
-                <Eye size={30} style={{ opacity: 0.6 }} />
-                {/* Visual corners */}
-                <div style={{ position: 'absolute', top: -1, left: -1, width: 6, height: 6, borderTop: '2px solid #9b6dff', borderLeft: '2px solid #9b6dff' }} />
-                <div style={{ position: 'absolute', top: -1, right: -1, width: 6, height: 6, borderTop: '2px solid #9b6dff', borderRight: '2px solid #9b6dff' }} />
-                <div style={{ position: 'absolute', bottom: -1, left: -1, width: 6, height: 6, borderBottom: '2px solid #9b6dff', borderLeft: '2px solid #9b6dff' }} />
-                <div style={{ position: 'absolute', bottom: -1, right: -1, width: 6, height: 6, borderBottom: '2px solid #9b6dff', borderRight: '2px solid #9b6dff' }} />
-              </div>
-
-              {/* Identity fields */}
-              <div style={{ flex: 1, fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', color: '#888', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-                <div>NAME: <span style={{ color: '#fff', fontWeight: 600 }}>AABHAS KATIYAR</span></div>
-                <div>DEGREE: <span style={{ color: '#fff', fontWeight: 600 }}>B.TECH (IT) 2025-2029</span></div>
-                <div>CLASS_REG: <span style={{ color: '#9b6dff' }}>KIET_GZBD</span></div>
-                <div>STATUS: <span style={{ color: '#00e87a', textShadow: '0 0 6px #00e87a' }}>READY_FOR_DEPLOY</span></div>
-              </div>
+        {/* Two-column: bio + traits */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gap: '3.5rem',
+            alignItems: 'start',
+          }}
+        >
+          {/* Left: Bio */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <motion.div {...fadeUp(0.08)}>
+              <p
+                style={{
+                  fontFamily: 'Inter, sans-serif',
+                  fontSize: '1rem',
+                  lineHeight: 1.75,
+                  color: '#888',
+                  margin: 0,
+                }}
+              >
+                I'm a first-year B.Tech IT student at KIET, Ghaziabad, who builds real software — not projects for a portfolio grade. I started with microcontrollers, writing C++ firmware to control motors and read sensors, and transitioned to full-stack web development because I wanted to ship complete systems.
+              </p>
             </motion.div>
 
-            {/* Biography details text */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', lineHeight: 1.65, color: '#888' }}>
-              <motion.p {...fadeUp(0.12)} style={{ color: '#fff', fontWeight: 500, fontSize: '0.95rem' }}>
-                Developing software architectures with a builder's approach.
-              </motion.p>
-              
-              <motion.p {...fadeUp(0.16)}>
-                I began programming at the hardware level, compiling firmware in C++ for microcontrollers. This low-level experience gave me an understanding of registers, pin arrays, and serial communications.
-              </motion.p>
+            <motion.div {...fadeUp(0.12)}>
+              <p
+                style={{
+                  fontFamily: 'Inter, sans-serif',
+                  fontSize: '1rem',
+                  lineHeight: 1.75,
+                  color: '#888',
+                  margin: 0,
+                }}
+              >
+                I've built <strong style={{ color: '#f0ede6', fontWeight: 600 }}>GymLane</strong> — a multi-tenant gym management SaaS with real-time check-ins and PostgreSQL Row Level Security — and <strong style={{ color: '#f0ede6', fontWeight: 600 }}>Yappr</strong> — a real-time social feed with WebSocket pub/sub and optimistic UI. Both are functional, deployed products.
+              </p>
+            </motion.div>
 
-              <motion.p {...fadeUp(0.2)}>
-                I transitioned to web architectures to design full-stack systems. Building GymLane (multi-tenant dashboard) and Yappr (real-time chat) allowed me to implement Supabase authentication, real-time WebSocket tables, and secure PostgreSQL Row Level Security (RLS) configurations.
-              </motion.p>
-            </div>
-          </div>
-
-          {/* Right Column: Holographic WORK_PILLARS dossier */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            <motion.h3
-              {...fadeUp(0.1)}
+            {/* Identity card */}
+            <motion.div
+              {...fadeUp(0.16)}
               style={{
-                fontFamily: 'Syne, sans-serif',
-                fontSize: '1.25rem',
-                fontWeight: 700,
-                color: '#fff',
-                margin: '0 0 0.5rem 0',
-                letterSpacing: '-0.02em',
+                background: 'rgba(15,15,15,0.6)',
+                border: '1px solid rgba(255,255,255,0.07)',
+                borderRadius: 12,
+                padding: '1.25rem 1.5rem',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.6rem',
+                backdropFilter: 'blur(16px)',
               }}
             >
-              Holographic System Metrics
-            </motion.h3>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              {TRAITS.map((trait, i) => (
-                <motion.div
-                  key={i}
-                  {...fadeUp(0.14 + i * 0.08)}
-                  style={{
-                    background: 'rgba(10, 11, 16, 0.45)',
-                    border: '1px solid rgba(255, 255, 255, 0.04)',
-                    borderRadius: '14px',
-                    padding: '1.25rem',
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    gap: '1rem',
-                    transition: 'all 0.3s ease',
-                  }}
-                  whileHover={{
-                    borderColor: `${trait.color}44`,
-                    background: 'rgba(14, 16, 26, 0.6)',
-                    y: -4,
-                  }}
-                >
-                  <div
+              {[
+                { label: 'Degree', value: 'B.Tech Information Technology' },
+                { label: 'College', value: 'KIET Group of Institutions' },
+                { label: 'Year', value: '2025 – 2029 (1st year)' },
+                { label: 'Contact', value: 'aabhas.katiyar.dev@gmail.com', mono: true },
+              ].map(({ label, value, mono }) => (
+                <div key={label} style={{ display: 'flex', gap: '1rem', alignItems: 'baseline' }}>
+                  <span
                     style={{
-                      background: `${trait.color}0a`,
-                      border: `1px solid ${trait.color}25`,
-                      borderRadius: '8px',
-                      padding: '0.45rem',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: trait.color,
+                      fontFamily: 'JetBrains Mono, monospace',
+                      fontSize: '0.5rem',
+                      color: '#333',
+                      letterSpacing: '0.1em',
+                      textTransform: 'uppercase',
+                      minWidth: '60px',
+                      flexShrink: 0,
                     }}
                   >
-                    {trait.icon}
-                  </div>
-                  <div>
-                    <h4 style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.6875rem', fontWeight: 700, color: '#fff', margin: '0 0 0.25rem 0', letterSpacing: '0.04em' }}>
-                      {trait.label}
-                    </h4>
-                    <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.75rem', lineHeight: 1.5, color: '#666', margin: 0 }}>
-                      {trait.desc}
-                    </p>
-                  </div>
-                </motion.div>
+                    {label}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: mono ? 'JetBrains Mono, monospace' : 'Inter, sans-serif',
+                      fontSize: '0.8rem',
+                      color: '#888',
+                    }}
+                  >
+                    {value}
+                  </span>
+                </div>
               ))}
-            </div>
+            </motion.div>
           </div>
 
+          {/* Right: Trait cards */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
+            {TRAITS.map((trait, i) => (
+              <motion.div
+                key={trait.title}
+                {...fadeUp(0.1 + i * 0.07)}
+                style={{
+                  background: 'rgba(15,15,15,0.55)',
+                  border: '1px solid rgba(255,255,255,0.06)',
+                  borderRadius: 12,
+                  padding: '1.125rem 1.25rem',
+                  display: 'flex',
+                  gap: '1rem',
+                  alignItems: 'flex-start',
+                  transition: 'border-color 0.3s ease, background 0.3s ease',
+                  cursor: 'default',
+                }}
+                whileHover={{
+                  borderColor: `${trait.color}30`,
+                  backgroundColor: 'rgba(18,18,18,0.7)',
+                  y: -3,
+                }}
+              >
+                <div
+                  style={{
+                    color: trait.color,
+                    padding: '0.4rem',
+                    borderRadius: 8,
+                    background: `${trait.color}10`,
+                    border: `1px solid ${trait.color}20`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                    marginTop: 1,
+                  }}
+                >
+                  {trait.icon}
+                </div>
+                <div>
+                  <h4
+                    style={{
+                      fontFamily: 'Syne, sans-serif',
+                      fontSize: '0.9375rem',
+                      fontWeight: 700,
+                      color: '#f0ede6',
+                      margin: '0 0 0.25rem 0',
+                    }}
+                  >
+                    {trait.title}
+                  </h4>
+                  <p
+                    style={{
+                      fontFamily: 'Inter, sans-serif',
+                      fontSize: '0.8125rem',
+                      color: '#555',
+                      lineHeight: 1.55,
+                      margin: 0,
+                    }}
+                  >
+                    {trait.desc}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

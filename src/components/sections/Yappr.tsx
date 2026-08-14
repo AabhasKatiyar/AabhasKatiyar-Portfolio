@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const YAPPR_TECH = ['React 19', 'TypeScript', 'Supabase Realtime', 'WebSockets', 'Optimistic UI', 'PostgreSQL'];
+
 interface Yap {
   id: string;
   author: string;
@@ -17,6 +19,7 @@ const INITIAL_YAPS: Yap[] = [
 ];
 
 export const Yappr = () => {
+  const [sandboxOpen, setSandboxOpen] = useState(false);
   const [yaps, setYaps] = useState<Yap[]>(INITIAL_YAPS);
   const [draft, setDraft] = useState('');
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
@@ -86,60 +89,101 @@ export const Yappr = () => {
     <section
       id="yappr"
       style={{
-        minHeight: '100svh',
         background: '#0d0609',
-        padding: 'clamp(4rem, 8vw, 8rem) clamp(1.5rem, 6vw, 6rem)',
+        padding: 'clamp(5rem, 10vw, 8rem) clamp(1.5rem, 6vw, 5rem)',
         position: 'relative',
         overflow: 'hidden',
       }}
     >
       {/* Ambient glow */}
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute',
-          top: '10%',
-          right: '-8%',
-          width: 600,
-          height: 600,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(255,61,110,0.06), transparent 65%)',
-          pointerEvents: 'none',
-        }}
-      />
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute',
-          bottom: '5%',
-          left: '-5%',
-          width: 400,
-          height: 400,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(155,109,255,0.04), transparent 65%)',
-          pointerEvents: 'none',
-        }}
-      />
+      <div aria-hidden style={{ position: 'absolute', top: '10%', right: '-8%', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(255,61,110,0.05), transparent 65%)', pointerEvents: 'none' }} />
 
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        style={{ maxWidth: 800, marginBottom: '4rem' }}
-      >
-        <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#ff3d6e', display: 'block', marginBottom: '0.75rem' }}>
-          05 — Yappr: Real-time PubSub & WebSocket Pipeline
-        </span>
-        <h2 style={{ fontFamily: 'Syne, sans-serif', fontSize: 'clamp(2rem, 5vw, 4.5rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1, color: '#f0ede6' }}>
-          Social streaming,{' '}
-          <span style={{ color: '#ff3d6e', textShadow: '0 0 30px rgba(255,61,110,0.4)' }}>without latency</span>.
-        </h2>
-        <p style={{ marginTop: '1.25rem', color: '#888', fontSize: '0.9375rem', lineHeight: 1.75, maxWidth: '58ch' }}>
-          Yappr delivers instant updates. Optimistic UI renders changes immediately in local memory before database mutations resolve, making interactions feel completely lag-free.
-        </p>
-      </motion.div>
+      <div style={{ maxWidth: 1050, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+
+        {/* ── Case Study Card ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          style={{
+            background: 'rgba(15,15,15,0.6)',
+            border: '1px solid rgba(255,255,255,0.07)',
+            borderRadius: 16,
+            padding: 'clamp(1.5rem, 4vw, 2.5rem)',
+            backdropFilter: 'blur(20px)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1.5rem',
+          }}
+        >
+          <div>
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#ff3d6e', display: 'block', marginBottom: '0.5rem' }}>
+              05 — Projects · Yappr
+            </span>
+            <h2 style={{ fontFamily: 'Syne, sans-serif', fontSize: 'clamp(1.75rem, 4vw, 3rem)', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.05, color: '#f0ede6', margin: 0 }}>
+              Real-time Social Feed with WebSocket Pub/Sub
+            </h2>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#ff3d6e' }}>Problem</span>
+              <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.875rem', color: '#666', lineHeight: 1.6, margin: 0 }}>
+                Social feeds feel sluggish when every like or new post triggers a full network refetch — terrible UX on mobile connections.
+              </p>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#00e87a' }}>Solution</span>
+              <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.875rem', color: '#666', lineHeight: 1.6, margin: 0 }}>
+                Optimistic UI renders state changes instantly in local memory. Supabase Realtime WebSockets deliver live posts. Database mutations happen asynchronously in the background.
+              </p>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', alignItems: 'center' }}>
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#333', letterSpacing: '0.1em', textTransform: 'uppercase', marginRight: '0.25rem' }}>Stack</span>
+            {YAPPR_TECH.map((t) => (
+              <span key={t} style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#555', border: '1px solid rgba(255,61,110,0.15)', background: 'rgba(255,61,110,0.04)', padding: '0.2rem 0.6rem', borderRadius: 4 }}>{t}</span>
+            ))}
+          </div>
+
+          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+            <button
+              onClick={() => setSandboxOpen((v) => !v)}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+                fontFamily: 'JetBrains Mono, monospace', fontSize: '0.6875rem', fontWeight: 700,
+                padding: '0.65rem 1.4rem', borderRadius: 7, cursor: 'pointer',
+                border: sandboxOpen ? '1px solid rgba(255,61,110,0.5)' : '1px solid rgba(255,61,110,0.4)',
+                background: sandboxOpen ? '#ff3d6e' : 'rgba(255,61,110,0.08)',
+                color: sandboxOpen ? '#fff' : '#ff3d6e',
+                transition: 'all 0.3s cubic-bezier(0.16,1,0.3,1)',
+                boxShadow: sandboxOpen ? '0 4px 20px rgba(255,61,110,0.3)' : 'none',
+              }}
+              onMouseEnter={(e) => { if (!sandboxOpen) { e.currentTarget.style.background = 'rgba(255,61,110,0.15)'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
+              onMouseLeave={(e) => { if (!sandboxOpen) { e.currentTarget.style.background = 'rgba(255,61,110,0.08)'; e.currentTarget.style.transform = 'translateY(0)'; } }}
+            >
+              {sandboxOpen ? '↑ Close Sandbox' : '⚡ Launch Sandbox'}
+            </button>
+            {!sandboxOpen && (
+              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#2a2a2a', letterSpacing: '0.08em' }}>
+                Interactive social feed with live WebSocket log
+              </span>
+            )}
+          </div>
+        </motion.div>
+
+        {/* ── Collapsible Sandbox ── */}
+        <AnimatePresence>
+          {sandboxOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              style={{ overflow: 'hidden' }}
+            >
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '3rem', alignItems: 'center' }}>
 
@@ -349,7 +393,12 @@ export const Yappr = () => {
           </div>
         </motion.div>
 
-      </div>
+      </div>{/* end sandbox grid */}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+      </div>{/* end outer container */}
     </section>
   );
 };
