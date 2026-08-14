@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { BrowserPreview } from '../ui/BrowserPreview';
 
 const GYMLANE_TECH = ['React 19', 'TypeScript', 'Supabase', 'PostgreSQL', 'Row Level Security', 'Supabase Auth'];
 
@@ -35,6 +36,7 @@ const STATUS_CLASS: Record<Member['status'], string> = {
 
 export const GymLane = () => {
   const [sandboxOpen, setSandboxOpen] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
   const [viewState, setViewState] = useState<'problem' | 'solution'>('problem');
   const [members, setMembers] = useState<Member[]>(INITIAL_MEMBERS);
   const [form, setForm] = useState({ name: '', plan: 'Monthly' });
@@ -150,10 +152,13 @@ export const GymLane = () => {
             ))}
           </div>
 
-          {/* Launch sandbox button */}
+          {/* Action buttons (Sandbox & Live Preview) */}
           <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
             <button
-              onClick={() => setSandboxOpen((v) => !v)}
+              onClick={() => {
+                setSandboxOpen((v) => !v);
+                setPreviewOpen(false);
+              }}
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
                 fontFamily: 'JetBrains Mono, monospace', fontSize: '0.6875rem', fontWeight: 700,
@@ -169,9 +174,31 @@ export const GymLane = () => {
             >
               {sandboxOpen ? '↑ Close Sandbox' : '⚡ Launch Sandbox'}
             </button>
-            {!sandboxOpen && (
+
+            <button
+              onClick={() => {
+                setPreviewOpen((v) => !v);
+                setSandboxOpen(false);
+              }}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+                fontFamily: 'JetBrains Mono, monospace', fontSize: '0.6875rem', fontWeight: 700,
+                padding: '0.65rem 1.4rem', borderRadius: 7, cursor: 'pointer',
+                border: previewOpen ? '1px solid rgba(0,232,122,0.5)' : '1px solid rgba(255,255,255,0.1)',
+                background: previewOpen ? '#00e87a' : 'rgba(255,255,255,0.03)',
+                color: previewOpen ? '#060d08' : '#888',
+                transition: 'all 0.3s cubic-bezier(0.16,1,0.3,1)',
+                boxShadow: previewOpen ? '0 4px 20px rgba(0,232,122,0.3)' : 'none',
+              }}
+              onMouseEnter={(e) => { if (!previewOpen) { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = '#fff'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
+              onMouseLeave={(e) => { if (!previewOpen) { e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; e.currentTarget.style.color = '#888'; e.currentTarget.style.transform = 'translateY(0)'; } }}
+            >
+              {previewOpen ? '↑ Close Preview' : '🌐 Live Preview'}
+            </button>
+
+            {!sandboxOpen && !previewOpen && (
               <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#2a2a2a', letterSpacing: '0.08em' }}>
-                Interactive member management demo
+                Test interactive dashboard or open live website
               </span>
             )}
           </div>
@@ -597,6 +624,23 @@ export const GymLane = () => {
         )}
       </AnimatePresence>
         </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* ── Collapsible Live Preview ── */}
+        <AnimatePresence>
+          {previewOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              style={{ overflow: 'hidden' }}
+            >
+              <div style={{ paddingTop: '0.5rem' }}>
+                <BrowserPreview url="https://gymlane.in" accentColor="#00e87a" />
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

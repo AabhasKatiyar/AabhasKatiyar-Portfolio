@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { BrowserPreview } from '../ui/BrowserPreview';
 
 interface Yap {
   id: string;
@@ -20,6 +21,7 @@ const YAPPR_TECH = ['React 19', 'TypeScript', 'Supabase Realtime', 'WebSockets',
 
 export const Yappr = () => {
   const [sandboxOpen, setSandboxOpen] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
   const [yaps, setYaps] = useState<Yap[]>(INITIAL_YAPS);
   const [draft, setDraft] = useState('');
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
@@ -163,10 +165,13 @@ export const Yappr = () => {
             ))}
           </div>
 
-          {/* Launch sandbox */}
+          {/* Action buttons (Sandbox & Live Preview) */}
           <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
             <button
-              onClick={() => setSandboxOpen((v) => !v)}
+              onClick={() => {
+                setSandboxOpen((v) => !v);
+                setPreviewOpen(false);
+              }}
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
                 fontFamily: 'JetBrains Mono, monospace', fontSize: '0.6875rem', fontWeight: 700,
@@ -182,9 +187,31 @@ export const Yappr = () => {
             >
               {sandboxOpen ? '↑ Close Sandbox' : '⚡ Launch Sandbox'}
             </button>
-            {!sandboxOpen && (
+
+            <button
+              onClick={() => {
+                setPreviewOpen((v) => !v);
+                setSandboxOpen(false);
+              }}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+                fontFamily: 'JetBrains Mono, monospace', fontSize: '0.6875rem', fontWeight: 700,
+                padding: '0.65rem 1.4rem', borderRadius: 7, cursor: 'pointer',
+                border: previewOpen ? '1px solid rgba(255,61,110,0.5)' : '1px solid rgba(255,255,255,0.1)',
+                background: previewOpen ? '#ff3d6e' : 'rgba(255,255,255,0.03)',
+                color: previewOpen ? '#fff' : '#888',
+                transition: 'all 0.3s cubic-bezier(0.16,1,0.3,1)',
+                boxShadow: previewOpen ? '0 4px 20px rgba(255,61,110,0.3)' : 'none',
+              }}
+              onMouseEnter={(e) => { if (!previewOpen) { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = '#fff'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
+              onMouseLeave={(e) => { if (!previewOpen) { e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; e.currentTarget.style.color = '#888'; e.currentTarget.style.transform = 'translateY(0)'; } }}
+            >
+              {previewOpen ? '↑ Close Preview' : '🌐 Live Preview'}
+            </button>
+
+            {!sandboxOpen && !previewOpen && (
               <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#2a2a2a', letterSpacing: '0.08em' }}>
-                Interactive social feed with live WebSocket log
+                Test interactive dashboard or open live website
               </span>
             )}
           </div>
@@ -399,6 +426,23 @@ export const Yappr = () => {
                   </div>
                 </motion.div>
 
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* ── Collapsible Live Preview ── */}
+        <AnimatePresence>
+          {previewOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              style={{ overflow: 'hidden' }}
+            >
+              <div style={{ paddingTop: '0.5rem' }}>
+                <BrowserPreview url="https://yappr.in" accentColor="#ff3d6e" />
               </div>
             </motion.div>
           )}
