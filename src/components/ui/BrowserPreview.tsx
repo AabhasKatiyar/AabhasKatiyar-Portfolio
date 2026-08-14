@@ -1,21 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 interface BrowserPreviewProps {
   url: string;
   accentColor: string;
-  previewImage: string;
 }
 
-export const BrowserPreview = ({ url, accentColor, previewImage }: BrowserPreviewProps) => {
+export const BrowserPreview = ({ url, accentColor }: BrowserPreviewProps) => {
   const [loading, setLoading] = useState(true);
+  const [iframeKey, setIframeKey] = useState(0);
 
-  useEffect(() => {
+  const handleRefresh = () => {
     setLoading(true);
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 850);
-    return () => clearTimeout(timer);
-  }, [previewImage]);
+    setIframeKey((prev) => prev + 1);
+  };
 
   const domain = url.replace('https://', '').replace('www.', '');
 
@@ -82,11 +79,8 @@ export const BrowserPreview = ({ url, accentColor, previewImage }: BrowserPrevie
         {/* Action icons / reload icon & popout */}
         <div style={{ display: 'flex', gap: '0.4rem', color: '#666', alignItems: 'center', flexShrink: 0 }}>
           <button
-            onClick={() => {
-              setLoading(true);
-              setTimeout(() => setLoading(false), 600);
-            }}
-            title="Reload Preview"
+            onClick={handleRefresh}
+            title="Refresh Preview"
             style={{
               background: 'none',
               border: 'none',
@@ -172,9 +166,6 @@ export const BrowserPreview = ({ url, accentColor, previewImage }: BrowserPrevie
           width: '100%',
           height: '560px',
           background: '#070707',
-          overflowY: 'auto',
-          scrollbarWidth: 'thin',
-          scrollbarColor: 'rgba(255,255,255,0.15) transparent',
         }}
       >
         {/* Loading Spinner Block */}
@@ -211,89 +202,24 @@ export const BrowserPreview = ({ url, accentColor, previewImage }: BrowserPrevie
                 textTransform: 'uppercase',
               }}
             >
-              connecting to secure host...
+              loading live site connection...
             </span>
           </div>
         )}
 
-        {/* Preview Screenshot (Scrollable Viewport) */}
-        {!loading && (
-          <div style={{ position: 'relative', width: '100%' }}>
-            <img
-              src={previewImage}
-              alt={`Live preview mockup of ${domain}`}
-              style={{
-                width: '100%',
-                height: 'auto',
-                display: 'block',
-              }}
-            />
-            
-            {/* Interactive Float Launch Overlay */}
-            <div
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                background: 'rgba(0,0,0,0)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                pointerEvents: 'none',
-              }}
-            >
-              <div
-                style={{
-                  position: 'sticky',
-                  bottom: '2rem',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '100%',
-                  pointerEvents: 'none',
-                }}
-              >
-                <a
-                  href={url}
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    background: 'rgba(10, 10, 10, 0.9)',
-                    border: `1px solid ${accentColor}40`,
-                    borderRadius: 30,
-                    padding: '0.75rem 1.5rem',
-                    color: '#fff',
-                    fontFamily: 'JetBrains Mono, monospace',
-                    fontSize: '0.6875rem',
-                    fontWeight: 600,
-                    letterSpacing: '0.04em',
-                    textDecoration: 'none',
-                    boxShadow: '0 10px 30px rgba(0,0,0,0.6)',
-                    pointerEvents: 'auto',
-                    transition: 'all 0.3s ease',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = accentColor;
-                    e.currentTarget.style.boxShadow = `0 10px 35px ${accentColor}25`;
-                    e.currentTarget.style.transform = 'translateY(-2px)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = `${accentColor}40`;
-                    e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.6)';
-                    e.currentTarget.style.transform = 'translateY(0)';
-                  }}
-                >
-                  Open Live Site ↗
-                </a>
-              </div>
-            </div>
-          </div>
-        )}
+        <iframe
+          key={iframeKey}
+          src={url}
+          title={`Live preview of ${domain}`}
+          onLoad={() => setLoading(false)}
+          style={{
+            width: '100%',
+            height: '100%',
+            border: 'none',
+            display: 'block',
+          }}
+          sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+        />
       </div>
 
       {/* Browser Footer Status */}
@@ -301,7 +227,7 @@ export const BrowserPreview = ({ url, accentColor, previewImage }: BrowserPrevie
         style={{
           background: 'rgba(12, 12, 12, 0.9)',
           borderTop: '1px solid rgba(255, 255, 255, 0.05)',
-          padding: '0.65rem 1.25rem',
+          padding: '0.5rem 1.25rem',
           fontFamily: 'JetBrains Mono, monospace',
           fontSize: '0.5625rem',
           color: '#444',
@@ -312,9 +238,9 @@ export const BrowserPreview = ({ url, accentColor, previewImage }: BrowserPrevie
           gap: '0.5rem',
         }}
       >
-        <span style={{ fontSize: '0.5rem', color: '#333' }}>STATIC PREVIEW MODE // ACTIVE</span>
+        <span style={{ fontSize: '0.5rem', color: '#333' }}>DIRECT LIVE PREVIEW MODE // ACTIVE</span>
         <span style={{ fontSize: '0.53rem', color: '#555' }}>
-          Interactive scrollable mock. Click <span style={{ color: '#fff', fontWeight: 500 }}>Open Live Site</span> or popout icon <span style={{ color: accentColor }}>↗</span> above to visit
+          Real-time iframe connection. If blocked, configure X-Frame-Options or click popout icon <span style={{ color: accentColor }}>↗</span> above
         </span>
       </div>
     </div>
