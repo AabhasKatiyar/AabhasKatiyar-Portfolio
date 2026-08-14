@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import pfpImage from '../../assets/pfp.png';
 
 interface HeroLandingProps {
   onViewResume: () => void;
@@ -340,18 +341,66 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
         >
           {/* Header */}
           <div style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '1.25rem' }}>
-            <p
-              style={{
-                fontFamily: 'JetBrains Mono, monospace',
-                fontSize: '0.5625rem',
-                color: '#333',
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-                marginBottom: '0.75rem',
-              }}
-            >
-              quick profile
-            </p>
+            <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', marginBottom: '1.25rem' }}>
+              <div 
+                style={{
+                  width: 64,
+                  height: 64,
+                  borderRadius: '50%',
+                  overflow: 'hidden',
+                  border: '2px solid rgba(0, 232, 122, 0.25)',
+                  boxShadow: '0 0 16px rgba(0, 232, 122, 0.15)',
+                  background: '#111',
+                  flexShrink: 0,
+                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = '#00e87a';
+                  e.currentTarget.style.boxShadow = '0 0 24px rgba(0, 232, 122, 0.35)';
+                  e.currentTarget.style.transform = 'scale(1.08) rotate(3deg)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(0, 232, 122, 0.25)';
+                  e.currentTarget.style.boxShadow = '0 0 16px rgba(0, 232, 122, 0.15)';
+                  e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
+                }}
+              >
+                <img 
+                  src={pfpImage} 
+                  alt="Aabhas Katiyar" 
+                  style={{ 
+                    width: '100%', 
+                    height: '100%', 
+                    objectFit: 'cover',
+                  }} 
+                />
+              </div>
+              <div>
+                <p
+                  style={{
+                    fontFamily: 'JetBrains Mono, monospace',
+                    fontSize: '0.5625rem',
+                    color: '#333',
+                    letterSpacing: '0.14em',
+                    textTransform: 'uppercase',
+                    margin: 0,
+                  }}
+                >
+                  quick profile
+                </p>
+                <h3
+                  style={{
+                    fontFamily: 'Syne, sans-serif',
+                    fontSize: '1.25rem',
+                    fontWeight: 800,
+                    color: '#f0ede6',
+                    margin: '0.15rem 0 0 0',
+                  }}
+                >
+                  Aabhas K.
+                </h3>
+              </div>
+            </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
               {[
                 { label: 'Role', value: 'Software & IoT Engineer' },

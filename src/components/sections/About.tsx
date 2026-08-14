@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Code2, Cpu, Rocket, Database } from 'lucide-react';
+import pfpImage from '../../assets/pfp.png';
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 20 },
@@ -146,42 +147,78 @@ export const About = () => {
                 borderRadius: 12,
                 padding: '1.25rem 1.5rem',
                 display: 'flex',
-                flexDirection: 'column',
-                gap: '0.6rem',
+                gap: '1.5rem',
+                alignItems: 'center',
                 backdropFilter: 'blur(16px)',
+                flexWrap: 'wrap',
               }}
             >
-              {[
-                { label: 'Degree', value: 'B.Tech Information Technology' },
-                { label: 'College', value: 'KIET Group of Institutions' },
-                { label: 'Year', value: '2025 – 2029 (1st year)' },
-                { label: 'Contact', value: 'aabhas.katiyar.dev@gmail.com', mono: true },
-              ].map(({ label, value, mono }) => (
-                <div key={label} style={{ display: 'flex', gap: '1rem', alignItems: 'baseline' }}>
-                  <span
-                    style={{
-                      fontFamily: 'JetBrains Mono, monospace',
-                      fontSize: '0.5rem',
-                      color: '#333',
-                      letterSpacing: '0.1em',
-                      textTransform: 'uppercase',
-                      minWidth: '60px',
-                      flexShrink: 0,
-                    }}
-                  >
-                    {label}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: mono ? 'JetBrains Mono, monospace' : 'Inter, sans-serif',
-                      fontSize: '0.8rem',
-                      color: '#888',
-                    }}
-                  >
-                    {value}
-                  </span>
-                </div>
-              ))}
+              <div 
+                style={{
+                  width: 72,
+                  height: 72,
+                  borderRadius: '50%',
+                  overflow: 'hidden',
+                  border: '2px solid rgba(155, 109, 255, 0.25)',
+                  boxShadow: '0 0 16px rgba(155, 109, 255, 0.15)',
+                  background: '#111',
+                  flexShrink: 0,
+                  transition: 'all 0.3s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = '#9b6dff';
+                  e.currentTarget.style.boxShadow = '0 0 24px rgba(155, 109, 255, 0.35)';
+                  e.currentTarget.style.transform = 'scale(1.05)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(155, 109, 255, 0.25)';
+                  e.currentTarget.style.boxShadow = '0 0 16px rgba(155, 109, 255, 0.15)';
+                  e.currentTarget.style.transform = 'scale(1)';
+                }}
+              >
+                <img 
+                  src={pfpImage} 
+                  alt="Aabhas Katiyar" 
+                  style={{ 
+                    width: '100%', 
+                    height: '100%', 
+                    objectFit: 'cover',
+                  }} 
+                />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', flex: 1, minWidth: '220px' }}>
+                {[
+                  { label: 'Degree', value: 'B.Tech Information Technology' },
+                  { label: 'College', value: 'KIET Group of Institutions' },
+                  { label: 'Year', value: '2025 – 2029 (1st year)' },
+                  { label: 'Contact', value: 'aabhas.katiyar.dev@gmail.com', mono: true },
+                ].map(({ label, value, mono }) => (
+                  <div key={label} style={{ display: 'flex', gap: '1rem', alignItems: 'baseline' }}>
+                    <span
+                      style={{
+                        fontFamily: 'JetBrains Mono, monospace',
+                        fontSize: '0.5rem',
+                        color: '#333',
+                        letterSpacing: '0.1em',
+                        textTransform: 'uppercase',
+                        minWidth: '60px',
+                        flexShrink: 0,
+                      }}
+                    >
+                      {label}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: mono ? 'JetBrains Mono, monospace' : 'Inter, sans-serif',
+                        fontSize: '0.8rem',
+                        color: '#888',
+                      }}
+                    >
+                      {value}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </motion.div>
           </div>
 
