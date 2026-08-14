@@ -5,8 +5,8 @@ import { CustomCursor } from './components/ui/CustomCursor';
 import { FloatingNav } from './components/ui/FloatingNav';
 import { VerticalThread } from './components/ui/VerticalThread';
 import { ResumeModal } from './components/ui/ResumeModal';
+import { SystemPreloader } from './components/ui/SystemPreloader';
 
-import { Hero } from './components/sections/Hero';
 import { HeroLanding } from './components/sections/HeroLanding';
 import { About } from './components/sections/About';
 import { Skills } from './components/sections/Skills';
@@ -22,7 +22,7 @@ function App() {
 
   return (
     <LenisProvider>
-      <div style={{ background: '#0c0c0c', overflowX: 'hidden', minHeight: '100vh', position: 'relative' }}>
+      <div style={{ background: '#040508', overflowX: 'hidden', minHeight: '100vh', position: 'relative' }}>
         {/* Subtle coordinate grid backdrop */}
         {introDone && <HeroCanvas />}
 
@@ -34,10 +34,11 @@ function App() {
         {/* Resume Modal overlay */}
         <ResumeModal isOpen={resumeOpen} onClose={() => setResumeOpen(false)} />
 
+        {/* System Diagnostics Preloader */}
+        {!introDone && <SystemPreloader onComplete={() => setIntroDone(true)} />}
+
         {/* Main page content sections */}
         <main style={{ position: 'relative', zIndex: 1 }}>
-          {!introDone && <Hero onIntroComplete={() => setIntroDone(true)} />}
-
           {introDone && (
             <div style={{ animation: 'pop-in 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards' }}>
               <HeroLanding onViewResume={() => setResumeOpen(true)} />
