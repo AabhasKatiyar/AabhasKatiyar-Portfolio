@@ -130,7 +130,7 @@ export const Yappr = () => {
         style={{ maxWidth: 800, marginBottom: '4rem' }}
       >
         <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#ff3d6e', display: 'block', marginBottom: '0.75rem' }}>
-          02 — Yappr: Real-time PubSub & WebSocket Pipeline
+          05 — Yappr: Real-time PubSub & WebSocket Pipeline
         </span>
         <h2 style={{ fontFamily: 'Syne, sans-serif', fontSize: 'clamp(2rem, 5vw, 4.5rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1, color: '#f0ede6' }}>
           Social streaming,{' '}

@@ -15,7 +15,15 @@ export const Hero = ({ onIntroComplete }: { onIntroComplete: () => void }) => {
   const [text, setText] = useState('');
   const [cursor, setCursor] = useState(true);
 
-  // Typewriter sequence coordination
+  // Fast skip if previously seen in this session (Recruiter-friendly)
+  useEffect(() => {
+    if (sessionStorage.getItem('portfolio-intro-seen') === 'true') {
+      setPhase('done');
+      onIntroComplete();
+    }
+  }, []);
+
+  // Typewriter sequence coordination (sped up for better UX)
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
 
@@ -25,7 +33,7 @@ export const Hero = ({ onIntroComplete }: { onIntroComplete: () => void }) => {
         if (len < sentence.length) {
           len++;
           setText(sentence.slice(0, len));
-          timer = setTimeout(tick, 45 + Math.random() * 30);
+          timer = setTimeout(tick, 20 + Math.random() * 20); // Faster speed (was 45 + random)
         } else {
           onFinish();
         }
@@ -34,35 +42,35 @@ export const Hero = ({ onIntroComplete }: { onIntroComplete: () => void }) => {
     };
 
     if (phase === 'idle') {
-      // 0.5s black screen pause
-      timer = setTimeout(() => setPhase('type1'), 500);
+      timer = setTimeout(() => setPhase('type1'), 200); // Shorter pause (was 500)
     } else if (phase === 'type1') {
       runTypewriter('Not every project deserves to exist.', 0, () => {
-        timer = setTimeout(() => setPhase('pause1'), 800);
+        timer = setTimeout(() => setPhase('pause1'), 400); // Shorter pause (was 800)
       });
     } else if (phase === 'pause1') {
       timer = setTimeout(() => {
         setText('');
         setPhase('type2');
-      }, 600);
+      }, 300); // Shorter pause (was 600)
     } else if (phase === 'type2') {
       runTypewriter('Every product starts with one problem.', 0, () => {
-        timer = setTimeout(() => setPhase('pause2'), 800);
+        timer = setTimeout(() => setPhase('pause2'), 400); // Shorter pause (was 800)
       });
     } else if (phase === 'pause2') {
       timer = setTimeout(() => {
         setText('');
         setPhase('type3');
-      }, 600);
+      }, 300); // Shorter pause (was 600)
     } else if (phase === 'type3') {
       runTypewriter('I build products that solve them.', 0, () => {
-        timer = setTimeout(() => setPhase('morph'), 1200);
+        timer = setTimeout(() => setPhase('morph'), 600); // Shorter pause (was 1200)
       });
     } else if (phase === 'morph') {
+      sessionStorage.setItem('portfolio-intro-seen', 'true');
       timer = setTimeout(() => {
         setPhase('done');
         onIntroComplete();
-      }, 2000);
+      }, 1200); // Shorter morph (was 2000)
     }
 
     return () => clearTimeout(timer);
@@ -77,6 +85,7 @@ export const Hero = ({ onIntroComplete }: { onIntroComplete: () => void }) => {
 
   // Canvas Architectural Network rendering loop
   useEffect(() => {
+    if (phase === 'done') return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -86,9 +95,8 @@ export const Hero = ({ onIntroComplete }: { onIntroComplete: () => void }) => {
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
-    // Coordinate grid nodes
     const nodes: Node[] = [];
-    const gridSpacing = 80;
+    const gridSpacing = 85;
 
     const setupNodes = () => {
       nodes.length = 0;
@@ -104,7 +112,6 @@ export const Hero = ({ onIntroComplete }: { onIntroComplete: () => void }) => {
         size: 5,
       });
 
-      // Branching grid coordinates
       for (let c = 0; c < cols; c++) {
         for (let r = 0; r < rows; r++) {
           const nx = c * gridSpacing;
@@ -143,7 +150,6 @@ export const Hero = ({ onIntroComplete }: { onIntroComplete: () => void }) => {
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.015)';
         ctx.lineWidth = 1;
 
-        // Draw horizontal grid lines
         for (let y = 0; y < height; y += gridSpacing) {
           ctx.beginPath();
           ctx.moveTo(0, y);
@@ -151,7 +157,6 @@ export const Hero = ({ onIntroComplete }: { onIntroComplete: () => void }) => {
           ctx.stroke();
         }
 
-        // Draw vertical grid lines
         for (let x = 0; x < width; x += gridSpacing) {
           ctx.beginPath();
           ctx.moveTo(x, 0);
@@ -165,13 +170,11 @@ export const Hero = ({ onIntroComplete }: { onIntroComplete: () => void }) => {
         pulseAngle += 0.08;
         const pulseRadius = 8 + Math.sin(pulseAngle) * 3;
 
-        // Draw pulse ring
         ctx.strokeStyle = 'rgba(0, 232, 122, 0.2)';
         ctx.beginPath();
         ctx.arc(width / 2, height / 2, pulseRadius, 0, Math.PI * 2);
         ctx.stroke();
 
-        // Draw primary node
         ctx.fillStyle = '#00e87a';
         ctx.beginPath();
         ctx.arc(width / 2, height / 2, 4, 0, Math.PI * 2);
@@ -180,7 +183,7 @@ export const Hero = ({ onIntroComplete }: { onIntroComplete: () => void }) => {
 
       // Network lines grow outward
       if (phase === 'type3' || phase === 'morph') {
-        if (progress < 1) progress += 0.01;
+        if (progress < 1) progress += 0.02; // Faster connection line growth (was 0.01)
 
         ctx.strokeStyle = 'rgba(0, 232, 122, 0.08)';
         ctx.lineWidth = 1;
@@ -197,7 +200,6 @@ export const Hero = ({ onIntroComplete }: { onIntroComplete: () => void }) => {
             );
             ctx.stroke();
 
-            // Draw branch coordinate dots
             ctx.fillStyle = 'rgba(0, 232, 122, 0.4)';
             ctx.beginPath();
             ctx.arc(
@@ -212,14 +214,13 @@ export const Hero = ({ onIntroComplete }: { onIntroComplete: () => void }) => {
         });
       }
 
-      // Accelerate camera & morph elements into outline dashboard boundaries
+      // Accelerate camera & morph elements
       if (phase === 'morph') {
         nodes.forEach((node) => {
-          node.x += (node.tx - node.x) * 0.08;
-          node.y += (node.ty - node.y) * 0.08;
+          node.x += (node.tx - node.x) * 0.12; // Faster morph (was 0.08)
+          node.y += (node.ty - node.y) * 0.12;
         });
 
-        // Draw visual schema frame morphing outward
         ctx.strokeStyle = 'rgba(0, 232, 122, 0.12)';
         ctx.lineWidth = 1.2;
         const boxW = 320 * progress;
@@ -238,12 +239,18 @@ export const Hero = ({ onIntroComplete }: { onIntroComplete: () => void }) => {
     };
   }, [phase]);
 
+  const handleSkip = () => {
+    sessionStorage.setItem('portfolio-intro-seen', 'true');
+    setPhase('done');
+    onIntroComplete();
+  };
+
   return (
     <div
       style={{
         position: 'fixed',
         inset: 0,
-        zIndex: 99,
+        zIndex: 999,
         background: '#0c0c0c',
         display: phase === 'done' ? 'none' : 'flex',
         flexDirection: 'column',
@@ -269,7 +276,7 @@ export const Hero = ({ onIntroComplete }: { onIntroComplete: () => void }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
+            transition={{ duration: 0.3 }}
             style={{
               fontFamily: 'JetBrains Mono, monospace',
               fontSize: 'clamp(0.9375rem, 1.6vw, 1.35rem)',
@@ -284,6 +291,43 @@ export const Hero = ({ onIntroComplete }: { onIntroComplete: () => void }) => {
           </motion.div>
         </AnimatePresence>
       </div>
+
+      {/* Instant Skip Intro Button for Recruiters */}
+      {phase !== 'done' && (
+        <button
+          onClick={handleSkip}
+          style={{
+            position: 'absolute',
+            bottom: '3rem',
+            zIndex: 10,
+            background: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            borderRadius: '999px',
+            padding: '0.65rem 1.45rem',
+            color: '#888',
+            fontFamily: 'JetBrains Mono, monospace',
+            fontSize: '0.65rem',
+            fontWeight: 600,
+            letterSpacing: '0.08em',
+            cursor: 'pointer',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
+            transition: 'all 0.25s',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = '#fff';
+            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = '#888';
+            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
+          }}
+        >
+          SKIP INTRO ↗
+        </button>
+      )}
     </div>
   );
 };

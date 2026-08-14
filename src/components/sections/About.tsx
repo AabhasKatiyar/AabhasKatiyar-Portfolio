@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { ShieldCheck, Cpu, Lightbulb, GraduationCap } from 'lucide-react';
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 20 },
@@ -9,20 +10,28 @@ const fadeUp = (delay = 0) => ({
 
 const TRAITS = [
   {
-    label: 'Builder mindset',
-    desc: 'I finish things. GymLane and Yappr are deployed, used, and actively developed — not just README files.',
+    label: 'Builder Mindset',
+    desc: 'I believe in finishing. GymLane and Yappr are fully deployed, operational SaaS systems, not just simple GitHub repositories.',
+    icon: <ShieldCheck size={20} className="text-[#00e87a]" />,
+    color: '#00e87a',
   },
   {
-    label: 'Product thinking',
-    desc: 'Before I write code I ask: who has this problem, why does it matter, and what is the simplest right solution?',
+    label: 'Engineering Depth',
+    desc: 'I go below abstraction layers. Starting with Arduino and ESP32 C++ code taught me memory constraints, serial registers, and logic flows.',
+    icon: <Cpu size={20} className="text-[#f59e0b]" />,
+    color: '#f59e0b',
   },
   {
-    label: 'Engineering depth',
-    desc: 'I want to understand why things work, not just how to use them. I read docs, break things, and rebuild them.',
+    label: 'Product Intuition',
+    desc: 'I ask product questions first: Who has this problem, why does it matter, and what is the cleanest, lowest-latency path to solve it?',
+    icon: <Lightbulb size={20} className="text-[#ff3d6e]" />,
+    color: '#ff3d6e',
   },
   {
-    label: 'Continuous learner',
-    desc: 'Started with Arduino C++ and am now building full-stack SaaS. Currently learning Next.js, System Design, and AI integration.',
+    label: 'Continuous Pace',
+    desc: 'I learn by building. Evolving from IoT microcontrollers to full-stack WebSockets, Supabase multi-tenancy, and Postgres RLS optimization.',
+    icon: <GraduationCap size={20} className="text-[#9b6dff]" />,
+    color: '#9b6dff',
   },
 ];
 
@@ -30,100 +39,139 @@ export const About = () => {
   return (
     <section
       id="about"
-      className="section-padding section-divider"
+      style={{
+        minHeight: '100vh',
+        background: '#08090f',
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        padding: 'clamp(4rem, 8vw, 8rem) clamp(1.5rem, 6vw, 6rem)',
+        overflow: 'hidden',
+      }}
     >
-      <div className="container-md">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+      <div style={{ maxWidth: '1050px', width: '100%', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '3.5rem' }}>
+        
+        {/* Section title */}
+        <motion.div {...fadeUp(0)}>
+          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#9b6dff', display: 'block', marginBottom: '0.75rem' }}>
+            01 — BACKGROUND
+          </span>
+          <h2 style={{ fontFamily: 'Syne, sans-serif', fontSize: 'clamp(2rem, 5vw, 4rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1, color: '#f0ede6' }}>
+            Engineering solutions,{' '}
+            <span style={{ color: '#9b6dff', textShadow: '0 0 30px rgba(155,109,255,0.2)' }}>
+              not just code
+            </span>
+            .
+          </h2>
+        </motion.div>
 
-          {/* Left: Story */}
-          <div>
-            <motion.p {...fadeUp(0)} className="section-eyebrow mb-4">
-              Who I am
+        {/* Two column grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '4rem', alignItems: 'start' }}>
+          
+          {/* Left: biography and details */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <motion.p {...fadeUp(0.08)} style={{ fontFamily: 'Inter, sans-serif', fontSize: '1rem', lineHeight: 1.7, color: '#f0ede6', fontWeight: 500 }}>
+              Hi, I'm Aabhas Katiyar. I am currently in my third year of B.Tech in Information Technology at KIET Group of Institutions, Ghaziabad (2025–2029).
+            </motion.p>
+            
+            <motion.p {...fadeUp(0.12)} style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', lineHeight: 1.7, color: '#888' }}>
+              My software journey began with hardware. Writing low-level C++ firmware on Arduino Uno and ESP32 nodes taught me about resource management, physical telemetry loops, and register communications. This hands-on hardware foundation completely changed my perspective on high-level web engineering.
             </motion.p>
 
-            <motion.h2 {...fadeUp(0.08)} className="heading-lg mb-8 text-white">
-              I build software that solves real problems.
-            </motion.h2>
+            <motion.p {...fadeUp(0.16)} style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', lineHeight: 1.7, color: '#888' }}>
+              When I transitioned to full-stack web architectures, I immediately focused on systems and security. I built <strong style={{ color: '#fff' }}>GymLane</strong> (a multi-tenant operations hub) and <strong style={{ color: '#fff' }}>Yappr</strong> (a live messaging system) to implement secure relational database designs, WebSocket telemetry feeds, and production deployments.
+            </motion.p>
 
-            <div className="space-y-5">
-              <motion.p {...fadeUp(0.15)} className="body-lg">
-                My name is Aabhas Katiyar. I'm in my third year of B.Tech
-                Information Technology at KIET Group of Institutions, Ghaziabad.
-              </motion.p>
-
-              <motion.p {...fadeUp(0.2)} className="body-lg">
-                I got into programming through Arduino — wiring motors, reading
-                sensors, writing C++ firmware that made physical things move. That
-                hands-on foundation changed how I think about software. I understand
-                what happens below the abstraction layers.
-              </motion.p>
-
-              <motion.p {...fadeUp(0.25)} className="body-lg">
-                I shifted to web development in 2025 and immediately went deeper
-                than I planned — from HTML and CSS to React, TypeScript, and then
-                Supabase and PostgreSQL. Within months I was building a complete
-                gym management SaaS called{' '}
-                <span className="text-white font-medium">GymLane</span> and a
-                social platform called{' '}
-                <span className="text-white font-medium">Yappr</span>.
-              </motion.p>
-
-              <motion.p {...fadeUp(0.3)} className="body-lg">
-                I'm still in college. I don't have years of corporate experience.
-                What I do have is a track record of starting real things and
-                finishing them — and the discipline to keep learning.
-              </motion.p>
-            </div>
-
-            {/* Key info */}
+            {/* Quick specifications grid */}
             <motion.div
-              {...fadeUp(0.38)}
-              className="mt-10 grid grid-cols-2 gap-4 pt-6 border-t border-[var(--color-border)]"
+              {...fadeUp(0.2)}
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(2, 1fr)',
+                gap: '1rem',
+                paddingTop: '2rem',
+                marginTop: '1rem',
+                borderTop: '1px solid rgba(255, 255, 255, 0.06)',
+              }}
             >
               <div>
-                <p className="label-mono mb-1">Location</p>
-                <p className="text-sm font-medium text-white">Uttar Pradesh, India</p>
+                <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.55rem', color: '#555', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: '0.2rem' }}>Location</span>
+                <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#f0ede6' }}>Uttar Pradesh, India</span>
               </div>
               <div>
-                <p className="label-mono mb-1">Education</p>
-                <p className="text-sm font-medium text-white">KIET Group of Institutions</p>
-                <p className="text-xs" style={{ color: 'var(--color-text-tertiary)' }}>B.Tech IT — 2025 to 2029</p>
+                <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.55rem', color: '#555', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: '0.2rem' }}>College</span>
+                <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#f0ede6' }}>KIET Group of Institutions</span>
               </div>
               <div>
-                <p className="label-mono mb-1">Open to</p>
-                <p className="text-sm font-medium text-white">Internships, Collaboration, Projects</p>
+                <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.55rem', color: '#555', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: '0.2rem' }}>Open to</span>
+                <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#00e87a' }}>Internships / Roles</span>
               </div>
               <div>
-                <p className="label-mono mb-1">Currently building</p>
-                <p className="text-sm font-medium text-white">GymLane & Yappr</p>
+                <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.55rem', color: '#555', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: '0.2rem' }}>SaaS Projects</span>
+                <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#c8ff00' }}>2 Live Systems</span>
               </div>
             </motion.div>
           </div>
 
-          {/* Right: How I think */}
-          <div>
-            <motion.p {...fadeUp(0.1)} className="section-eyebrow mb-4">
-              How I think
-            </motion.p>
+          {/* Right: traits grid */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             <motion.h3
-              {...fadeUp(0.18)}
-              className="heading-md mb-8 text-white"
+              {...fadeUp(0.1)}
+              style={{
+                fontFamily: 'Syne, sans-serif',
+                fontSize: '1.25rem',
+                fontWeight: 700,
+                color: '#fff',
+                margin: '0 0 0.5rem 0',
+                letterSpacing: '-0.02em',
+              }}
             >
-              Four things that shape how I work
+              Four Pillars of My Work
             </motion.h3>
 
-            <div className="space-y-4">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {TRAITS.map((trait, i) => (
                 <motion.div
                   key={i}
-                  {...fadeUp(0.2 + i * 0.08)}
-                  className="card card-hover"
+                  {...fadeUp(0.14 + i * 0.08)}
+                  style={{
+                    background: 'rgba(15, 17, 28, 0.45)',
+                    border: '1px solid rgba(255, 255, 255, 0.05)',
+                    borderRadius: '12px',
+                    padding: '1.25rem',
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '1rem',
+                    transition: 'all 0.3s ease',
+                  }}
+                  whileHover={{
+                    borderColor: `${trait.color}44`,
+                    background: 'rgba(25, 28, 48, 0.55)',
+                    y: -4,
+                  }}
                 >
-                  <p className="text-sm font-semibold text-white mb-2"
-                     style={{ fontFamily: 'var(--font-display)', letterSpacing: '-0.01em' }}>
-                    {trait.label}
-                  </p>
-                  <p className="body-sm">{trait.desc}</p>
+                  <div
+                    style={{
+                      background: 'rgba(255,255,255,0.03)',
+                      border: '1px solid rgba(255,255,255,0.06)',
+                      borderRadius: '8px',
+                      padding: '0.5rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {trait.icon}
+                  </div>
+                  <div>
+                    <h4 style={{ fontFamily: 'Syne, sans-serif', fontSize: '0.9rem', fontWeight: 700, color: '#fff', margin: '0 0 0.3rem 0' }}>
+                      {trait.label}
+                    </h4>
+                    <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.75rem', lineHeight: 1.5, color: '#888', margin: 0 }}>
+                      {trait.desc}
+                    </p>
+                  </div>
                 </motion.div>
               ))}
             </div>

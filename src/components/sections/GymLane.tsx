@@ -129,7 +129,7 @@ export const GymLane = () => {
         style={{ maxWidth: 800, marginBottom: '3.5rem' }}
       >
         <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#00e87a', display: 'block', marginBottom: '0.75rem' }}>
-          01 — GymLane: Operational Case Study
+          04 — GymLane: Operational Case Study
         </span>
         <h2 style={{ fontFamily: 'Syne, sans-serif', fontSize: 'clamp(2rem, 5vw, 4rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1, color: '#f0ede6' }}>
           Visualizing data security and{' '}

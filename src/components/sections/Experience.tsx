@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { SpotlightCard } from '../ui/SpotlightCard';
 import { GraduationCap, BrainCircuit, Rocket } from 'lucide-react';
 
 interface TimelineEvent {
@@ -9,100 +8,212 @@ interface TimelineEvent {
   description: string;
   icon: React.ReactNode;
   tags: string[];
+  color: string;
 }
 
 export const Experience = () => {
   const events: TimelineEvent[] = [
     {
-      year: "2025 - 2029",
+      year: "2025 — 2029",
       role: "B.Tech in Information Technology",
-      organization: "KIET UNIVERSITY",
-      description: "Focusing on software development foundations, data structures & algorithms, and advanced Internet of Things (IoT) hardware-software architectures.",
+      organization: "KIET Group of Institutions, Ghaziabad",
+      description: "Focusing on software development structures, data algorithms, computer networks, and advanced Internet of Things (IoT) hardware-software configurations.",
       icon: <GraduationCap size={18} />,
-      tags: ["Algorithms", "Database Systems", "IoT Engineering", "Computer Architecture"]
+      tags: ["Algorithms", "Database Systems", "IoT Engineering", "Computer Architecture"],
+      color: '#00e87a',
     },
     {
       year: "2025 (Autumn)",
       role: "Embedded Logic Researcher",
-      organization: "C++ EMBEDDED LABS",
+      organization: "C++ Embedded Labs",
       description: "Experimented with microcontroller capabilities, constructing autonomous circuitry configurations, analog telemetry loops, and SPI/I2C communication channels.",
       icon: <BrainCircuit size={18} />,
-      tags: ["ESP32", "Arduino Uno", "Serial Bus", "PWM Systems"]
+      tags: ["ESP32", "Arduino Uno", "Serial Bus", "PWM Systems"],
+      color: '#f59e0b',
     },
     {
       year: "2025 (Summer)",
       role: "Independent Web Builder",
-      organization: "SELF-INITIATED LABS",
+      organization: "Self-Initiated Projects",
       description: "Crafted raw-compiled CSS/HTML structures to master browser rendering engine behaviors, semantic structures, and grid alignment mathematics.",
       icon: <Rocket size={18} />,
-      tags: ["Semantic HTML", "CSS Grid Layouts", "DOM APIs"]
+      tags: ["Semantic HTML", "CSS Grid Layouts", "DOM APIs"],
+      color: '#ff3d6e',
     }
   ];
 
   return (
-    <section className="py-28 px-6 max-w-5xl mx-auto border-t border-white/5" id="experience">
-      {/* Section Title */}
-      <div className="flex items-center gap-2 mb-16">
-        <span className="font-mono text-xs text-brand-cobalt tracking-wider">// 04.</span>
-        <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white uppercase font-display">
-          Milestone Timelines
-        </h2>
-      </div>
-
-      {/* Timeline Layout */}
-      <div className="relative pl-6 md:pl-10 border-l border-white/5 space-y-12 max-w-3xl mx-auto">
-        {events.map((event, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: index * 0.15 }}
-            className="relative"
-          >
-            {/* Timeline Node Point Ring */}
-            <span className="absolute -left-[31px] md:-left-[47px] top-1.5 flex h-4 w-4 md:h-6 md:w-6 items-center justify-center rounded-full bg-[#070a13] border-2 border-brand-cobalt shadow-[0_0_10px_rgba(59,130,246,0.3)]">
-              <span className="h-1.5 w-1.5 md:h-2 md:w-2 rounded-full bg-brand-gold animate-pulse" />
+    <section
+      id="experience"
+      style={{
+        minHeight: '100vh',
+        background: '#08080c',
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        padding: 'clamp(4rem, 8vw, 8rem) clamp(1.5rem, 6vw, 6rem)',
+        overflow: 'hidden',
+      }}
+    >
+      <div style={{ maxWidth: '1050px', width: '100%', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '3.5rem' }}>
+        
+        {/* Section Title */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#00e87a', display: 'block', marginBottom: '0.75rem' }}>
+            03 — MILESTONE TIMELINE
+          </span>
+          <h2 style={{ fontFamily: 'Syne, sans-serif', fontSize: 'clamp(2rem, 5vw, 4rem)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1, color: '#f0ede6' }}>
+            Education &amp;{' '}
+            <span style={{ color: '#00e87a', textShadow: '0 0 30px rgba(0,232,122,0.2)' }}>
+              experience
             </span>
+            .
+          </h2>
+        </motion.div>
 
-            {/* Event Content Spotlight Card */}
-            <SpotlightCard glowColor={index % 2 === 0 ? 'cobalt' : 'amber'} className="!p-5 space-y-4">
-              
-              {/* Card Header details */}
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-white/5 pb-3">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-black/40 border border-white/5 text-brand-cobalt">
-                    {event.icon}
+        {/* Timeline Layout */}
+        <div style={{ position: 'relative', paddingLeft: '2rem', borderLeft: '1px solid rgba(255, 255, 255, 0.05)', maxWidth: '800px', margin: '0 auto', width: '100%' }}>
+          {events.map((event, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6, delay: index * 0.15 }}
+              style={{
+                position: 'relative',
+                marginBottom: index === events.length - 1 ? 0 : '3.5rem',
+              }}
+            >
+              {/* Timeline Indicator Ring */}
+              <span
+                style={{
+                  position: 'absolute',
+                  left: 'calc(-2rem - 6px)',
+                  top: '6px',
+                  display: 'flex',
+                  height: '11px',
+                  width: '11px',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: '50%',
+                  background: '#08080c',
+                  border: `2px solid ${event.color}`,
+                  boxShadow: `0 0 10px ${event.color}aa`,
+                  zIndex: 2,
+                }}
+              >
+                <span
+                  style={{
+                    height: '3px',
+                    width: '3px',
+                    borderRadius: '50%',
+                    background: '#fff',
+                  }}
+                />
+              </span>
+
+              {/* Event Content Card */}
+              <div
+                style={{
+                  background: 'rgba(12, 13, 20, 0.45)',
+                  border: '1px solid rgba(255, 255, 255, 0.05)',
+                  borderRadius: '16px',
+                  padding: '1.5rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '1rem',
+                  transition: 'all 0.3s ease',
+                }}
+              >
+                {/* Card Header */}
+                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '0.75rem', borderBottom: '1px solid rgba(255,255,255,0.04)', paddingBottom: '0.75rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <div
+                      style={{
+                        padding: '0.5rem',
+                        borderRadius: '8px',
+                        background: 'rgba(255, 255, 255, 0.03)',
+                        border: '1px solid rgba(255, 255, 255, 0.06)',
+                        color: event.color,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      {event.icon}
+                    </div>
+                    <div>
+                      <h4 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '0.95rem', color: '#fff', margin: 0 }}>
+                        {event.role}
+                      </h4>
+                      <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', color: '#555', letterSpacing: '0.05em' }}>
+                        {event.organization}
+                      </span>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-display font-bold text-sm md:text-base text-white">{event.role}</h4>
-                    <span className="text-[10px] font-mono text-slate-500 tracking-wider">{event.organization}</span>
-                  </div>
-                </div>
-                <span className="text-[10px] md:text-xs font-mono font-bold text-brand-gold text-glow-amber bg-brand-gold/5 px-2.5 py-1 rounded-md border border-brand-gold/10 self-start md:self-center">
-                  {event.year}
-                </span>
-              </div>
-
-              {/* Event Description */}
-              <p className="text-xs md:text-sm text-slate-400 font-light leading-relaxed">
-                {event.description}
-              </p>
-
-              {/* Tags pills */}
-              <div className="flex flex-wrap gap-2 pt-2">
-                {event.tags.map((tag, tagIndex) => (
-                  <span 
-                    key={tagIndex}
-                    className="text-[9px] font-mono text-slate-500 bg-white/2 border border-white/5 px-2 py-0.75 rounded-md hover:text-white transition-colors duration-200"
+                  
+                  <span
+                    style={{
+                      fontFamily: 'JetBrains Mono, monospace',
+                      fontSize: '0.65rem',
+                      fontWeight: 700,
+                      color: event.color,
+                      background: `${event.color}0a`,
+                      border: `1px solid ${event.color}18`,
+                      padding: '0.3rem 0.7rem',
+                      borderRadius: '6px',
+                    }}
                   >
-                    {tag}
+                    {event.year}
                   </span>
-                ))}
+                </div>
+
+                {/* Event Description */}
+                <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.8rem', lineHeight: 1.6, color: '#888', margin: 0 }}>
+                  {event.description}
+                </p>
+
+                {/* Tags pills */}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.25rem' }}>
+                  {event.tags.map((tag, tagIndex) => (
+                    <span
+                      key={tagIndex}
+                      style={{
+                        fontFamily: 'JetBrains Mono, monospace',
+                        fontSize: '0.6rem',
+                        color: '#666',
+                        background: 'rgba(255, 255, 255, 0.02)',
+                        border: '1px solid rgba(255, 255, 255, 0.04)',
+                        padding: '0.2rem 0.5rem',
+                        borderRadius: '4px',
+                        transition: 'color 0.2s, border-color 0.2s',
+                        cursor: 'default',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.color = '#fff';
+                        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.color = '#666';
+                        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.04)';
+                      }}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </SpotlightCard>
-          </motion.div>
-        ))}
+            </motion.div>
+          ))}
+        </div>
+
       </div>
     </section>
   );

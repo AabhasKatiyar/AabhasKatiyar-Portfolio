@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const EMAIL = 'abhas.katiyar.dev@gmail.com';
+const EMAIL = 'aabhas.katiyar.dev@gmail.com';
 
 export const Contact = () => {
   const [copied, setCopied] = useState(false);
@@ -64,10 +64,10 @@ export const Contact = () => {
           fontSize: '0.625rem',
           letterSpacing: '0.14em',
           textTransform: 'uppercase',
-          color: '#1e1e1e',
+          color: '#c8ff00',
         }}
       >
-        05 — Contact
+        07 — Contact
       </motion.span>
 
       {/* Terminal wrapper */}
@@ -221,7 +221,7 @@ export const Contact = () => {
         >
           {[
             { label: 'GitHub', href: 'https://github.com/AabhasKatiyar' },
-            { label: 'LinkedIn', href: 'https://linkedin.com/in/aabhas-katiyar' },
+            { label: 'LinkedIn', href: 'https://linkedin.com/in/aabhaskatiyar' },
           ].map(({ label, href }) => (
             <a
               key={label}

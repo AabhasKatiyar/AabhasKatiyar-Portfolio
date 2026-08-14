@@ -183,8 +183,8 @@ export const EngineeringLab = () => {
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
         style={{ marginBottom: '4rem' }}
       >
-        <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#888' }}>
-          04 — Engineering Lab
+        <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#f59e0b' }}>
+          06 — Engineering Lab
         </span>
         <h2 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: 'clamp(2rem, 5vw, 4.5rem)', letterSpacing: '-0.04em', lineHeight: 1, color: '#f0ede6', marginTop: '0.75rem' }}>
           Tactile prototypes & retrospectives.
