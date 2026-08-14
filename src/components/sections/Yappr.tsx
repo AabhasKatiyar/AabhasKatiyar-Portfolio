@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BrowserPreview } from '../ui/BrowserPreview';
+import yapprPreview from '../../assets/yappr_preview.png';
 
 interface Yap {
   id: string;
@@ -442,7 +443,7 @@ export const Yappr = () => {
               style={{ overflow: 'hidden' }}
             >
               <div style={{ paddingTop: '0.5rem' }}>
-                <BrowserPreview url="https://yappr.in" accentColor="#ff3d6e" />
+                <BrowserPreview url="https://yappr.in" accentColor="#ff3d6e" previewImage={yapprPreview} />
               </div>
             </motion.div>
           )}

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BrowserPreview } from '../ui/BrowserPreview';
+import gymlanePreview from '../../assets/gymlane_preview.png';
 
 const GYMLANE_TECH = ['React 19', 'TypeScript', 'Supabase', 'PostgreSQL', 'Row Level Security', 'Supabase Auth'];
 
@@ -639,7 +640,7 @@ export const GymLane = () => {
               style={{ overflow: 'hidden' }}
             >
               <div style={{ paddingTop: '0.5rem' }}>
-                <BrowserPreview url="https://gymlane.in" accentColor="#00e87a" />
+                <BrowserPreview url="https://gymlane.in" accentColor="#00e87a" previewImage={gymlanePreview} />
               </div>
             </motion.div>
           )}
