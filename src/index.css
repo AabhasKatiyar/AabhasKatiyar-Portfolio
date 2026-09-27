@@ -22,8 +22,8 @@
   --bg-contact:  #080808;
 
   /* UI surfaces — glassmorphism */
-  --surface:       rgba(13, 17, 28, 0.85);
-  --surface-hover: rgba(18, 24, 38, 0.90);
+  --surface:       rgba(11, 16, 26, 0.40);
+  --surface-hover: rgba(18, 24, 38, 0.55);
   --border:        rgba(255,255,255,0.12);
   --border-hover:  rgba(255,255,255,0.22);
 
@@ -127,11 +127,35 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
-    scroll-behavior: smooth;
+    overflow-x: clip;
   }
 
-  body { overflow-x: hidden; }
+  body {
+    overflow-x: clip;
+  }
+
+  /* Fixed canvas background locked to viewport */
+  .fixed-canvas-bg {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    z-index: 0 !important;
+    pointer-events: none !important;
+    overflow: hidden !important;
+    transform: translate3d(0, 0, 0) !important;
+    -webkit-transform: translate3d(0, 0, 0) !important;
+  }
+
+  .fixed-canvas-bg canvas {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+    pointer-events: none !important;
+  }
 
   h1, h2, h3, h4 {
     font-family: var(--font-display);

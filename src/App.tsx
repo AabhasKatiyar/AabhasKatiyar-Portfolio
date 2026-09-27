@@ -20,11 +20,11 @@ function App() {
 
   return (
     <LenisProvider>
-      <div style={{ background: '#070a13', overflowX: 'hidden', minHeight: '100vh', position: 'relative' }}>
-        {/* ── FULL-PAGE 240-FRAME SCROLL-DRIVEN VIDEO BACKGROUND CANVAS ── */}
-        {/* Synchronized across the entire website from top to bottom */}
-        <GlobalVideoCanvas />
+      {/* ── FULL-PAGE 240-FRAME SCROLL-DRIVEN VIDEO BACKGROUND CANVAS ── */}
+      {/* Mounted directly at root so it is strictly anchored to the viewport on mobile */}
+      <GlobalVideoCanvas />
 
+      <div style={{ background: 'transparent', overflowX: 'clip', minHeight: '100vh', position: 'relative' }}>
         {/* Global cursor & navigation */}
         <CustomCursor />
         <FloatingNav />

@@ -266,15 +266,16 @@ export const EngineeringLab = () => {
             transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
             whileHover={{ y: -6, scale: 1.01 }}
             style={{
-              background: 'rgba(10, 16, 11, 0.82)',
-              border: '1px solid rgba(0,232,122,0.18)',
+              background: 'rgba(5, 14, 8, 0.40)',
+              border: '1px solid rgba(0,232,122,0.20)',
               borderRadius: 14,
               padding: '1.5rem',
               display: 'flex',
               flexDirection: 'column',
               gap: '1rem',
-              backdropFilter: 'blur(20px)',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+              backdropFilter: 'blur(12px) saturate(160%)',
+              WebkitBackdropFilter: 'blur(12px) saturate(160%)',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.08)',
               transition: 'box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 20px rgba(0,232,122,0.15), 0 24px 64px rgba(0,0,0,0.55)'; }}
@@ -299,15 +300,16 @@ export const EngineeringLab = () => {
             transition={{ delay: 0.1, duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
             whileHover={{ y: -6, scale: 1.01 }}
             style={{
-              background: 'rgba(15, 12, 4, 0.82)',
-              border: '1px solid rgba(245,158,11,0.18)',
+              background: 'rgba(15, 12, 4, 0.40)',
+              border: '1px solid rgba(245,158,11,0.20)',
               borderRadius: 14,
               padding: '1.5rem',
               display: 'flex',
               flexDirection: 'column',
               gap: '1rem',
-              backdropFilter: 'blur(20px)',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+              backdropFilter: 'blur(12px) saturate(160%)',
+              WebkitBackdropFilter: 'blur(12px) saturate(160%)',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.08)',
               transition: 'box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 20px rgba(245,158,11,0.15), 0 24px 64px rgba(0,0,0,0.55)'; }}
@@ -332,16 +334,17 @@ export const EngineeringLab = () => {
             transition={{ delay: 0.2, duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
             whileHover={{ y: -6, scale: 1.01 }}
             style={{
-              background: 'rgba(13, 17, 28, 0.88)',
-              border: '1px solid rgba(255,255,255,0.12)',
+              background: 'rgba(11, 16, 26, 0.40)',
+              border: '1px solid rgba(255,255,255,0.15)',
               borderRadius: 14,
               padding: '1.5rem',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
               gap: '1rem',
-              backdropFilter: 'blur(20px)',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+              backdropFilter: 'blur(12px) saturate(160%)',
+              WebkitBackdropFilter: 'blur(12px) saturate(160%)',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.08)',
               transition: 'box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 20px rgba(200,255,0,0.15), 0 24px 64px rgba(0,0,0,0.55)'; }}
@@ -389,16 +392,17 @@ export const EngineeringLab = () => {
             transition={{ delay: 0.25, duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
             whileHover={{ y: -6, scale: 1.01 }}
             style={{
-              background: 'rgba(13, 17, 28, 0.88)',
-              border: '1px solid rgba(200,255,0,0.18)',
+              background: 'rgba(11, 16, 26, 0.40)',
+              border: '1px solid rgba(200,255,0,0.20)',
               borderRadius: 14,
               padding: '1.5rem',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
               gap: '1rem',
-              backdropFilter: 'blur(20px)',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+              backdropFilter: 'blur(12px) saturate(160%)',
+              WebkitBackdropFilter: 'blur(12px) saturate(160%)',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.08)',
               transition: 'box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 20px rgba(200,255,0,0.18), 0 24px 64px rgba(0,0,0,0.55)'; }}

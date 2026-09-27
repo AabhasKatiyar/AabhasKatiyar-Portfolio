@@ -143,16 +143,16 @@ export const Experience = () => {
                 {/* Card */}
                 <div
                   style={{
-                    background: 'rgba(13, 17, 28, 0.88)',
-                    border: '1px solid rgba(255,255,255,0.12)',
+                    background: 'rgba(11, 16, 26, 0.38)',
+                    border: '1px solid rgba(255,255,255,0.15)',
                     borderRadius: 14,
                     padding: '1.5rem 1.65rem',
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '0.85rem',
-                    backdropFilter: 'blur(20px)',
-                    WebkitBackdropFilter: 'blur(20px)',
-                    boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+                    backdropFilter: 'blur(12px) saturate(160%)',
+                    WebkitBackdropFilter: 'blur(12px) saturate(160%)',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.1)',
                     transition: 'border-color 0.3s ease',
                   }}
                   onMouseEnter={(e) => {

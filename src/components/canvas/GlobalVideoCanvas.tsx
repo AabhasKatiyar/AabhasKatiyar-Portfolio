@@ -58,18 +58,9 @@ export const GlobalVideoCanvas = () => {
     const dpr = Math.min(window.devicePixelRatio || 1, isTouch ? 1.5 : 2.0);
     
     // Stable viewport dimensions:
-    // On mobile touch devices, lock height to the full screen dimension so the video canvas
-    // is rendered at TRUE full screen from the very first frame, and never jumps or zooms when the address bar hides/shows!
-    let displayWidth = window.innerWidth || document.documentElement.clientWidth;
-    let displayHeight = window.innerHeight || document.documentElement.clientHeight;
-
-    if (isTouch && typeof window !== 'undefined' && window.screen) {
-      const isPortrait = displayWidth < displayHeight;
-      if (isPortrait) {
-        displayHeight = Math.max(displayHeight, window.screen.height || displayHeight);
-        displayWidth = Math.min(displayWidth, window.screen.width || displayWidth);
-      }
-    }
+    // Use true viewport dimensions without artificial screen.height inflation to keep canvas firmly anchored
+    const displayWidth = window.innerWidth || document.documentElement.clientWidth;
+    const displayHeight = window.innerHeight || document.documentElement.clientHeight;
 
     const targetWidth = Math.round(displayWidth * dpr);
     const targetHeight = Math.round(displayHeight * dpr);
@@ -89,9 +80,8 @@ export const GlobalVideoCanvas = () => {
     let drawX: number;
     let drawY: number;
 
-    // Universal 100% full-screen cover geometry:
-    // Ensures video completely covers the viewport on all screens (mobile portrait, tablet, desktop)
-    // with ZERO empty bars or cutoffs.
+    // Universal 100% full-screen cover geometry centered both horizontally and vertically:
+    // Ensures video canvas stays rock-solid in place without upward shifts or jumps on mobile
     if (canvasRatio > imgRatio) {
       drawW = displayWidth;
       drawH = displayWidth / imgRatio;
@@ -101,7 +91,7 @@ export const GlobalVideoCanvas = () => {
       drawH = displayHeight;
       drawW = displayHeight * imgRatio;
       drawX = (displayWidth - drawW) / 2;
-      drawY = 0;
+      drawY = (displayHeight - drawH) / 2;
     }
 
     metricsRef.current = {
@@ -550,13 +540,9 @@ export const GlobalVideoCanvas = () => {
         className="fixed-canvas-bg"
         style={{
           position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
+          inset: 0,
           width: '100%',
           height: '100%',
-          minHeight: '100lvh',
           zIndex: 0,
           pointerEvents: 'none',
           overflow: 'hidden',
@@ -567,12 +553,10 @@ export const GlobalVideoCanvas = () => {
           ref={canvasRef}
           style={{
             position: 'absolute',
-            top: 0,
-            left: 0,
+            inset: 0,
             width: '100%',
             height: '100%',
-            transform: 'translateZ(0)', // Force dedicated GPU compositor layer
-            willChange: 'contents',
+            pointerEvents: 'none',
           }}
         />
 

@@ -121,11 +121,13 @@ export const Yappr = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
           style={{
-            background: 'rgba(15,15,15,0.6)',
-            border: '1px solid rgba(255,255,255,0.07)',
+            background: 'rgba(11, 16, 26, 0.38)',
+            border: '1px solid rgba(255,255,255,0.15)',
             borderRadius: 16,
             padding: 'clamp(1.5rem, 4vw, 2.5rem)',
-            backdropFilter: 'blur(20px)',
+            backdropFilter: 'blur(12px) saturate(160%)',
+            WebkitBackdropFilter: 'blur(12px) saturate(160%)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.1)',
             display: 'flex',
             flexDirection: 'column',
             gap: '1.5rem',
@@ -369,16 +371,17 @@ export const Yappr = () => {
                   viewport={{ once: true }}
                   transition={{ delay: 0.12, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                   style={{
-                    background: 'rgba(13, 17, 28, 0.88)',
-                    border: '1px solid rgba(255,61,110,0.2)',
+                    background: 'rgba(11, 16, 26, 0.40)',
+                    border: '1px solid rgba(255,61,110,0.25)',
                     borderRadius: 16,
                     padding: '1.5rem',
                     minHeight: 340,
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
-                    backdropFilter: 'blur(20px)',
-                    boxShadow: '0 8px 48px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)',
+                    backdropFilter: 'blur(12px) saturate(160%)',
+                    WebkitBackdropFilter: 'blur(12px) saturate(160%)',
+                    boxShadow: '0 8px 48px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.08)',
                   }}
                 >
                   <div>

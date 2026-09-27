@@ -108,11 +108,13 @@ export const GymLane = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
           style={{
-            background: 'rgba(15,15,15,0.6)',
-            border: '1px solid rgba(255,255,255,0.07)',
+            background: 'rgba(11, 16, 26, 0.38)',
+            border: '1px solid rgba(255,255,255,0.15)',
             borderRadius: 16,
             padding: 'clamp(1.5rem, 4vw, 2.5rem)',
-            backdropFilter: 'blur(20px)',
+            backdropFilter: 'blur(12px) saturate(160%)',
+            WebkitBackdropFilter: 'blur(12px) saturate(160%)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.1)',
             display: 'flex',
             flexDirection: 'column',
             gap: '1.5rem',
@@ -326,9 +328,10 @@ export const GymLane = () => {
                     cursor: 'pointer',
                     borderRadius: 10,
                     border: activeLayer === layer.key ? '1px solid #00e87a' : '1px solid rgba(255,255,255,0.14)',
-                    background: activeLayer === layer.key ? 'rgba(0,232,122,0.08)' : 'rgba(13,17,28,0.85)',
+                    background: activeLayer === layer.key ? 'rgba(0,232,122,0.12)' : 'rgba(11,16,26,0.38)',
                     padding: '1.1rem 1.35rem',
-                    backdropFilter: 'blur(20px)',
+                    backdropFilter: 'blur(12px) saturate(160%)',
+                    WebkitBackdropFilter: 'blur(12px) saturate(160%)',
                     boxShadow: activeLayer === layer.key ? '0 0 20px rgba(0,232,122,0.18), inset 0 0 30px rgba(0,232,122,0.05)' : 'none',
                     transition: 'all 0.45s cubic-bezier(0.16, 1, 0.3, 1)',
                   }}
@@ -365,16 +368,17 @@ export const GymLane = () => {
             {/* Right: Sandbox Screen */}
             <div
               style={{
-                background: 'rgba(10, 16, 11, 0.8)',
+                background: 'rgba(10, 16, 11, 0.42)',
                 borderRadius: 14,
-                border: '1px solid rgba(0,232,122,0.14)',
+                border: '1px solid rgba(0,232,122,0.18)',
                 padding: '1.5rem',
                 minHeight: 400,
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                backdropFilter: 'blur(20px)',
-                boxShadow: '0 8px 48px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04)',
+                backdropFilter: 'blur(12px) saturate(160%)',
+                WebkitBackdropFilter: 'blur(12px) saturate(160%)',
+                boxShadow: '0 8px 48px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)',
               }}
             >
               <AnimatePresence mode="wait">

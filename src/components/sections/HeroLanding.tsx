@@ -368,13 +368,13 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.75, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           style={{
-            background: 'rgba(13, 17, 28, 0.88)',
-            border: '1px solid rgba(255,255,255,0.14)',
+            background: 'rgba(11, 15, 25, 0.32)',
+            border: '1px solid rgba(255,255,255,0.18)',
             borderRadius: 16,
             padding: '2rem',
-            backdropFilter: 'blur(24px)',
-            WebkitBackdropFilter: 'blur(24px)',
-            boxShadow: '0 12px 48px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.08)',
+            backdropFilter: 'blur(10px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(10px) saturate(180%)',
+            boxShadow: '0 12px 48px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.15)',
             display: 'flex',
             flexDirection: 'column',
             gap: '1.5rem',

@@ -106,13 +106,13 @@ export const Contact = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           style={{
-            background: 'rgba(13, 17, 28, 0.88)',
-            border: '1px solid rgba(200,255,0,0.2)',
+            background: 'rgba(11, 16, 26, 0.40)',
+            border: '1px solid rgba(200,255,0,0.22)',
             borderRadius: 16,
             padding: 'clamp(1.5rem, 4vw, 2.75rem)',
-            backdropFilter: 'blur(24px)',
-            WebkitBackdropFilter: 'blur(24px)',
-            boxShadow: '0 0 60px rgba(200,255,0,0.06), 0 32px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.06)',
+            backdropFilter: 'blur(12px) saturate(160%)',
+            WebkitBackdropFilter: 'blur(12px) saturate(160%)',
+            boxShadow: '0 0 60px rgba(200,255,0,0.06), 0 32px 80px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.08)',
             width: '100%',
             display: 'flex',
             flexDirection: 'column',

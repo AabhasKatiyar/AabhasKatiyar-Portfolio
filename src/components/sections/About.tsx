@@ -144,16 +144,16 @@ export const About = () => {
             <motion.div
               {...fadeUp(0.16)}
               style={{
-                background: 'rgba(13, 17, 28, 0.88)',
-                border: '1px solid rgba(255,255,255,0.14)',
+                background: 'rgba(11, 16, 26, 0.38)',
+                border: '1px solid rgba(255,255,255,0.16)',
                 borderRadius: 12,
                 padding: '1.25rem 1.5rem',
                 display: 'flex',
                 gap: '1.5rem',
                 alignItems: 'center',
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+                backdropFilter: 'blur(12px) saturate(160%)',
+                WebkitBackdropFilter: 'blur(12px) saturate(160%)',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.1)',
                 flexWrap: 'wrap',
               }}
             >
@@ -235,22 +235,22 @@ export const About = () => {
                 key={trait.title}
                 {...fadeUp(0.1 + i * 0.07)}
                 style={{
-                  background: 'rgba(13, 17, 28, 0.85)',
-                  border: '1px solid rgba(255,255,255,0.12)',
+                  background: 'rgba(11, 16, 26, 0.38)',
+                  border: '1px solid rgba(255,255,255,0.14)',
                   borderRadius: 12,
                   padding: '1.25rem 1.35rem',
                   display: 'flex',
                   gap: '1rem',
                   alignItems: 'flex-start',
-                  backdropFilter: 'blur(20px)',
-                  WebkitBackdropFilter: 'blur(20px)',
-                  boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
+                  backdropFilter: 'blur(12px) saturate(160%)',
+                  WebkitBackdropFilter: 'blur(12px) saturate(160%)',
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
                   transition: 'border-color 0.3s ease, background 0.3s ease',
                   cursor: 'default',
                 }}
                 whileHover={{
                   borderColor: `${trait.color}50`,
-                  backgroundColor: 'rgba(18, 24, 40, 0.95)',
+                  backgroundColor: 'rgba(18, 26, 44, 0.55)',
                   y: -3,
                 }}
               >
