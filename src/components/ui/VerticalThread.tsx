@@ -12,6 +12,9 @@ const WORLDS = [
   { id: 'contact',      label: 'Contact',  color: '#c8ff00', shortLabel: '07' },
 ];
 
+const START_Y = 16;
+const STEP = 32;
+
 export const VerticalThread = () => {
   const { scrollYProgress } = useScroll();
   const [activeWorld, setActiveWorld] = useState('hero-landing');
@@ -41,7 +44,8 @@ export const VerticalThread = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setVisible(window.scrollY > 280);
+      // Appear quickly once user starts scrolling
+      setVisible(window.scrollY > 120);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
@@ -57,18 +61,18 @@ export const VerticalThread = () => {
     }
   };
 
-  // SVG wave path representation (updated for 7 sections, height 360)
-  const pathD = "M 20 0 Q 12 15, 20 30 Q 28 55, 20 80 Q 12 105, 20 130 Q 28 155, 20 180 Q 12 205, 20 230 Q 28 255, 20 280 Q 12 305, 20 330 Q 28 345, 20 360";
+  // Compact wavy SVG path tailored for 8 items within 260px
+  const pathD = "M 20 0 Q 14 16, 20 32 Q 26 48, 20 64 Q 14 80, 20 96 Q 26 112, 20 128 Q 14 144, 20 160 Q 26 176, 20 192 Q 14 208, 20 224 Q 26 240, 20 256";
 
   return (
     <motion.div
       className="hidden lg:flex no-print vertical-thread"
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: visible ? 1 : 0, x: visible ? 0 : -20 }}
-      transition={{ duration: 0.4 }}
+      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
       style={{
         position: 'fixed',
-        left: '2rem',
+        left: 'clamp(1rem, 2vw, 2rem)',
         top: '50%',
         transform: 'translateY(-50%)',
         zIndex: 90,
@@ -78,16 +82,16 @@ export const VerticalThread = () => {
       }}
     >
       <svg
-        width="160"
-        height="380"
-        viewBox="0 0 160 380"
+        width="150"
+        height="265"
+        viewBox="0 0 150 265"
         style={{ overflow: 'visible' }}
       >
         {/* Background thread path (relaxed and dark) */}
         <path
           d={pathD}
           fill="none"
-          stroke="rgba(255, 255, 255, 0.05)"
+          stroke="rgba(255, 255, 255, 0.06)"
           strokeWidth="2"
           strokeLinecap="round"
         />
@@ -130,7 +134,7 @@ export const VerticalThread = () => {
 
         {/* Render Interactive Nodes */}
         {WORLDS.map((world, idx) => {
-          const y = 30 + idx * 50;
+          const y = START_Y + idx * STEP;
           const isActive = activeWorld === world.id;
           const isHovered = hovered === world.id;
 
@@ -148,12 +152,12 @@ export const VerticalThread = () => {
                   <motion.circle
                     cx="20"
                     cy={y}
-                    r="9"
+                    r="8"
                     fill="none"
                     stroke={world.color}
                     strokeWidth="1"
                     initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 0.4, scale: 1 }}
+                    animate={{ opacity: 0.45, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.5 }}
                     transition={{ duration: 0.2 }}
                     style={{
@@ -167,18 +171,19 @@ export const VerticalThread = () => {
               <motion.circle
                 cx="20"
                 cy={y}
-                r={isActive ? 5 : 3.5}
+                r={isActive ? 4.5 : 3}
                 fill={isActive ? world.color : "#1c1c1e"}
-                stroke={isActive ? world.color : "rgba(255, 255, 255, 0.2)"}
+                stroke={isActive ? world.color : "rgba(255, 255, 255, 0.25)"}
                 strokeWidth="1.5"
                 animate={{
-                  r: isActive ? 5 : isHovered ? 4.5 : 3.5,
-                  fill: isActive ? world.color : isHovered ? "rgba(255, 255, 255, 0.4)" : "#121214",
-                  stroke: isActive ? world.color : isHovered ? world.color : "rgba(255, 255, 255, 0.2)",
+                  r: isActive ? 4.5 : isHovered ? 4 : 3,
+                  fill: isActive ? world.color : isHovered ? "rgba(255, 255, 255, 0.5)" : "#121214",
+                  stroke: isActive ? world.color : isHovered ? world.color : "rgba(255, 255, 255, 0.25)",
                 }}
-                transition={{ duration: 0.25 }}
+                transition={{ duration: 0.2 }}
                 style={{
-                  filter: isActive ? `drop-shadow(0 0 8px ${world.color})` : 'none',
+                  filter: isActive ? `drop-shadow(0 0 6px ${world.color})` : 'none',
+                  transition: 'filter 0.3s ease',
                 }}
               />
 
@@ -187,12 +192,12 @@ export const VerticalThread = () => {
                 <motion.circle
                   cx="20"
                   cy={y}
-                  r="15"
+                  r="12"
                   fill="none"
                   stroke={world.color}
                   strokeWidth="1"
                   animate={{
-                    scale: [1, 2],
+                    scale: [1, 1.8],
                     opacity: [0.6, 0],
                   }}
                   transition={{
@@ -205,29 +210,29 @@ export const VerticalThread = () => {
 
               {/* Tooltip & Text details */}
               <foreignObject
-                x="40"
-                y={y - 12}
-                width="120"
-                height="30"
+                x="36"
+                y={y - 11}
+                width="114"
+                height="24"
                 style={{ overflow: 'visible', pointerEvents: 'none' }}
               >
                 <div
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '0.45rem',
-                    opacity: isActive || isHovered ? 1 : 0.8,
-                    transform: `translateX(${isHovered ? '4px' : '0px'})`,
-                    transition: 'opacity 0.3s ease, transform 0.3s ease',
+                    gap: '0.35rem',
+                    opacity: isActive || isHovered ? 1 : 0.75,
+                    transform: `translateX(${isHovered ? '3px' : '0px'})`,
+                    transition: 'opacity 0.25s ease, transform 0.25s ease',
                   }}
                 >
                   <span
                     style={{
                       fontFamily: 'JetBrains Mono, monospace',
-                      fontSize: '0.58rem',
+                      fontSize: '0.55rem',
                       fontWeight: 600,
-                      color: isActive || isHovered ? world.color : '#cbd5e1',
-                      letterSpacing: '0.05em',
+                      color: isActive || isHovered ? world.color : '#94a3b8',
+                      letterSpacing: '0.04em',
                     }}
                   >
                     {world.shortLabel}
@@ -235,7 +240,7 @@ export const VerticalThread = () => {
                   <span
                     style={{
                       fontFamily: 'var(--font-display)',
-                      fontSize: '0.75rem',
+                      fontSize: '0.72rem',
                       fontWeight: 700,
                       color: isActive || isHovered ? '#ffffff' : '#94a3b8',
                       letterSpacing: '0.01em',

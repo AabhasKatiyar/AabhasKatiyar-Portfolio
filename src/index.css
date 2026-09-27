@@ -601,10 +601,20 @@
     padding-bottom: 4.5rem !important;
   }
 
-  /* FloatingNav: sleek and compact */
+  /* FloatingNav: sleek and compact on mobile */
   .floating-nav-bar {
-    padding: 0.4rem 0.75rem !important;
-    gap: 0.75rem !important;
+    width: calc(100% - 1rem) !important;
+    top: 0.5rem !important;
+    padding: 0.35rem 0.65rem !important;
+  }
+
+  /* Hide scrollbars on mobile nav tabs */
+  .floating-nav-tabs-scroll::-webkit-scrollbar {
+    display: none !important;
+  }
+  .floating-nav-tabs-scroll {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
   }
 
   /* VerticalThread: hidden on mobile */
