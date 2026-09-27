@@ -42,7 +42,7 @@ export const Skills = () => {
       id="skills"
       style={{
         minHeight: '100vh',
-        background: '#0e0e0e',
+        background: 'transparent',
         padding: 'clamp(5rem, 10vw, 8rem) clamp(1.5rem, 6vw, 5rem)',
         position: 'relative',
         overflow: 'hidden',

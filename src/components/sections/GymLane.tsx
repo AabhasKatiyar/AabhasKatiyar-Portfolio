@@ -90,7 +90,7 @@ export const GymLane = () => {
     <section
       id="gymlane"
       style={{
-        background: '#060d08',
+        background: 'transparent',
         padding: 'clamp(5rem, 10vw, 8rem) clamp(1.5rem, 6vw, 5rem)',
         position: 'relative',
         overflow: 'hidden',

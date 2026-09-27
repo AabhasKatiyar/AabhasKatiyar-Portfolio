@@ -91,7 +91,7 @@ export const Yappr = () => {
     <section
       id="yappr"
       style={{
-        background: '#0d0609',
+        background: 'transparent',
         padding: 'clamp(5rem, 10vw, 8rem) clamp(1.5rem, 6vw, 5rem)',
         position: 'relative',
         overflow: 'hidden',

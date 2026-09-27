@@ -173,7 +173,7 @@ export const EngineeringLab = () => {
   return (
     <section
       id="archive"
-      style={{ background: '#0c0c0c', padding: 'clamp(4rem, 8vw, 8rem) clamp(1.5rem, 6vw, 6rem)', minHeight: '100svh' }}
+      style={{ background: 'transparent', padding: 'clamp(4rem, 8vw, 8rem) clamp(1.5rem, 6vw, 6rem)', minHeight: '100svh' }}
     >
       {/* Section Header */}
       <motion.div

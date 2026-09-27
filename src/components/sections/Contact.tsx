@@ -22,7 +22,7 @@ export const Contact = () => {
       id="contact"
       style={{
         minHeight: '100svh',
-        background: '#080808',
+        background: 'transparent',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',

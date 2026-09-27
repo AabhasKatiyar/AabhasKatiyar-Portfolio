@@ -1,6 +1,12 @@
 import { useEffect } from 'react';
 import Lenis from 'lenis';
 
+declare global {
+  interface Window {
+    __lenis?: Lenis;
+  }
+}
+
 export const LenisProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const lenis = new Lenis({
@@ -10,14 +16,18 @@ export const LenisProvider = ({ children }: { children: React.ReactNode }) => {
       infinite: false,
     });
 
+    window.__lenis = lenis;
+
     function raf(time: number) {
       lenis.raf(time);
       requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    const animId = requestAnimationFrame(raf);
 
     return () => {
+      cancelAnimationFrame(animId);
+      delete window.__lenis;
       lenis.destroy();
     };
   }, []);

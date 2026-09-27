@@ -47,6 +47,17 @@ export const VerticalThread = () => {
     return () => observers.forEach((o) => o.disconnect());
   }, []);
 
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setVisible(window.scrollY > 280);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const activeColor = WORLDS.find((w) => w.id === activeWorld)?.color ?? '#c8ff00';
 
   const handleClick = (id: string) => {
@@ -60,8 +71,11 @@ export const VerticalThread = () => {
   const pathD = "M 20 0 Q 12 15, 20 30 Q 28 55, 20 80 Q 12 105, 20 130 Q 28 155, 20 180 Q 12 205, 20 230 Q 28 255, 20 280 Q 12 305, 20 330 Q 28 345, 20 360";
 
   return (
-    <div
+    <motion.div
       className="hidden lg:flex no-print"
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: visible ? 1 : 0, x: visible ? 0 : -20 }}
+      transition={{ duration: 0.4 }}
       style={{
         position: 'fixed',
         left: '2rem',
@@ -70,7 +84,7 @@ export const VerticalThread = () => {
         zIndex: 90,
         flexDirection: 'column',
         alignItems: 'center',
-        pointerEvents: 'none',
+        pointerEvents: visible ? 'auto' : 'none',
       }}
     >
       <svg
@@ -246,6 +260,6 @@ export const VerticalThread = () => {
           );
         })}
       </svg>
-    </div>
+    </motion.div>
   );
 };

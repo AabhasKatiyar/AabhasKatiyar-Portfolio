@@ -57,7 +57,7 @@ export const Experience = () => {
       id="experience"
       style={{
         minHeight: '100vh',
-        background: '#0c0c0c',
+        background: 'transparent',
         padding: 'clamp(5rem, 10vw, 8rem) clamp(1.5rem, 6vw, 5rem)',
         position: 'relative',
         overflow: 'hidden',

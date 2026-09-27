@@ -62,10 +62,10 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
       id="hero-landing"
       style={{
         minHeight: '100vh',
-        background: '#0c0c0c',
+        background: 'transparent',
         display: 'flex',
         alignItems: 'center',
-        padding: 'clamp(5rem, 10vw, 8rem) clamp(1.5rem, 6vw, 5rem)',
+        padding: 'clamp(5rem, 8vw, 8rem) clamp(2rem, 6vw, 5rem)',
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -145,7 +145,7 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
               {...fadeUp(0.05)}
               style={{
                 fontFamily: 'Syne, sans-serif',
-                fontSize: 'clamp(3rem, 8vw, 6.5rem)',
+                fontSize: 'clamp(2.5rem, 5.5vw, 5rem)',
                 fontWeight: 800,
                 letterSpacing: '-0.04em',
                 lineHeight: 0.95,
