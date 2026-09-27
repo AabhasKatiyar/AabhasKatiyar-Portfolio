@@ -1,0 +1,7 @@
+# Netlify build cancellation config
+# Prevents Netlify from running builds and consuming build minutes / credits.
+# Hosting and edge deployments are handled exclusively by Cloudflare.
+
+[build]
+  # Returning exit code 0 tells Netlify to cancel/ignore the build immediately with 0 credit usage.
+  ignore = "exit 0"
