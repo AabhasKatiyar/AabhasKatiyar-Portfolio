@@ -615,21 +615,21 @@ export const GlobalVideoCanvas = () => {
         className="hud-dock no-print"
         style={{
           position: 'fixed',
-          bottom: 'max(1rem, env(safe-area-inset-bottom, 1rem))',
+          bottom: 'max(0.6rem, env(safe-area-inset-bottom, 0.6rem))',
           left: '50%',
           transform: 'translateX(-50%)',
           zIndex: 85,
-          width: hudMinimized ? 'auto' : 'min(92%, 520px)',
-          background: 'rgba(11, 14, 22, 0.88)',
+          width: hudMinimized ? 'auto' : 'min(90%, 360px)',
+          background: 'rgba(11, 14, 22, 0.82)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
           border: '1px solid rgba(255, 255, 255, 0.12)',
-          borderRadius: 14,
-          padding: hudMinimized ? '0.4rem 0.85rem' : '0.6rem 0.95rem',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.7), 0 0 1px 1px rgba(255, 255, 255, 0.05)',
+          borderRadius: 10,
+          padding: hudMinimized ? '0.22rem 0.55rem' : '0.28rem 0.65rem',
+          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.6), 0 0 1px 1px rgba(255, 255, 255, 0.05)',
           display: 'flex',
           flexDirection: 'column',
-          gap: '0.35rem',
+          gap: '0.2rem',
           transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
       >
@@ -639,26 +639,26 @@ export const GlobalVideoCanvas = () => {
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '0.6rem',
+              gap: '0.45rem',
               cursor: 'pointer',
               fontFamily: 'JetBrains Mono, monospace',
-              fontSize: '0.625rem',
+              fontSize: '0.55rem',
               color: '#00e87a',
             }}
           >
             <span
               style={{
-                width: 6,
-                height: 6,
+                width: 5,
+                height: 5,
                 borderRadius: '50%',
                 background: '#00e87a',
-                boxShadow: '0 0 8px #00e87a',
+                boxShadow: '0 0 6px #00e87a',
                 animation: 'pulse-dot 2s infinite',
               }}
             />
             <span ref={miniFrameTextRef}>FRM 001</span>
             <span ref={miniPercentTextRef} style={{ color: '#94a3b8' }}>(0%)</span>
-            <span style={{ color: '#cbd5e1', fontSize: '0.55rem' }}>[EXPAND]</span>
+            <span style={{ color: '#cbd5e1', fontSize: '0.5rem', opacity: 0.8 }}>[EXPAND]</span>
           </div>
         ) : (
           <>
@@ -668,34 +668,34 @@ export const GlobalVideoCanvas = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                gap: '0.75rem',
+                gap: '0.5rem',
               }}
             >
-              {/* Play / Pause auto scrub button */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              {/* Play / Pause auto scrub button + quick scroll */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
                 <button
                   onClick={() => setIsPlaying((p) => !p)}
                   style={{
                     background: isPlaying ? '#00e87a' : 'rgba(255,255,255,0.08)',
                     color: isPlaying ? '#070a13' : '#f0ede6',
                     border: 'none',
-                    borderRadius: 5,
-                    padding: '0.28rem 0.65rem',
+                    borderRadius: 4,
+                    padding: '0.18rem 0.45rem',
                     fontFamily: 'JetBrains Mono, monospace',
-                    fontSize: '0.6rem',
+                    fontSize: '0.55rem',
                     fontWeight: 700,
-                    letterSpacing: '0.04em',
+                    letterSpacing: '0.03em',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '0.35rem',
+                    gap: '0.25rem',
                     transition: 'all 0.2s ease',
                   }}
                   title={isPlaying ? 'Pause Auto Scroll' : 'Play Auto Scroll'}
                 >
                   {isPlaying ? (
                     <>
-                      <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor">
+                      <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor">
                         <rect x="6" y="4" width="4" height="16" />
                         <rect x="14" y="4" width="4" height="16" />
                       </svg>
@@ -703,10 +703,10 @@ export const GlobalVideoCanvas = () => {
                     </>
                   ) : (
                     <>
-                      <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor">
+                      <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor">
                         <polygon points="5 3 19 12 5 21 5 3" />
                       </svg>
-                      AUTO SCROLL
+                      AUTO
                     </>
                   )}
                 </button>
@@ -715,16 +715,16 @@ export const GlobalVideoCanvas = () => {
                   onClick={scrollToTop}
                   style={{
                     background: 'transparent',
-                    color: '#cbd5e1',
+                    color: '#94a3b8',
                     border: 'none',
                     fontFamily: 'JetBrains Mono, monospace',
-                    fontSize: '0.6rem',
+                    fontSize: '0.52rem',
                     cursor: 'pointer',
-                    padding: '0.25rem 0.4rem',
+                    padding: '0.15rem 0.25rem',
                     transition: 'color 0.2s ease',
                   }}
                   onMouseEnter={(e) => (e.currentTarget.style.color = '#ffffff')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = '#cbd5e1')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = '#94a3b8')}
                   title="Scroll to top of website"
                 >
                   TOP ↑
@@ -734,19 +734,19 @@ export const GlobalVideoCanvas = () => {
                   onClick={scrollToBottom}
                   style={{
                     background: 'transparent',
-                    color: '#cbd5e1',
+                    color: '#94a3b8',
                     border: 'none',
                     fontFamily: 'JetBrains Mono, monospace',
-                    fontSize: '0.6rem',
+                    fontSize: '0.52rem',
                     cursor: 'pointer',
-                    padding: '0.25rem 0.4rem',
+                    padding: '0.15rem 0.25rem',
                     transition: 'color 0.2s ease',
                   }}
                   onMouseEnter={(e) => (e.currentTarget.style.color = '#ffffff')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = '#cbd5e1')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = '#94a3b8')}
                   title="Scroll to bottom of website"
                 >
-                  BOTTOM ↓
+                  BOT ↓
                 </button>
               </div>
 
@@ -754,20 +754,20 @@ export const GlobalVideoCanvas = () => {
               <div
                 style={{
                   fontFamily: 'JetBrains Mono, monospace',
-                  fontSize: '0.6rem',
+                  fontSize: '0.55rem',
                   color: '#cbd5e1',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '0.5rem',
+                  gap: '0.35rem',
                 }}
               >
                 <span>
-                  FRAME <strong ref={frameNumberTextRef} style={{ color: '#00e87a' }}>001</strong> / 240
+                  FRM <strong ref={frameNumberTextRef} style={{ color: '#00e87a' }}>001</strong>/{TOTAL_FRAMES}
                 </span>
                 <span style={{ color: 'rgba(255,255,255,0.2)' }}>•</span>
                 <span ref={percentTextRef} style={{ color: '#ffffff' }}>0%</span>
                 {loadPercent < 100 && (
-                  <span ref={loadPercentTextRef} style={{ color: '#c8ff00', fontSize: '0.56rem' }}>
+                  <span ref={loadPercentTextRef} style={{ color: '#c8ff00', fontSize: '0.52rem' }}>
                     ({loadPercent}%)
                   </span>
                 )}
@@ -778,10 +778,10 @@ export const GlobalVideoCanvas = () => {
                     border: 'none',
                     color: '#94a3b8',
                     cursor: 'pointer',
-                    fontSize: '0.75rem',
+                    fontSize: '0.7rem',
                     lineHeight: 1,
-                    padding: '0 0.25rem',
-                    marginLeft: '0.25rem',
+                    padding: '0 0.15rem',
+                    marginLeft: '0.15rem',
                   }}
                   title="Minimize Dock"
                 >
@@ -794,6 +794,7 @@ export const GlobalVideoCanvas = () => {
             <div style={{ position: 'relative', width: '100%', display: 'flex', alignItems: 'center' }}>
               <input
                 ref={scrubberInputRef}
+                className="scrubber-slider"
                 type="range"
                 min="0"
                 max={TOTAL_FRAMES - 1}
@@ -801,11 +802,8 @@ export const GlobalVideoCanvas = () => {
                 onChange={handleScrubChange}
                 style={{
                   width: '100%',
-                  height: 3,
-                  WebkitAppearance: 'none',
-                  appearance: 'none',
+                  height: 2.5,
                   background: 'linear-gradient(to right, #00e87a 0%, #00e87a 0%, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.15) 100%)',
-                  borderRadius: 2,
                   outline: 'none',
                   cursor: 'pointer',
                 }}
