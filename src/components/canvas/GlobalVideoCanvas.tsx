@@ -58,9 +58,18 @@ export const GlobalVideoCanvas = () => {
     const dpr = Math.min(window.devicePixelRatio || 1, isTouch ? 1.5 : 2.0);
     
     // Stable viewport dimensions:
-    // Use true viewport dimensions without artificial screen.height inflation to keep canvas firmly anchored
+    // On mobile touch devices, lock height to the full physical screen dimension so the canvas
+    // is rendered for the full display once and NEVER re-scales or zooms when the address bar moves!
     const displayWidth = window.innerWidth || document.documentElement.clientWidth;
-    const displayHeight = window.innerHeight || document.documentElement.clientHeight;
+    let displayHeight = window.innerHeight || document.documentElement.clientHeight;
+
+    if (isTouch && typeof window !== 'undefined') {
+      const screenH = window.screen?.height || 0;
+      const isPortrait = displayWidth < displayHeight;
+      if (isPortrait && screenH > displayHeight) {
+        displayHeight = screenH;
+      }
+    }
 
     const targetWidth = Math.round(displayWidth * dpr);
     const targetHeight = Math.round(displayHeight * dpr);
@@ -80,7 +89,7 @@ export const GlobalVideoCanvas = () => {
     let drawX: number;
     let drawY: number;
 
-    // Universal 100% full-screen cover geometry centered both horizontally and vertically:
+    // Universal 100% full-screen cover geometry:
     // Ensures video canvas stays rock-solid in place without upward shifts or jumps on mobile
     if (canvasRatio > imgRatio) {
       drawW = displayWidth;
@@ -91,7 +100,7 @@ export const GlobalVideoCanvas = () => {
       drawH = displayHeight;
       drawW = displayHeight * imgRatio;
       drawX = (displayWidth - drawW) / 2;
-      drawY = (displayHeight - drawH) / 2;
+      drawY = 0;
     }
 
     metricsRef.current = {
@@ -540,9 +549,11 @@ export const GlobalVideoCanvas = () => {
         className="fixed-canvas-bg"
         style={{
           position: 'fixed',
-          inset: 0,
-          width: '100%',
-          height: '100%',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100lvh',
+          minHeight: '100vh',
           zIndex: 0,
           pointerEvents: 'none',
           overflow: 'hidden',
@@ -553,7 +564,8 @@ export const GlobalVideoCanvas = () => {
           ref={canvasRef}
           style={{
             position: 'absolute',
-            inset: 0,
+            top: 0,
+            left: 0,
             width: '100%',
             height: '100%',
             pointerEvents: 'none',
