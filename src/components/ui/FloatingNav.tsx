@@ -130,9 +130,9 @@ export const FloatingNav = () => {
             borderBottom: '1px solid rgba(255,255,255,0.06)',
             boxShadow: `0 0 40px rgba(0,0,0,0.6), 0 1px 0 rgba(255,255,255,0.04)`,
           }}
-          className="no-print"
+          className="no-print floating-nav-bar"
         >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.65rem 2rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.65rem clamp(1rem, 4vw, 2rem)' }}>
             {/* Brand */}
             <a
               href="#hero-landing"
@@ -244,7 +244,7 @@ export const FloatingNav = () => {
                       flexDirection: 'column',
                       alignItems: 'center',
                       gap: '0.3rem',
-                      padding: '0.4rem 0.65rem',
+                      padding: 'clamp(0.3rem, 1vw, 0.4rem) clamp(0.35rem, 1.5vw, 0.65rem)',
                       borderRadius: 6,
                       textDecoration: 'none',
                       transition: 'background 0.3s ease',

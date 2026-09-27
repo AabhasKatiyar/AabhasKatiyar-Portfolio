@@ -116,6 +116,7 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
           {/* Status badge */}
           <motion.div {...fadeUp(0)} style={{ display: 'flex', alignItems: 'center' }}>
             <div
+              className="hero-status-badge"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -348,6 +349,7 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
 
         {/* ── RIGHT: Identity card ── */}
         <motion.div
+          className="hero-profile-card"
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.75, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}

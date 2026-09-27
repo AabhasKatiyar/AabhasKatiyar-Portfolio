@@ -558,7 +558,7 @@ export const GlobalVideoCanvas = () => {
 
       {/* ── FLOATING BOTTOM SCRUB CONTROLLER DOCK ── */}
       <div
-        className="no-print"
+        className="hud-dock no-print"
         style={{
           position: 'fixed',
           bottom: 'max(1rem, env(safe-area-inset-bottom, 1rem))',

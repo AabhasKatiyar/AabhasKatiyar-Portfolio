@@ -72,7 +72,7 @@ export const VerticalThread = () => {
 
   return (
     <motion.div
-      className="hidden lg:flex no-print"
+      className="hidden lg:flex no-print vertical-thread"
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: visible ? 1 : 0, x: visible ? 0 : -20 }}
       transition={{ duration: 0.4 }}

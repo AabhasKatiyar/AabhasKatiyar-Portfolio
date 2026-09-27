@@ -532,3 +532,82 @@
     animation-iteration-count: 1 !important;
   }
 }
+
+/* ================================================
+   MOBILE RESPONSIVE FIXES
+   ================================================ */
+
+/* Hide the right profile card on mobile — the hero left column is enough */
+@media (max-width: 767px) {
+  .hero-profile-card {
+    display: none !important;
+  }
+
+  /* Hero section: single column, proper bottom clearance for HUD dock */
+  #hero-landing {
+    padding-top: 5rem !important;
+    padding-bottom: 5.5rem !important; /* clearance for minimized HUD dock */
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+    min-height: 100svh !important;
+  }
+
+  /* Hero grid: full-width single column */
+  #hero-landing > div > div:not([aria-hidden]) {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  /* Status badge: allow text to wrap cleanly */
+  #hero-landing .hero-status-badge {
+    flex-wrap: wrap !important;
+    border-radius: 10px !important;
+    padding: 0.45rem 0.85rem !important;
+    max-width: 100% !important;
+  }
+
+  /* Section padding — every major section on mobile */
+  section {
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+  }
+
+  /* HUD dock: stay clear of nav safe areas */
+  .hud-dock {
+    bottom: max(0.75rem, env(safe-area-inset-bottom, 0.75rem)) !important;
+    width: min(96%, 480px) !important;
+  }
+
+  /* FloatingNav: keep it tight */
+  .floating-nav-bar {
+    padding: 0.4rem 0.85rem !important;
+    gap: 1rem !important;
+  }
+
+  /* VerticalThread: hide on very small mobile */
+  .vertical-thread {
+    display: none !important;
+  }
+
+  /* ResumeModal: full-screen on mobile */
+  .resume-modal-inner {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: 100dvh !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    padding: 1.25rem !important;
+  }
+}
+
+/* Tablet tweaks (768px – 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  #hero-landing {
+    padding-bottom: 5rem !important;
+  }
+
+  #hero-landing > div > div:not([aria-hidden]) {
+    gap: 2.5rem !important;
+  }
+}
+
