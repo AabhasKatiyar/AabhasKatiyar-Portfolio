@@ -9,20 +9,12 @@ export const GlobalVideoCanvas = () => {
   // Images cache
   const imagesRef = useRef<(HTMLImageElement | null)[]>(new Array(TOTAL_FRAMES).fill(null));
   const lastDrawnImgRef = useRef<HTMLImageElement | null>(null);
-  const [loadedCount, setLoadedCount] = useState(0);
   const [isInitialLoaded, setIsInitialLoaded] = useState(false);
 
   // HUD UI State (Only changes on user interaction, NEVER on every scroll frame!)
   const [isPlaying, setIsPlaying] = useState(false);
-  const [hudMinimized, setHudMinimized] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
-
-  // Direct DOM Refs for 60fps/120fps HUD updates with ZERO React re-renders
+  // Direct DOM Ref for 60fps/120fps progress update with ZERO React re-renders
   const scrubberInputRef = useRef<HTMLInputElement>(null);
-  const frameNumberTextRef = useRef<HTMLElement>(null);
-  const percentTextRef = useRef<HTMLElement>(null);
-  const miniFrameTextRef = useRef<HTMLElement>(null);
-  const miniPercentTextRef = useRef<HTMLElement>(null);
-  const loadPercentTextRef = useRef<HTMLElement>(null);
 
   // Animation & Metric Refs
   const targetFrameRef = useRef(0);
@@ -198,7 +190,6 @@ export const GlobalVideoCanvas = () => {
     }
 
     imagesRef.current[idx] = img;
-    setLoadedCount((prev) => prev + 1);
 
     if (idx === 0) {
       setIsInitialLoaded(true);
@@ -412,22 +403,8 @@ export const GlobalVideoCanvas = () => {
         lastDrawnFrameRef.current = roundedFrame;
         renderFrameToCanvas(roundedFrame);
 
-        // Update HUD elements directly in the DOM without triggering React re-renders!
+        // Update progress bar directly in the DOM without triggering React re-renders!
         const pct = Math.round((roundedFrame / (TOTAL_FRAMES - 1)) * 100);
-        const framePadded = String(roundedFrame + 1).padStart(3, '0');
-
-        if (frameNumberTextRef.current) {
-          frameNumberTextRef.current.textContent = framePadded;
-        }
-        if (percentTextRef.current) {
-          percentTextRef.current.textContent = `${pct}%`;
-        }
-        if (miniFrameTextRef.current) {
-          miniFrameTextRef.current.textContent = `FRM ${framePadded}`;
-        }
-        if (miniPercentTextRef.current) {
-          miniPercentTextRef.current.textContent = `(${pct}%)`;
-        }
         if (scrubberInputRef.current) {
           scrubberInputRef.current.value = String(roundedFrame);
           scrubberInputRef.current.style.background = `linear-gradient(to right, #00e87a 0%, #00e87a ${pct}%, rgba(255,255,255,0.15) ${pct}%, rgba(255,255,255,0.15) 100%)`;
@@ -563,8 +540,6 @@ export const GlobalVideoCanvas = () => {
     }
   };
 
-  const loadPercent = Math.min(100, Math.round((loadedCount / TOTAL_FRAMES) * 100));
-
   return (
     <>
       {/* ── FIXED FULLSCREEN VIDEO CANVAS ── */}
@@ -677,202 +652,140 @@ export const GlobalVideoCanvas = () => {
         className="hud-dock no-print"
         style={{
           position: 'fixed',
-          bottom: 'max(0.6rem, env(safe-area-inset-bottom, 0.6rem))',
+          bottom: 'max(0.65rem, env(safe-area-inset-bottom, 0.65rem))',
           left: '50%',
           transform: 'translateX(-50%)',
           zIndex: 85,
-          width: hudMinimized ? 'auto' : 'min(90%, 360px)',
-          background: 'rgba(11, 14, 22, 0.82)',
+          width: 'fit-content',
+          background: 'rgba(11, 14, 22, 0.85)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
           border: '1px solid rgba(255, 255, 255, 0.12)',
-          borderRadius: 10,
-          padding: hudMinimized ? '0.22rem 0.55rem' : '0.28rem 0.65rem',
+          borderRadius: 8,
+          padding: '0.22rem 0.45rem',
           boxShadow: '0 8px 24px rgba(0, 0, 0, 0.6), 0 0 1px 1px rgba(255, 255, 255, 0.05)',
           display: 'flex',
           flexDirection: 'column',
-          gap: '0.2rem',
-          transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+          gap: '0.18rem',
+          alignItems: 'center',
         }}
       >
-        {hudMinimized ? (
-          <div
-            onClick={() => setHudMinimized(false)}
+        {/* Buttons Row: AUTO, TOP, BOT */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+          {/* Play / Pause auto scroll button */}
+          <button
+            onClick={() => setIsPlaying((p) => !p)}
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.45rem',
-              cursor: 'pointer',
+              background: isPlaying ? '#00e87a' : 'rgba(255,255,255,0.08)',
+              color: isPlaying ? '#070a13' : '#f0ede6',
+              border: 'none',
+              borderRadius: 4,
+              padding: '0.18rem 0.45rem',
               fontFamily: 'JetBrains Mono, monospace',
               fontSize: '0.55rem',
-              color: '#00e87a',
+              fontWeight: 700,
+              letterSpacing: '0.03em',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.25rem',
+              transition: 'all 0.2s ease',
             }}
+            title={isPlaying ? 'Pause Auto Scroll' : 'Play Auto Scroll'}
           >
-            <span
-              style={{
-                width: 5,
-                height: 5,
-                borderRadius: '50%',
-                background: '#00e87a',
-                boxShadow: '0 0 6px #00e87a',
-                animation: 'pulse-dot 2s infinite',
-              }}
-            />
-            <span ref={miniFrameTextRef}>FRM 001</span>
-            <span ref={miniPercentTextRef} style={{ color: '#94a3b8' }}>(0%)</span>
-            <span style={{ color: '#cbd5e1', fontSize: '0.5rem', opacity: 0.8 }}>[EXPAND]</span>
-          </div>
-        ) : (
-          <>
-            {/* Top row */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: '0.5rem',
-              }}
-            >
-              {/* Play / Pause auto scrub button + quick scroll */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                <button
-                  onClick={() => setIsPlaying((p) => !p)}
-                  style={{
-                    background: isPlaying ? '#00e87a' : 'rgba(255,255,255,0.08)',
-                    color: isPlaying ? '#070a13' : '#f0ede6',
-                    border: 'none',
-                    borderRadius: 4,
-                    padding: '0.18rem 0.45rem',
-                    fontFamily: 'JetBrains Mono, monospace',
-                    fontSize: '0.55rem',
-                    fontWeight: 700,
-                    letterSpacing: '0.03em',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.25rem',
-                    transition: 'all 0.2s ease',
-                  }}
-                  title={isPlaying ? 'Pause Auto Scroll' : 'Play Auto Scroll'}
-                >
-                  {isPlaying ? (
-                    <>
-                      <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor">
-                        <rect x="6" y="4" width="4" height="16" />
-                        <rect x="14" y="4" width="4" height="16" />
-                      </svg>
-                      PAUSE
-                    </>
-                  ) : (
-                    <>
-                      <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor">
-                        <polygon points="5 3 19 12 5 21 5 3" />
-                      </svg>
-                      AUTO
-                    </>
-                  )}
-                </button>
+            {isPlaying ? (
+              <>
+                <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor">
+                  <rect x="6" y="4" width="4" height="16" />
+                  <rect x="14" y="4" width="4" height="16" />
+                </svg>
+                PAUSE
+              </>
+            ) : (
+              <>
+                <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5 3 19 12 5 21 5 3" />
+                </svg>
+                AUTO
+              </>
+            )}
+          </button>
 
-                <button
-                  onClick={scrollToTop}
-                  style={{
-                    background: 'transparent',
-                    color: '#94a3b8',
-                    border: 'none',
-                    fontFamily: 'JetBrains Mono, monospace',
-                    fontSize: '0.52rem',
-                    cursor: 'pointer',
-                    padding: '0.15rem 0.25rem',
-                    transition: 'color 0.2s ease',
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = '#ffffff')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = '#94a3b8')}
-                  title="Scroll to top of website"
-                >
-                  TOP ↑
-                </button>
+          <button
+            onClick={scrollToTop}
+            style={{
+              background: 'transparent',
+              color: '#94a3b8',
+              border: 'none',
+              borderRadius: 4,
+              fontFamily: 'JetBrains Mono, monospace',
+              fontSize: '0.52rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              padding: '0.18rem 0.35rem',
+              transition: 'color 0.2s ease, background 0.2s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = '#ffffff';
+              e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = '#94a3b8';
+              e.currentTarget.style.background = 'transparent';
+            }}
+            title="Scroll to top of website"
+          >
+            TOP ↑
+          </button>
 
-                <button
-                  onClick={scrollToBottom}
-                  style={{
-                    background: 'transparent',
-                    color: '#94a3b8',
-                    border: 'none',
-                    fontFamily: 'JetBrains Mono, monospace',
-                    fontSize: '0.52rem',
-                    cursor: 'pointer',
-                    padding: '0.15rem 0.25rem',
-                    transition: 'color 0.2s ease',
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = '#ffffff')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = '#94a3b8')}
-                  title="Scroll to bottom of website"
-                >
-                  BOT ↓
-                </button>
-              </div>
+          <button
+            onClick={scrollToBottom}
+            style={{
+              background: 'transparent',
+              color: '#94a3b8',
+              border: 'none',
+              borderRadius: 4,
+              fontFamily: 'JetBrains Mono, monospace',
+              fontSize: '0.52rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              padding: '0.18rem 0.35rem',
+              transition: 'color 0.2s ease, background 0.2s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = '#ffffff';
+              e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = '#94a3b8';
+              e.currentTarget.style.background = 'transparent';
+            }}
+            title="Scroll to bottom of website"
+          >
+            BOT ↓
+          </button>
+        </div>
 
-              {/* Status info */}
-              <div
-                style={{
-                  fontFamily: 'JetBrains Mono, monospace',
-                  fontSize: '0.55rem',
-                  color: '#cbd5e1',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.35rem',
-                }}
-              >
-                <span>
-                  FRM <strong ref={frameNumberTextRef} style={{ color: '#00e87a' }}>001</strong>/{TOTAL_FRAMES}
-                </span>
-                <span style={{ color: 'rgba(255,255,255,0.2)' }}>•</span>
-                <span ref={percentTextRef} style={{ color: '#ffffff' }}>0%</span>
-                {loadPercent < 100 && (
-                  <span ref={loadPercentTextRef} style={{ color: '#c8ff00', fontSize: '0.52rem' }}>
-                    ({loadPercent}%)
-                  </span>
-                )}
-                <button
-                  onClick={() => setHudMinimized(true)}
-                  style={{
-                    background: 'transparent',
-                    border: 'none',
-                    color: '#94a3b8',
-                    cursor: 'pointer',
-                    fontSize: '0.7rem',
-                    lineHeight: 1,
-                    padding: '0 0.15rem',
-                    marginLeft: '0.15rem',
-                  }}
-                  title="Minimize Dock"
-                >
-                  −
-                </button>
-              </div>
-            </div>
-
-            {/* Bottom Scrubber Input */}
-            <div style={{ position: 'relative', width: '100%', display: 'flex', alignItems: 'center' }}>
-              <input
-                ref={scrubberInputRef}
-                className="scrubber-slider"
-                type="range"
-                min="0"
-                max={TOTAL_FRAMES - 1}
-                defaultValue="0"
-                onChange={handleScrubChange}
-                style={{
-                  width: '100%',
-                  height: 2.5,
-                  background: 'linear-gradient(to right, #00e87a 0%, #00e87a 0%, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.15) 100%)',
-                  outline: 'none',
-                  cursor: 'pointer',
-                }}
-              />
-            </div>
-          </>
-        )}
+        {/* Micro 2px progress scrubber bar */}
+        <div style={{ position: 'relative', width: '100%', display: 'flex', alignItems: 'center' }}>
+          <input
+            ref={scrubberInputRef}
+            className="scrubber-slider"
+            type="range"
+            min="0"
+            max={TOTAL_FRAMES - 1}
+            defaultValue="0"
+            onChange={handleScrubChange}
+            style={{
+              width: '100%',
+              height: 2,
+              background: 'linear-gradient(to right, #00e87a 0%, #00e87a 0%, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.15) 100%)',
+              outline: 'none',
+              cursor: 'pointer',
+            }}
+            title="Drag to scrub video position"
+          />
+        </div>
       </div>
     </>
   );

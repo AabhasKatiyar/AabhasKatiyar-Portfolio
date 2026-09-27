@@ -618,9 +618,9 @@
 @media (max-width: 767px) {
   /* Ultra-compact HUD dock on mobile phones */
   .hud-dock {
-    width: min(92%, 330px) !important;
+    width: fit-content !important;
     bottom: max(0.45rem, env(safe-area-inset-bottom, 0.45rem)) !important;
-    padding: 0.2rem 0.5rem !important;
+    padding: 0.2rem 0.45rem !important;
   }
 
   /* Hero section: clean mobile spacing, centered, no bottom obstruction */
