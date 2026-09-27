@@ -39,6 +39,7 @@ export const GlobalVideoCanvas = () => {
     drawW: 0,
     drawH: 0,
   });
+  const lastWidthRef = useRef(0);
 
   // Fast frame path resolver (uses 77% lighter WebP frames with JPG fallback)
   const getFrameUrl = useCallback((index: number) => {
@@ -55,8 +56,20 @@ export const GlobalVideoCanvas = () => {
     const isTouch = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
     // Cap DPR to 1.5 on mobile to save GPU fill-rate, 2.0 on desktop
     const dpr = Math.min(window.devicePixelRatio || 1, isTouch ? 1.5 : 2.0);
-    const displayWidth = window.innerWidth;
-    const displayHeight = window.innerHeight;
+    
+    // Stable viewport dimensions:
+    // On mobile touch devices, lock height to the full screen dimension so the video canvas
+    // is rendered at TRUE full screen from the very first frame, and never jumps or zooms when the address bar hides/shows!
+    let displayWidth = window.innerWidth || document.documentElement.clientWidth;
+    let displayHeight = window.innerHeight || document.documentElement.clientHeight;
+
+    if (isTouch && typeof window !== 'undefined' && window.screen) {
+      const isPortrait = displayWidth < displayHeight;
+      if (isPortrait) {
+        displayHeight = Math.max(displayHeight, window.screen.height || displayHeight);
+        displayWidth = Math.min(displayWidth, window.screen.width || displayWidth);
+      }
+    }
 
     const targetWidth = Math.round(displayWidth * dpr);
     const targetHeight = Math.round(displayHeight * dpr);
@@ -254,21 +267,38 @@ export const GlobalVideoCanvas = () => {
   useEffect(() => {
     let timeoutId: number;
     const handleResize = () => {
+      // On mobile touch devices, vertical scrolling collapses/expands the browser URL bar,
+      // firing window resize events that change height only. The width NEVER changes during scroll!
+      // We ignore these height-only resizes to prevent sudden jumps, zooms, and redraw glitches.
+      const currentWidth = window.innerWidth;
+      const isTouch = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+      
+      if (isTouch && lastWidthRef.current > 0 && Math.abs(currentWidth - lastWidthRef.current) < 15) {
+        return;
+      }
+      lastWidthRef.current = currentWidth;
+
       clearTimeout(timeoutId);
       timeoutId = window.setTimeout(() => {
         updateCanvasMetrics();
         renderFrameToCanvas(Math.round(currentFrameRef.current));
-      }, 50);
+      }, 60);
     };
 
+    lastWidthRef.current = window.innerWidth;
     updateCanvasMetrics();
     window.addEventListener('resize', handleResize, { passive: true });
-    window.addEventListener('orientationchange', handleResize, { passive: true });
+    window.addEventListener('orientationchange', () => {
+      setTimeout(() => {
+        lastWidthRef.current = window.innerWidth;
+        updateCanvasMetrics();
+        renderFrameToCanvas(Math.round(currentFrameRef.current));
+      }, 150);
+    }, { passive: true });
 
     return () => {
       clearTimeout(timeoutId);
       window.removeEventListener('resize', handleResize);
-      window.removeEventListener('orientationchange', handleResize);
     };
   }, [updateCanvasMetrics, renderFrameToCanvas]);
 
@@ -474,6 +504,7 @@ export const GlobalVideoCanvas = () => {
     <>
       {/* ── FIXED FULLSCREEN VIDEO CANVAS ── */}
       <div
+        className="fixed-canvas-bg"
         style={{
           position: 'fixed',
           top: 0,
@@ -481,7 +512,8 @@ export const GlobalVideoCanvas = () => {
           right: 0,
           bottom: 0,
           width: '100%',
-          height: '100dvh',
+          height: '100%',
+          minHeight: '100lvh',
           zIndex: 0,
           pointerEvents: 'none',
           overflow: 'hidden',
@@ -492,10 +524,10 @@ export const GlobalVideoCanvas = () => {
           ref={canvasRef}
           style={{
             position: 'absolute',
-            inset: 0,
+            top: 0,
+            left: 0,
             width: '100%',
             height: '100%',
-            objectFit: 'cover',
             transform: 'translateZ(0)', // Force dedicated GPU compositor layer
             willChange: 'contents',
           }}
