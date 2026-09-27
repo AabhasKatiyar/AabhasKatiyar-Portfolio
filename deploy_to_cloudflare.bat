@@ -4,13 +4,14 @@ echo ========================================================
 echo    DEPLOYING TO CLOUDFLARE PAGES (aabhaskatiyar-portfolio)
 echo ========================================================
 echo.
-echo 1. Ensuring production build is up to date...
+echo 1. Building production bundle...
 call npm run build
 echo.
-echo 2. Deploying dist folder to Cloudflare Pages project: aabhaskatiyar-portfolio...
+echo 2. Deploying dist folder to Cloudflare Pages...
 call npx wrangler pages deploy dist --project-name=aabhaskatiyar-portfolio
 echo.
 echo ========================================================
-echo Done! Check your live website at https://www.aabhaskatiyar.in
+echo Deployment complete!
+echo Live at: https://aabhaskatiyar-portfolio.pages.dev
 echo ========================================================
 pause

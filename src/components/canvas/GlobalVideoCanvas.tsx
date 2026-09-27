@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const TOTAL_FRAMES = 240;
@@ -8,57 +8,53 @@ export const GlobalVideoCanvas = () => {
 
   // Images cache
   const imagesRef = useRef<(HTMLImageElement | null)[]>(new Array(TOTAL_FRAMES).fill(null));
+  const lastDrawnImgRef = useRef<HTMLImageElement | null>(null);
   const [loadedCount, setLoadedCount] = useState(0);
   const [isInitialLoaded, setIsInitialLoaded] = useState(false);
 
-  // Scroll & Animation State
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [currentFrameDisplay, setCurrentFrameDisplay] = useState(0);
+  // HUD UI State (Only changes on user interaction, NEVER on every scroll frame!)
   const [isPlaying, setIsPlaying] = useState(false);
   const [hudMinimized, setHudMinimized] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
 
+  // Direct DOM Refs for 60fps/120fps HUD updates with ZERO React re-renders
+  const scrubberInputRef = useRef<HTMLInputElement>(null);
+  const frameNumberTextRef = useRef<HTMLElement>(null);
+  const percentTextRef = useRef<HTMLElement>(null);
+  const miniFrameTextRef = useRef<HTMLElement>(null);
+  const miniPercentTextRef = useRef<HTMLElement>(null);
+  const loadPercentTextRef = useRef<HTMLElement>(null);
+
+  // Animation & Metric Refs
   const targetFrameRef = useRef(0);
   const currentFrameRef = useRef(0);
+  const lastDrawnFrameRef = useRef(-1);
   const isPlayingRef = useRef(false);
 
-  // Fast frame path resolver (frame_0001.jpg to frame_0240.jpg)
+  // Pre-computed canvas layout metrics (calculated strictly on resize, never per-frame)
+  const metricsRef = useRef({
+    targetWidth: 0,
+    targetHeight: 0,
+    drawX: 0,
+    drawY: 0,
+    drawW: 0,
+    drawH: 0,
+  });
+
+  // Fast frame path resolver
   const getFrameUrl = useCallback((index: number) => {
     const frameNum = Math.max(1, Math.min(TOTAL_FRAMES, index + 1));
     const padded = String(frameNum).padStart(4, '0');
     return `/frames/frame_${padded}.jpg`;
   }, []);
 
-  // Helper to find nearest loaded image
-  const getNearestLoadedImage = useCallback((targetIdx: number): HTMLImageElement | null => {
-    const images = imagesRef.current;
-    if (images[targetIdx]?.complete && images[targetIdx]?.naturalWidth) {
-      return images[targetIdx];
-    }
-    // Search outward
-    for (let offset = 1; offset < TOTAL_FRAMES; offset++) {
-      const left = targetIdx - offset;
-      if (left >= 0 && images[left]?.complete && images[left]?.naturalWidth) {
-        return images[left];
-      }
-      const right = targetIdx + offset;
-      if (right < TOTAL_FRAMES && images[right]?.complete && images[right]?.naturalWidth) {
-        return images[right];
-      }
-    }
-    return images[0] || null;
-  }, []);
-
-  // Draw current frame to canvas with aspect-ratio cover
-  const renderFrameToCanvas = useCallback((frameIdx: number) => {
+  // Update canvas sizing & cover geometry once on resize
+  const updateCanvasMetrics = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d', { alpha: false });
-    if (!ctx) return;
 
-    const img = getNearestLoadedImage(frameIdx);
-    if (!img || !img.complete || img.naturalWidth === 0) return;
-
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const isTouch = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+    // Cap DPR to 1.5 on mobile to save GPU fill-rate, 2.0 on desktop
+    const dpr = Math.min(window.devicePixelRatio || 1, isTouch ? 1.5 : 2.0);
     const displayWidth = window.innerWidth;
     const displayHeight = window.innerHeight;
 
@@ -70,13 +66,11 @@ export const GlobalVideoCanvas = () => {
       canvas.height = targetHeight;
     }
 
-    // Cover calculation: 1920 x 1080
-    const imgWidth = img.naturalWidth || 1920;
-    const imgHeight = img.naturalHeight || 1080;
+    const imgWidth = 1920;
+    const imgHeight = 1080;
     const imgRatio = imgWidth / imgHeight;
     const canvasRatio = displayWidth / displayHeight;
 
-    // Aspect ratio & framing calculation
     let drawW: number;
     let drawH: number;
     let drawX: number;
@@ -85,26 +79,22 @@ export const GlobalVideoCanvas = () => {
     const isPortrait = canvasRatio < 1.0;
 
     if (isPortrait) {
-      // SMART MOBILE/PORTRAIT FRAMING:
-      // In 1920x1080 landscape, Aabhas's head and the halo occupy the central ~50% of the width.
-      // With simple cover on mobile, 74% of the width was cut off, zooming excessively into his face.
-      // Here we frame so his entire head, curly hair, shoulders, and the halo are comfortably visible!
-      const subjectSpan = 0.50; // Central subject width ratio
+      // Smart portrait framing:
+      // Focus on subject span comfortably without extreme zooming
+      const subjectSpan = 0.50;
       const targetSubjectWidth = Math.min(displayWidth * 0.94, 460);
       drawW = targetSubjectWidth / subjectSpan;
       drawH = drawW / imgRatio;
 
-      // Ensure good vertical presence on taller phones
       if (drawH < displayHeight * 0.54) {
         drawH = displayHeight * 0.54;
         drawW = drawH * imgRatio;
       }
 
       drawX = (displayWidth - drawW) / 2;
-      // Positioned nicely in the upper portion so the face frames behind the hero title
       drawY = (displayHeight - drawH) * 0.28;
     } else {
-      // Desktop / Landscape: full cinematic cover
+      // Desktop Cinematic Cover
       if (canvasRatio > imgRatio) {
         drawW = displayWidth;
         drawH = displayWidth / imgRatio;
@@ -118,134 +108,257 @@ export const GlobalVideoCanvas = () => {
       }
     }
 
-    // Fill canvas background before drawing image to eliminate any edge artifacts
-    ctx.fillStyle = '#070a13';
-    ctx.fillRect(0, 0, targetWidth, targetHeight);
+    metricsRef.current = {
+      targetWidth,
+      targetHeight,
+      drawX: Math.round(drawX * dpr),
+      drawY: Math.round(drawY * dpr),
+      drawW: Math.round(drawW * dpr),
+      drawH: Math.round(drawH * dpr),
+    };
 
-    ctx.drawImage(
-      img,
-      Math.round(drawX * dpr),
-      Math.round(drawY * dpr),
-      Math.round(drawW * dpr),
-      Math.round(drawH * dpr)
-    );
-  }, [getNearestLoadedImage]);
+    // Pre-fill canvas background
+    const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
+    if (ctx) {
+      ctx.fillStyle = '#070a13';
+      ctx.fillRect(0, 0, targetWidth, targetHeight);
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = isTouch ? 'low' : 'medium';
+    }
 
-  // Progressive Preloading
+    // Force redraw of current frame
+    lastDrawnFrameRef.current = -1;
+  }, []);
+
+  // Blazing-fast 0.1ms canvas draw call (Zero layout math, zero context recreation)
+  const renderFrameToCanvas = useCallback((frameIdx: number) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
+    if (!ctx) return;
+
+    // Pick target image or fallback to last successfully rendered frame
+    let img = imagesRef.current[frameIdx];
+    if (!img || !img.complete || img.naturalWidth === 0) {
+      // Outward search for nearest loaded keyframe if not ready yet
+      const images = imagesRef.current;
+      for (let offset = 1; offset < 16; offset++) {
+        const left = frameIdx - offset;
+        if (left >= 0 && images[left]?.complete && images[left]?.naturalWidth) {
+          img = images[left];
+          break;
+        }
+        const right = frameIdx + offset;
+        if (right < TOTAL_FRAMES && images[right]?.complete && images[right]?.naturalWidth) {
+          img = images[right];
+          break;
+        }
+      }
+      if (!img) img = lastDrawnImgRef.current;
+    }
+
+    if (!img || !img.complete || img.naturalWidth === 0) return;
+    lastDrawnImgRef.current = img;
+
+    const { drawX, drawY, drawW, drawH } = metricsRef.current;
+    ctx.drawImage(img, drawX, drawY, drawW, drawH);
+  }, []);
+
+  // High-performance progressive preloading with off-thread async Image.decode()
   useEffect(() => {
     let isCancelled = false;
 
-    const loadImage = (idx: number): Promise<HTMLImageElement> => {
-      return new Promise((resolve, reject) => {
-        if (imagesRef.current[idx]) {
-          return resolve(imagesRef.current[idx]!);
-        }
-        const img = new Image();
-        img.src = getFrameUrl(idx);
-        img.onload = () => {
-          if (!isCancelled) {
-            imagesRef.current[idx] = img;
-            setLoadedCount((prev) => prev + 1);
-            if (idx === 0) {
-              setIsInitialLoaded(true);
-              renderFrameToCanvas(0);
-            }
-          }
-          resolve(img);
-        };
-        img.onerror = reject;
-      });
+    const loadAndDecodeImage = async (idx: number): Promise<HTMLImageElement | null> => {
+      if (imagesRef.current[idx]) {
+        return imagesRef.current[idx];
+      }
+      const img = new Image();
+      img.src = getFrameUrl(idx);
+
+      try {
+        await img.decode();
+      } catch {
+        // Fallback for browsers or aborted decodes
+      }
+
+      if (isCancelled) return null;
+      imagesRef.current[idx] = img;
+      setLoadedCount((prev) => prev + 1);
+
+      if (idx === 0) {
+        setIsInitialLoaded(true);
+        updateCanvasMetrics();
+        renderFrameToCanvas(0);
+      }
+
+      return img;
     };
 
-    async function preloadAll() {
-      try {
-        // Step 1: Immediate first frame
-        await loadImage(0);
+    async function preloadPipeline() {
+      // 1. Immediate first frame
+      await loadAndDecodeImage(0);
+      if (isCancelled) return;
 
-        // Step 2: Keyframes every 4th frame (60 frames total)
-        const keyframes: number[] = [];
-        for (let i = 4; i < TOTAL_FRAMES; i += 4) {
-          keyframes.push(i);
-        }
+      // 2. High-priority first 20 frames (hero region)
+      for (let i = 1; i <= 20; i++) {
+        if (isCancelled) return;
+        await loadAndDecodeImage(i);
+      }
 
-        const chunkSize = 8;
-        for (let i = 0; i < keyframes.length; i += chunkSize) {
-          if (isCancelled) return;
-          const chunk = keyframes.slice(i, i + chunkSize);
-          await Promise.allSettled(chunk.map((idx) => loadImage(idx)));
-        }
+      // 3. Keyframes spaced every 4th frame (enables smooth scrubbing before 100% download)
+      const keyframes: number[] = [];
+      for (let i = 24; i < TOTAL_FRAMES; i += 4) {
+        keyframes.push(i);
+      }
+      for (let i = 0; i < keyframes.length; i += 4) {
+        if (isCancelled) return;
+        const chunk = keyframes.slice(i, i + 4);
+        await Promise.allSettled(chunk.map((idx) => loadAndDecodeImage(idx)));
+        // Yield 8ms to the event loop so UI stays 100% silky responsive
+        await new Promise((r) => setTimeout(r, 8));
+      }
 
-        // Step 3: All remaining frames
-        const remaining: number[] = [];
-        for (let i = 1; i < TOTAL_FRAMES; i++) {
-          if (i % 4 !== 0) {
-            remaining.push(i);
-          }
+      // 4. Fill in all remaining in-between frames in throttled batches of 4
+      const remaining: number[] = [];
+      for (let i = 1; i < TOTAL_FRAMES; i++) {
+        if (!imagesRef.current[i]) {
+          remaining.push(i);
         }
+      }
 
-        for (let i = 0; i < remaining.length; i += chunkSize) {
-          if (isCancelled) return;
-          const chunk = remaining.slice(i, i + chunkSize);
-          await Promise.allSettled(chunk.map((idx) => loadImage(idx)));
-        }
-      } catch (err) {
-        console.warn('Frame loading notice:', err);
+      for (let i = 0; i < remaining.length; i += 4) {
+        if (isCancelled) return;
+        const chunk = remaining.slice(i, i + 4);
+        await Promise.allSettled(chunk.map((idx) => loadAndDecodeImage(idx)));
+        await new Promise((r) => setTimeout(r, 12));
       }
     }
 
-    preloadAll();
+    preloadPipeline();
 
     return () => {
       isCancelled = true;
     };
-  }, [getFrameUrl, renderFrameToCanvas]);
+  }, [getFrameUrl, renderFrameToCanvas, updateCanvasMetrics]);
 
-  // Global Full-Page Scroll Listener (Supports both Native Touch and Lenis Events)
+  // Window resize & orientation change handler
   useEffect(() => {
-    const updateFromScroll = () => {
-      const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
-      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-      const progress = Math.max(0, Math.min(1, scrollY / maxScroll));
-
-      setScrollProgress(progress);
-      targetFrameRef.current = Math.round(progress * (TOTAL_FRAMES - 1));
+    let timeoutId: number;
+    const handleResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = window.setTimeout(() => {
+        updateCanvasMetrics();
+        renderFrameToCanvas(Math.round(currentFrameRef.current));
+      }, 50);
     };
 
-    // 1. Native scroll & touch events
-    window.addEventListener('scroll', updateFromScroll, { passive: true });
-    window.addEventListener('touchmove', updateFromScroll, { passive: true });
+    updateCanvasMetrics();
+    window.addEventListener('resize', handleResize, { passive: true });
+    window.addEventListener('orientationchange', handleResize, { passive: true });
 
-    // 2. Hook directly into Lenis for mobile touch synchronization
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleResize);
+    };
+  }, [updateCanvasMetrics, renderFrameToCanvas]);
+
+  // Unified Scroll Position Listener (Zero React Re-renders!)
+  useEffect(() => {
     let unbindLenis: (() => void) | undefined;
+
+    const onScrollPosition = (progress: number) => {
+      const clamped = Math.max(0, Math.min(1, progress));
+      targetFrameRef.current = clamped * (TOTAL_FRAMES - 1);
+    };
+
+    // Native scroll fallback
+    const handleNativeScroll = () => {
+      const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      onScrollPosition(scrollY / maxScroll);
+    };
+
     let retryCount = 0;
-    const bindLenis = () => {
+    const connectLenis = () => {
       const lenis = window.__lenis;
       if (lenis) {
         unbindLenis = lenis.on('scroll', (e: { progress?: number; scroll?: number; limit?: number }) => {
           const p = typeof e.progress === 'number'
             ? e.progress
             : (e.scroll !== undefined && e.limit ? e.scroll / Math.max(1, e.limit) : 0);
-          const clamped = Math.max(0, Math.min(1, p));
-          setScrollProgress(clamped);
-          targetFrameRef.current = Math.round(clamped * (TOTAL_FRAMES - 1));
+          onScrollPosition(p);
         });
-      } else if (retryCount < 20) {
+      } else if (retryCount < 25) {
         retryCount++;
-        setTimeout(bindLenis, 80);
+        setTimeout(connectLenis, 60);
       }
     };
-    bindLenis();
 
-    updateFromScroll();
+    connectLenis();
+    window.addEventListener('scroll', handleNativeScroll, { passive: true });
+    handleNativeScroll();
 
     return () => {
-      window.removeEventListener('scroll', updateFromScroll);
-      window.removeEventListener('touchmove', updateFromScroll);
+      window.removeEventListener('scroll', handleNativeScroll);
       if (unbindLenis) unbindLenis();
     };
   }, []);
 
-  // Handle Auto-Scroll through Lenis for zero-jitter, 60fps velocity
+  // Silky 60fps/120fps Animation Loop with Adaptive Continuous Lerp
+  useEffect(() => {
+    let animId: number;
+
+    const loop = () => {
+      const diff = targetFrameRef.current - currentFrameRef.current;
+      const absDiff = Math.abs(diff);
+
+      if (absDiff < 0.005) {
+        currentFrameRef.current = targetFrameRef.current;
+      } else {
+        // Dynamic adaptive smoothing:
+        // Speeds up during fast scrolls to prevent rubber-banding lag,
+        // softens down during micro-scrolls for cinematic analog smoothness.
+        const factor = absDiff > 18 ? 0.40 : absDiff > 6 ? 0.30 : 0.22;
+        currentFrameRef.current += diff * factor;
+      }
+
+      const roundedFrame = Math.round(currentFrameRef.current);
+
+      if (roundedFrame !== lastDrawnFrameRef.current) {
+        lastDrawnFrameRef.current = roundedFrame;
+        renderFrameToCanvas(roundedFrame);
+
+        // Update HUD elements directly in the DOM without triggering React re-renders!
+        const pct = Math.round((roundedFrame / (TOTAL_FRAMES - 1)) * 100);
+        const framePadded = String(roundedFrame + 1).padStart(3, '0');
+
+        if (frameNumberTextRef.current) {
+          frameNumberTextRef.current.textContent = framePadded;
+        }
+        if (percentTextRef.current) {
+          percentTextRef.current.textContent = `${pct}%`;
+        }
+        if (miniFrameTextRef.current) {
+          miniFrameTextRef.current.textContent = `FRM ${framePadded}`;
+        }
+        if (miniPercentTextRef.current) {
+          miniPercentTextRef.current.textContent = `(${pct}%)`;
+        }
+        if (scrubberInputRef.current) {
+          scrubberInputRef.current.value = String(roundedFrame);
+          scrubberInputRef.current.style.background = `linear-gradient(to right, #00e87a 0%, #00e87a ${pct}%, rgba(255,255,255,0.15) ${pct}%, rgba(255,255,255,0.15) 100%)`;
+        }
+      }
+
+      animId = requestAnimationFrame(loop);
+    };
+
+    animId = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(animId);
+  }, [renderFrameToCanvas]);
+
+  // Handle Auto-Scroll through Lenis
   useEffect(() => {
     isPlayingRef.current = isPlaying;
 
@@ -254,7 +367,6 @@ export const GlobalVideoCanvas = () => {
       const currentY = window.scrollY;
       const remaining = Math.max(0, maxScroll - currentY);
 
-      // If already at or near bottom, wrap to top first
       if (remaining < 20) {
         if (window.__lenis) {
           window.__lenis.scrollTo(0, { immediate: true });
@@ -266,19 +378,17 @@ export const GlobalVideoCanvas = () => {
       const lenis = window.__lenis;
       if (lenis) {
         const distance = remaining < 20 ? maxScroll : remaining;
-        // ~200px per second for smooth, pleasant reading and scrubbing
-        const duration = Math.max(2, distance / 200);
+        const duration = Math.max(2, distance / 220);
 
         lenis.scrollTo(maxScroll, {
           duration,
-          easing: (t: number) => t, // Perfectly linear constant speed
+          easing: (t: number) => t,
           onComplete: () => {
             setIsPlaying(false);
           },
         });
       }
     } else {
-      // Pause lenis programmatic scroll
       if (window.__lenis) {
         window.__lenis.stop();
         window.__lenis.start();
@@ -286,7 +396,7 @@ export const GlobalVideoCanvas = () => {
     }
   }, [isPlaying]);
 
-  // Pause auto-scroll on user manual touch/wheel interaction
+  // Pause auto-scroll on manual user interaction
   useEffect(() => {
     const handleUserInteract = () => {
       if (isPlayingRef.current) {
@@ -296,56 +406,12 @@ export const GlobalVideoCanvas = () => {
 
     window.addEventListener('wheel', handleUserInteract, { passive: true });
     window.addEventListener('touchstart', handleUserInteract, { passive: true });
-    window.addEventListener('touchmove', handleUserInteract, { passive: true });
 
     return () => {
       window.removeEventListener('wheel', handleUserInteract);
       window.removeEventListener('touchstart', handleUserInteract);
-      window.removeEventListener('touchmove', handleUserInteract);
     };
   }, []);
-
-  // Smooth Lerp Animation Loop with Frame Deduplication
-  const lastDrawnFrameRef = useRef(-1);
-
-  useEffect(() => {
-    let animId: number;
-    const isTouch = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
-    const lerpFactor = isTouch ? 0.45 : 0.28;
-
-    const loop = () => {
-      // Lerp towards scroll position
-      const diff = targetFrameRef.current - currentFrameRef.current;
-      if (Math.abs(diff) < 0.05) {
-        currentFrameRef.current = targetFrameRef.current;
-      } else {
-        currentFrameRef.current += diff * lerpFactor;
-      }
-
-      const roundedFrame = Math.round(currentFrameRef.current);
-      // Only render & trigger state update if frame actually changed
-      if (roundedFrame !== lastDrawnFrameRef.current) {
-        lastDrawnFrameRef.current = roundedFrame;
-        renderFrameToCanvas(roundedFrame);
-        setCurrentFrameDisplay(roundedFrame);
-      }
-
-      animId = requestAnimationFrame(loop);
-    };
-
-    animId = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(animId);
-  }, [renderFrameToCanvas]);
-
-  // Window resize handler
-  useEffect(() => {
-    const handleResize = () => {
-      lastDrawnFrameRef.current = -1; // Force redraw on resize
-      renderFrameToCanvas(Math.round(currentFrameRef.current));
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [renderFrameToCanvas]);
 
   // Scrubber drag handler
   const handleScrubChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -354,7 +420,6 @@ export const GlobalVideoCanvas = () => {
     targetFrameRef.current = frame;
     currentFrameRef.current = frame;
     const progress = frame / (TOTAL_FRAMES - 1);
-    setScrollProgress(progress);
 
     const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
     const targetScrollY = progress * maxScroll;
@@ -409,6 +474,8 @@ export const GlobalVideoCanvas = () => {
             width: '100%',
             height: '100%',
             objectFit: 'cover',
+            transform: 'translateZ(0)', // Force dedicated GPU compositor layer
+            willChange: 'contents',
           }}
         />
 
@@ -417,7 +484,7 @@ export const GlobalVideoCanvas = () => {
           {!isInitialLoaded && (
             <motion.div
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.5 }}
               style={{
                 position: 'absolute',
                 inset: 0,
@@ -456,7 +523,6 @@ export const GlobalVideoCanvas = () => {
         </AnimatePresence>
 
         {/* ── CINEMATIC AESTHETIC OVERLAYS ── */}
-        {/* Contrast Scrim: allows halo and silhouette to shine while keeping foreground text razor sharp */}
         <div
           aria-hidden
           style={{
@@ -467,7 +533,6 @@ export const GlobalVideoCanvas = () => {
           }}
         />
 
-        {/* Radial Vignette */}
         <div
           aria-hidden
           style={{
@@ -478,7 +543,6 @@ export const GlobalVideoCanvas = () => {
           }}
         />
 
-        {/* Subtle Architectural Coordinate Grid */}
         <div
           aria-hidden
           style={{
@@ -538,8 +602,8 @@ export const GlobalVideoCanvas = () => {
                 animation: 'pulse-dot 2s infinite',
               }}
             />
-            <span>FRM {String(currentFrameDisplay + 1).padStart(3, '0')}</span>
-            <span style={{ color: '#666' }}>({Math.round(scrollProgress * 100)}%)</span>
+            <span ref={miniFrameTextRef}>FRM 001</span>
+            <span ref={miniPercentTextRef} style={{ color: '#666' }}>(0%)</span>
             <span style={{ color: '#888', fontSize: '0.55rem' }}>[EXPAND]</span>
           </div>
         ) : (
@@ -644,12 +708,14 @@ export const GlobalVideoCanvas = () => {
                 }}
               >
                 <span>
-                  FRAME <strong style={{ color: '#00e87a' }}>{String(currentFrameDisplay + 1).padStart(3, '0')}</strong> / 240
+                  FRAME <strong ref={frameNumberTextRef} style={{ color: '#00e87a' }}>001</strong> / 240
                 </span>
                 <span style={{ color: 'rgba(255,255,255,0.2)' }}>•</span>
-                <span style={{ color: '#f0ede6' }}>{Math.round(scrollProgress * 100)}%</span>
+                <span ref={percentTextRef} style={{ color: '#f0ede6' }}>0%</span>
                 {loadPercent < 100 && (
-                  <span style={{ color: '#c8ff00', fontSize: '0.56rem' }}>({loadPercent}%)</span>
+                  <span ref={loadPercentTextRef} style={{ color: '#c8ff00', fontSize: '0.56rem' }}>
+                    ({loadPercent}%)
+                  </span>
                 )}
                 <button
                   onClick={() => setHudMinimized(true)}
@@ -673,17 +739,18 @@ export const GlobalVideoCanvas = () => {
             {/* Bottom Scrubber Input */}
             <div style={{ position: 'relative', width: '100%', display: 'flex', alignItems: 'center' }}>
               <input
+                ref={scrubberInputRef}
                 type="range"
                 min="0"
                 max={TOTAL_FRAMES - 1}
-                value={currentFrameDisplay}
+                defaultValue="0"
                 onChange={handleScrubChange}
                 style={{
                   width: '100%',
                   height: 3,
                   WebkitAppearance: 'none',
                   appearance: 'none',
-                  background: `linear-gradient(to right, #00e87a 0%, #00e87a ${scrollProgress * 100}%, rgba(255,255,255,0.15) ${scrollProgress * 100}%, rgba(255,255,255,0.15) 100%)`,
+                  background: 'linear-gradient(to right, #00e87a 0%, #00e87a 0%, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.15) 100%)',
                   borderRadius: 2,
                   outline: 'none',
                   cursor: 'pointer',
