@@ -123,32 +123,32 @@ export const GymLane = () => {
             <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#00e87a', display: 'block', marginBottom: '0.5rem' }}>
               04 — Projects · GymLane
             </span>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.75rem, 4vw, 3rem)', fontWeight: 700, letterSpacing: '-0.01em', lineHeight: 1.15, color: '#f0ede6', margin: 0 }}>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.75rem, 4vw, 3rem)', fontWeight: 700, letterSpacing: '-0.01em', lineHeight: 1.15, color: '#ffffff', margin: 0 }}>
               Multi-tenant Gym Management SaaS
             </h2>
           </div>
 
           {/* Case study grid */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#ff3d6e' }}>Problem</span>
-              <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.875rem', color: '#666', lineHeight: 1.6, margin: 0 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#ff3d6e', fontWeight: 600 }}>Problem</span>
+              <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.9375rem', color: '#cbd5e1', lineHeight: 1.65, margin: 0 }}>
                 Gym owners lose revenue when members access facilities on expired plans — manual registers are error-prone and don't scale.
               </p>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#00e87a' }}>Solution</span>
-              <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.875rem', color: '#666', lineHeight: 1.6, margin: 0 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#00e87a', fontWeight: 600 }}>Solution</span>
+              <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.9375rem', color: '#cbd5e1', lineHeight: 1.65, margin: 0 }}>
                 Real-time dashboard with QR check-in simulation, live MRR tracking, and PostgreSQL Row Level Security enforcing true multi-tenant data isolation at the database layer.
               </p>
             </div>
           </div>
 
           {/* Tech stack */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', alignItems: 'center' }}>
-            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#333', letterSpacing: '0.1em', textTransform: 'uppercase', marginRight: '0.25rem' }}>Stack</span>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', alignItems: 'center' }}>
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', color: '#94a3b8', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', marginRight: '0.25rem' }}>Stack</span>
             {GYMLANE_TECH.map((t) => (
-              <span key={t} style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#555', border: '1px solid rgba(0,232,122,0.15)', background: 'rgba(0,232,122,0.04)', padding: '0.2rem 0.6rem', borderRadius: 4 }}>{t}</span>
+              <span key={t} style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.6875rem', fontWeight: 500, color: '#f8fafc', border: '1px solid rgba(0,232,122,0.35)', background: 'rgba(0,232,122,0.08)', padding: '0.25rem 0.65rem', borderRadius: 5 }}>{t}</span>
             ))}
           </div>
 
@@ -184,20 +184,20 @@ export const GymLane = () => {
                 display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
                 fontFamily: 'JetBrains Mono, monospace', fontSize: '0.6875rem', fontWeight: 700,
                 padding: '0.65rem 1.4rem', borderRadius: 7, cursor: 'pointer',
-                border: previewOpen ? '1px solid rgba(0,232,122,0.5)' : '1px solid rgba(255,255,255,0.1)',
-                background: previewOpen ? '#00e87a' : 'rgba(255,255,255,0.03)',
-                color: previewOpen ? '#060d08' : '#888',
+                border: previewOpen ? '1px solid rgba(0,232,122,0.5)' : '1px solid rgba(255,255,255,0.22)',
+                background: previewOpen ? '#00e87a' : 'rgba(255,255,255,0.08)',
+                color: previewOpen ? '#060d08' : '#f8fafc',
                 transition: 'all 0.3s cubic-bezier(0.16,1,0.3,1)',
                 boxShadow: previewOpen ? '0 4px 20px rgba(0,232,122,0.3)' : 'none',
               }}
-              onMouseEnter={(e) => { if (!previewOpen) { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = '#fff'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
-              onMouseLeave={(e) => { if (!previewOpen) { e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; e.currentTarget.style.color = '#888'; e.currentTarget.style.transform = 'translateY(0)'; } }}
+              onMouseEnter={(e) => { if (!previewOpen) { e.currentTarget.style.background = 'rgba(255,255,255,0.14)'; e.currentTarget.style.color = '#fff'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
+              onMouseLeave={(e) => { if (!previewOpen) { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = '#f8fafc'; e.currentTarget.style.transform = 'translateY(0)'; } }}
             >
               {previewOpen ? '↑ Close Preview' : '🌐 Live Preview'}
             </button>
 
             {!sandboxOpen && !previewOpen && (
-              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#2a2a2a', letterSpacing: '0.08em' }}>
+              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', color: '#94a3b8', letterSpacing: '0.08em', fontWeight: 500 }}>
                 Test interactive dashboard or open live website
               </span>
             )}
@@ -237,7 +237,7 @@ export const GymLane = () => {
               <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', color: '#ff3d6e', fontWeight: 700, letterSpacing: '-0.01em', marginBottom: '0.75rem' }}>
                 The Traditional Friction
               </h3>
-              <p style={{ fontSize: '0.9375rem', color: '#888', lineHeight: 1.7 }}>
+              <p style={{ fontSize: '1rem', color: '#e2e8f0', lineHeight: 1.7 }}>
                 Gym owners lose revenue when members access facilities on expired plans because checking registers manually is error-prone. Keeping track of hundreds of renewals via spreadsheets leads to leakages.
               </p>
             </div>
@@ -252,19 +252,19 @@ export const GymLane = () => {
                   whileHover={{ scale: 1.02, translateY: -4 }}
                   transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                   style={{
-                    background: 'rgba(255,61,110,0.04)',
-                    border: '1px solid rgba(255,61,110,0.15)',
+                    background: 'rgba(255,61,110,0.06)',
+                    border: '1px solid rgba(255,61,110,0.22)',
                     borderRadius: 10,
-                    padding: '1rem',
+                    padding: '1.1rem',
                     fontFamily: 'JetBrains Mono, monospace',
-                    fontSize: '0.6875rem',
+                    fontSize: '0.75rem',
                     backdropFilter: 'blur(12px)',
                     cursor: 'default',
                     transition: 'box-shadow 0.4s ease',
                   }}
                 >
-                  <div style={{ color: '#ff3d6e', marginBottom: '0.3rem' }}>{item.icon} {item.title}</div>
-                  <div style={{ color: '#555', lineHeight: 1.5 }}>{item.desc}</div>
+                  <div style={{ color: '#ff3d6e', marginBottom: '0.4rem', fontWeight: 600 }}>{item.icon} {item.title}</div>
+                  <div style={{ color: '#cbd5e1', lineHeight: 1.6, fontSize: '0.8125rem' }}>{item.desc}</div>
                 </motion.div>
               ))}
             </div>
@@ -325,19 +325,19 @@ export const GymLane = () => {
                   style={{
                     cursor: 'pointer',
                     borderRadius: 10,
-                    border: activeLayer === layer.key ? '1px solid #00e87a' : '1px solid rgba(255,255,255,0.07)',
-                    background: activeLayer === layer.key ? 'rgba(0,232,122,0.06)' : 'rgba(15,15,15,0.65)',
-                    padding: '1rem 1.25rem',
-                    backdropFilter: 'blur(16px)',
-                    boxShadow: activeLayer === layer.key ? '0 0 20px rgba(0,232,122,0.12), inset 0 0 30px rgba(0,232,122,0.03)' : 'none',
+                    border: activeLayer === layer.key ? '1px solid #00e87a' : '1px solid rgba(255,255,255,0.14)',
+                    background: activeLayer === layer.key ? 'rgba(0,232,122,0.08)' : 'rgba(13,17,28,0.85)',
+                    padding: '1.1rem 1.35rem',
+                    backdropFilter: 'blur(20px)',
+                    boxShadow: activeLayer === layer.key ? '0 0 20px rgba(0,232,122,0.18), inset 0 0 30px rgba(0,232,122,0.05)' : 'none',
                     transition: 'all 0.45s cubic-bezier(0.16, 1, 0.3, 1)',
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                    <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#00e87a', letterSpacing: '0.1em' }}>{layer.label}</span>
-                    <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.45rem', color: '#444' }}>{layer.tech}</span>
+                    <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#00e87a', letterSpacing: '0.1em', fontWeight: 600 }}>{layer.label}</span>
+                    <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#94a3b8', fontWeight: 500 }}>{layer.tech}</span>
                   </div>
-                  <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '0.875rem', color: '#fff', fontWeight: 700, letterSpacing: '-0.01em' }}>{layer.title}</h4>
+                  <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '0.9375rem', color: '#fff', fontWeight: 700, letterSpacing: '-0.01em' }}>{layer.title}</h4>
                 </motion.div>
               ))}
 
@@ -346,16 +346,17 @@ export const GymLane = () => {
                 style={{
                   alignSelf: 'flex-start',
                   fontFamily: 'JetBrains Mono, monospace',
-                  fontSize: '0.5625rem',
-                  color: '#444',
+                  fontSize: '0.625rem',
+                  color: '#94a3b8',
                   background: 'transparent',
                   border: 'none',
                   cursor: 'pointer',
                   transition: 'color 0.3s ease',
                   marginTop: '0.5rem',
+                  fontWeight: 500,
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = '#888')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = '#444')}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#f8fafc')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = '#94a3b8')}
               >
                 ← View Problem Statement
               </button>
@@ -379,11 +380,11 @@ export const GymLane = () => {
               <AnimatePresence mode="wait">
                 {activeLayer === 'ui' && (
                   <motion.div key="ui" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.6rem' }}>
-                      <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#888' }}>Live Dashboard Preview</span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.6rem' }}>
+                      <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', color: '#cbd5e1', fontWeight: 600 }}>Live Dashboard Preview</span>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                        <span style={{ display: 'block', width: 5, height: 5, borderRadius: '50%', background: '#00e87a', boxShadow: '0 0 6px #00e87a', animation: 'pulse-dot 2s ease-in-out infinite' }} />
-                        <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#00e87a' }}>MRR: ₹{totalMRR.toLocaleString('en-IN')}</span>
+                        <span style={{ display: 'block', width: 6, height: 6, borderRadius: '50%', background: '#00e87a', boxShadow: '0 0 8px #00e87a', animation: 'pulse-dot 2s ease-in-out infinite' }} />
+                        <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', color: '#00e87a', fontWeight: 600 }}>MRR: ₹{totalMRR.toLocaleString('en-IN')}</span>
                       </div>
                     </div>
 
@@ -392,12 +393,13 @@ export const GymLane = () => {
                         onClick={() => setShowForm(!showForm)}
                         style={{
                           fontFamily: 'JetBrains Mono, monospace',
-                          fontSize: '0.5625rem',
-                          padding: '0.3rem 0.7rem',
+                          fontSize: '0.625rem',
+                          padding: '0.35rem 0.8rem',
                           borderRadius: 5,
-                          border: '1px solid rgba(0,232,122,0.4)',
-                          background: 'rgba(0,232,122,0.07)',
+                          border: '1px solid rgba(0,232,122,0.5)',
+                          background: 'rgba(0,232,122,0.1)',
                           color: '#00e87a',
+                          fontWeight: 600,
                           cursor: 'pointer',
                           transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                         }}
@@ -407,7 +409,7 @@ export const GymLane = () => {
                           e.currentTarget.style.boxShadow = '0 0 16px rgba(0,232,122,0.35)';
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.background = 'rgba(0,232,122,0.07)';
+                          e.currentTarget.style.background = 'rgba(0,232,122,0.1)';
                           e.currentTarget.style.color = '#00e87a';
                           e.currentTarget.style.boxShadow = 'none';
                         }}
@@ -418,24 +420,25 @@ export const GymLane = () => {
                         onClick={simulateScan}
                         style={{
                           fontFamily: 'JetBrains Mono, monospace',
-                          fontSize: '0.5625rem',
-                          padding: '0.3rem 0.7rem',
+                          fontSize: '0.625rem',
+                          padding: '0.35rem 0.8rem',
                           borderRadius: 5,
-                          border: '1px solid rgba(255,255,255,0.08)',
-                          background: 'transparent',
-                          color: '#666',
+                          border: '1px solid rgba(255,255,255,0.2)',
+                          background: 'rgba(255,255,255,0.05)',
+                          color: '#cbd5e1',
+                          fontWeight: 500,
                           cursor: 'pointer',
                           transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)';
-                          e.currentTarget.style.color = '#f0ede6';
-                          e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
+                          e.currentTarget.style.borderColor = 'rgba(255,255,255,0.4)';
+                          e.currentTarget.style.color = '#ffffff';
+                          e.currentTarget.style.background = 'rgba(255,255,255,0.12)';
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
-                          e.currentTarget.style.color = '#666';
-                          e.currentTarget.style.background = 'transparent';
+                          e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)';
+                          e.currentTarget.style.color = '#cbd5e1';
+                          e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
                         }}
                       >
                         Simulate QR Check-in
@@ -449,7 +452,7 @@ export const GymLane = () => {
                           initial={{ opacity: 0, height: 0 }}
                           animate={{ opacity: 1, height: 'auto' }}
                           exit={{ opacity: 0, height: 0 }}
-                          style={{ display: 'flex', gap: '0.4rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', padding: '0.5rem', borderRadius: 7, overflow: 'hidden' }}
+                          style={{ display: 'flex', gap: '0.4rem', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.12)', padding: '0.6rem', borderRadius: 7, overflow: 'hidden' }}
                         >
                           <input
                             value={form.name}
@@ -457,12 +460,12 @@ export const GymLane = () => {
                             placeholder="Name"
                             style={{
                               flex: 1,
-                              background: 'rgba(10,10,10,0.6)',
-                              border: '1px solid rgba(255,255,255,0.08)',
-                              padding: '0.25rem 0.5rem',
+                              background: 'rgba(10,10,10,0.8)',
+                              border: '1px solid rgba(255,255,255,0.15)',
+                              padding: '0.3rem 0.6rem',
                               borderRadius: 4,
                               color: '#fff',
-                              fontSize: '0.625rem',
+                              fontSize: '0.6875rem',
                               fontFamily: 'JetBrains Mono, monospace',
                               outline: 'none',
                               transition: 'border-color 0.3s ease',
@@ -472,20 +475,20 @@ export const GymLane = () => {
                               e.currentTarget.style.boxShadow = '0 0 12px rgba(0,232,122,0.12)';
                             }}
                             onBlur={(e) => {
-                              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)';
                               e.currentTarget.style.boxShadow = 'none';
                             }}
                           />
                           <select
                             value={form.plan}
                             onChange={(e) => setForm({ ...form, plan: e.target.value })}
-                            style={{ background: '#0a100b', border: '1px solid rgba(255,255,255,0.08)', color: '#888', fontSize: '0.625rem', fontFamily: 'JetBrains Mono, monospace', outline: 'none', borderRadius: 4, padding: '0.25rem 0.3rem' }}
+                            style={{ background: '#0a100b', border: '1px solid rgba(255,255,255,0.15)', color: '#f8fafc', fontSize: '0.6875rem', fontFamily: 'JetBrains Mono, monospace', outline: 'none', borderRadius: 4, padding: '0.3rem 0.4rem' }}
                           >
                             {PLANS.map((p) => <option key={p} value={p}>{p}</option>)}
                           </select>
                           <button
                             type="submit"
-                            style={{ background: '#00e87a', color: '#060d08', border: 'none', padding: '0.25rem 0.6rem', borderRadius: 4, fontSize: '0.625rem', fontFamily: 'JetBrains Mono, monospace', cursor: 'pointer', fontWeight: 700, transition: 'all 0.3s ease' }}
+                            style={{ background: '#00e87a', color: '#060d08', border: 'none', padding: '0.3rem 0.75rem', borderRadius: 4, fontSize: '0.6875rem', fontFamily: 'JetBrains Mono, monospace', cursor: 'pointer', fontWeight: 700, transition: 'all 0.3s ease' }}
                             onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 0 12px rgba(0,232,122,0.4)'; }}
                             onMouseLeave={(e) => { e.currentTarget.style.boxShadow = 'none'; }}
                           >
@@ -496,11 +499,11 @@ export const GymLane = () => {
                     </AnimatePresence>
 
                     <div style={{ overflowX: 'auto' }}>
-                      <table style={{ width: '100%', fontSize: '0.5625rem', fontFamily: 'JetBrains Mono, monospace', borderCollapse: 'collapse' }}>
+                      <table style={{ width: '100%', fontSize: '0.625rem', fontFamily: 'JetBrains Mono, monospace', borderCollapse: 'collapse' }}>
                         <thead>
-                          <tr style={{ color: '#444', textAlign: 'left', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+                          <tr style={{ color: '#94a3b8', textAlign: 'left', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
                             {['ID', 'NAME', 'PLAN', 'STATUS'].map((h) => (
-                              <th key={h} style={{ padding: '0.3rem 0.4rem', letterSpacing: '0.08em' }}>{h}</th>
+                              <th key={h} style={{ padding: '0.35rem 0.45rem', letterSpacing: '0.08em', fontWeight: 600 }}>{h}</th>
                             ))}
                           </tr>
                         </thead>
@@ -513,12 +516,12 @@ export const GymLane = () => {
                                 animate={{ opacity: 1, x: 0 }}
                                 exit={{ opacity: 0, x: 8 }}
                                 transition={{ duration: 0.3 }}
-                                style={{ borderBottom: '1px solid rgba(255,255,255,0.02)' }}
+                                style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}
                               >
-                                <td style={{ padding: '0.3rem 0.4rem', color: '#2a4a2e' }}>{m.id}</td>
-                                <td style={{ padding: '0.3rem 0.4rem', color: '#f0ede6' }}>{m.name}</td>
-                                <td style={{ padding: '0.3rem 0.4rem', color: '#555' }}>{m.plan}</td>
-                                <td style={{ padding: '0.3rem 0.4rem' }}>
+                                <td style={{ padding: '0.35rem 0.45rem', color: '#4ade80' }}>{m.id}</td>
+                                <td style={{ padding: '0.35rem 0.45rem', color: '#ffffff', fontWeight: 500 }}>{m.name}</td>
+                                <td style={{ padding: '0.35rem 0.45rem', color: '#cbd5e1' }}>{m.plan}</td>
+                                <td style={{ padding: '0.35rem 0.45rem' }}>
                                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                                     {/* Pulsing status dot */}
                                     <span
@@ -547,27 +550,27 @@ export const GymLane = () => {
 
                 {activeLayer === 'jwt' && (
                   <motion.div key="jwt" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#888', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.5rem', display: 'block' }}>JWT Token Decode</span>
+                    <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', color: '#cbd5e1', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.5rem', display: 'block' }}>JWT Token Decode</span>
                     <div
                       style={{
                         background: 'rgba(7, 12, 8, 0.9)',
-                        border: '1px solid rgba(0,232,122,0.12)',
+                        border: '1px solid rgba(0,232,122,0.18)',
                         padding: '1rem',
                         borderRadius: 8,
                         fontFamily: 'JetBrains Mono, monospace',
-                        fontSize: '0.625rem',
+                        fontSize: '0.6875rem',
                         lineHeight: 1.7,
                         color: '#a0c0a0',
                         boxShadow: 'inset 0 0 20px rgba(0,232,122,0.03)',
                       }}
                     >
                       <div>{'{'}</div>
-                      <div style={{ paddingLeft: '1rem' }}><span style={{ color: '#555' }}>"iss"</span>: <span style={{ color: '#00e87a' }}>"supabase_auth"</span>,</div>
-                      <div style={{ paddingLeft: '1rem' }}><span style={{ color: '#555' }}>"role"</span>: <span style={{ color: '#00e87a' }}>"authenticated"</span>,</div>
-                      <div style={{ paddingLeft: '1rem' }}><span style={{ color: '#555' }}>"gym_id"</span>: <span style={{ color: '#f59e0b' }}>"gym_81bf28ac"</span></div>
+                      <div style={{ paddingLeft: '1rem' }}><span style={{ color: '#94a3b8' }}>"iss"</span>: <span style={{ color: '#00e87a' }}>"supabase_auth"</span>,</div>
+                      <div style={{ paddingLeft: '1rem' }}><span style={{ color: '#94a3b8' }}>"role"</span>: <span style={{ color: '#00e87a' }}>"authenticated"</span>,</div>
+                      <div style={{ paddingLeft: '1rem' }}><span style={{ color: '#94a3b8' }}>"gym_id"</span>: <span style={{ color: '#f59e0b' }}>"gym_81bf28ac"</span></div>
                       <div>{'}'}</div>
                     </div>
-                    <p style={{ fontSize: '0.75rem', color: '#555', lineHeight: 1.65 }}>
+                    <p style={{ fontSize: '0.8125rem', color: '#cbd5e1', lineHeight: 1.65 }}>
                       JWT keys verify who is calling the endpoints. This isolates data parameters seamlessly.
                     </p>
                   </motion.div>
@@ -575,15 +578,15 @@ export const GymLane = () => {
 
                 {activeLayer === 'postgres' && (
                   <motion.div key="postgres" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#888', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.5rem', display: 'block' }}>Postgres RLS Policy SQL</span>
+                    <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', color: '#cbd5e1', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.5rem', display: 'block' }}>Postgres RLS Policy SQL</span>
                     <div
                       style={{
                         background: 'rgba(5, 10, 6, 0.95)',
-                        border: '1px solid rgba(0,232,122,0.12)',
+                        border: '1px solid rgba(0,232,122,0.18)',
                         padding: '1rem',
                         borderRadius: 8,
                         fontFamily: 'JetBrains Mono, monospace',
-                        fontSize: '0.625rem',
+                        fontSize: '0.6875rem',
                         lineHeight: 1.8,
                         color: '#00e87a',
                         boxShadow: 'inset 0 0 20px rgba(0,232,122,0.03)',
@@ -595,7 +598,7 @@ export const GymLane = () => {
                       &nbsp;&nbsp;gym_id = auth.jwt() -&gt;&gt; <span style={{ color: '#f59e0b' }}>'gym_id'</span><br />
                       );
                     </div>
-                    <p style={{ fontSize: '0.75rem', color: '#555', lineHeight: 1.65 }}>
+                    <p style={{ fontSize: '0.8125rem', color: '#cbd5e1', lineHeight: 1.65 }}>
                       Enforces multi-tenant separation right at the database layer. Gym owner A cannot read Gym owner B's records under any circumstance.
                     </p>
                   </motion.div>
@@ -603,7 +606,7 @@ export const GymLane = () => {
               </AnimatePresence>
 
               {/* Status bar */}
-              <div style={{ borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '0.5rem', display: 'flex', justifyContent: 'space-between', marginTop: '1rem', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#333' }}>
+              <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '0.5rem', display: 'flex', justifyContent: 'space-between', marginTop: '1rem', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#94a3b8' }}>
                 <span>SQL PIPE TRANSACTIONS</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                   <span
@@ -616,7 +619,7 @@ export const GymLane = () => {
                       animation: 'pulse-dot 2s ease-in-out infinite',
                     }}
                   />
-                  <span style={{ color: '#00e87a' }}>{pulseText}</span>
+                  <span style={{ color: '#00e87a', fontWeight: 600 }}>{pulseText}</span>
                 </div>
               </div>
             </div>

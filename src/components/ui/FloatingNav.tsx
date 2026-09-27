@@ -256,10 +256,11 @@ export const FloatingNav = () => {
                     <span
                       style={{
                         fontFamily: 'JetBrains Mono, monospace',
-                        fontSize: '0.55rem',
+                        fontSize: '0.625rem',
+                        fontWeight: 600,
                         letterSpacing: '0.12em',
                         textTransform: 'uppercase',
-                        color: isActive ? world.color : isHovered ? '#aaa' : '#444',
+                        color: isActive ? world.color : isHovered ? '#ffffff' : '#94a3b8',
                         transition: 'color 0.3s ease',
                         whiteSpace: 'nowrap',
                       }}
@@ -305,7 +306,7 @@ export const FloatingNav = () => {
                   animation: 'pulse-dot 2s ease-in-out infinite',
                 }}
               />
-              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#333', letterSpacing: '0.1em' }}>
+              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#94a3b8', fontWeight: 600, letterSpacing: '0.1em' }}>
                 LIVE
               </span>
             </div>

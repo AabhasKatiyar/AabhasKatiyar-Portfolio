@@ -87,7 +87,7 @@ export const Experience = () => {
               fontWeight: 700,
               letterSpacing: '-0.02em',
               lineHeight: 1.1,
-              color: '#f0ede6',
+              color: '#ffffff',
               margin: 0,
             }}
           >
@@ -112,8 +112,8 @@ export const Experience = () => {
               left: 0,
               top: 8,
               bottom: 8,
-              width: 1,
-              background: 'rgba(255,255,255,0.06)',
+              width: 2,
+              background: 'rgba(255,255,255,0.15)',
             }}
           />
 
@@ -128,13 +128,13 @@ export const Experience = () => {
                 <div
                   style={{
                     position: 'absolute',
-                    left: 'calc(-2rem - 4px)',
+                    left: 'calc(-2rem - 4.5px)',
                     top: 6,
-                    width: 9,
-                    height: 9,
+                    width: 11,
+                    height: 11,
                     borderRadius: '50%',
                     background: item.color,
-                    boxShadow: `0 0 10px ${item.color}99`,
+                    boxShadow: `0 0 12px ${item.color}`,
                     border: '2px solid #0c0c0c',
                     zIndex: 1,
                   }}
@@ -143,21 +143,23 @@ export const Experience = () => {
                 {/* Card */}
                 <div
                   style={{
-                    background: 'rgba(15,15,15,0.55)',
-                    border: '1px solid rgba(255,255,255,0.06)',
-                    borderRadius: 12,
-                    padding: '1.375rem 1.5rem',
+                    background: 'rgba(13, 17, 28, 0.88)',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                    borderRadius: 14,
+                    padding: '1.5rem 1.65rem',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '0.75rem',
-                    backdropFilter: 'blur(16px)',
+                    gap: '0.85rem',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
                     transition: 'border-color 0.3s ease',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = `${item.color}30`;
+                    e.currentTarget.style.borderColor = `${item.color}50`;
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)';
+                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
                   }}
                 >
                   {/* Top row */}
@@ -174,11 +176,11 @@ export const Experience = () => {
                       <h3
                         style={{
                           fontFamily: 'var(--font-display)',
-                          fontSize: '1rem',
+                          fontSize: '1.0625rem',
                           fontWeight: 700,
                           letterSpacing: '-0.01em',
-                          color: '#f0ede6',
-                          margin: '0 0 0.2rem 0',
+                          color: '#ffffff',
+                          margin: '0 0 0.25rem 0',
                         }}
                       >
                         {item.role}
@@ -186,8 +188,9 @@ export const Experience = () => {
                       <p
                         style={{
                           fontFamily: 'Inter, sans-serif',
-                          fontSize: '0.75rem',
-                          color: '#444',
+                          fontSize: '0.8125rem',
+                          color: '#94a3b8',
+                          fontWeight: 500,
                           margin: 0,
                         }}
                       >
@@ -197,12 +200,13 @@ export const Experience = () => {
                     <span
                       style={{
                         fontFamily: 'JetBrains Mono, monospace',
-                        fontSize: '0.625rem',
+                        fontSize: '0.6875rem',
+                        fontWeight: 600,
                         color: item.color,
-                        background: `${item.color}0d`,
-                        border: `1px solid ${item.color}25`,
+                        background: `${item.color}15`,
+                        border: `1px solid ${item.color}40`,
                         padding: '0.25rem 0.75rem',
-                        borderRadius: 5,
+                        borderRadius: 6,
                         whiteSpace: 'nowrap',
                         flexShrink: 0,
                       }}
@@ -215,9 +219,9 @@ export const Experience = () => {
                   <p
                     style={{
                       fontFamily: 'Inter, sans-serif',
-                      fontSize: '0.875rem',
-                      lineHeight: 1.65,
-                      color: '#666',
+                      fontSize: '0.9375rem',
+                      lineHeight: 1.7,
+                      color: '#cbd5e1',
                       margin: 0,
                     }}
                   >
@@ -225,19 +229,20 @@ export const Experience = () => {
                   </p>
 
                   {/* Tags */}
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.45rem' }}>
                     {item.tags.map((tag) => (
                       <span
                         key={tag}
                         style={{
                           fontFamily: 'JetBrains Mono, monospace',
-                          fontSize: '0.5625rem',
+                          fontSize: '0.6875rem',
+                          fontWeight: 500,
                           letterSpacing: '0.04em',
-                          color: '#444',
-                          border: '1px solid rgba(255,255,255,0.05)',
-                          padding: '0.2rem 0.55rem',
-                          borderRadius: 4,
-                          background: 'rgba(255,255,255,0.02)',
+                          color: '#f8fafc',
+                          border: '1px solid rgba(255,255,255,0.16)',
+                          padding: '0.25rem 0.65rem',
+                          borderRadius: 5,
+                          background: 'rgba(255,255,255,0.06)',
                         }}
                       >
                         {tag}

@@ -113,41 +113,42 @@ export const Journey = () => {
           <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: stage.accent, transition: 'color 0.4s' }}>
             03 — Journey Timeline
           </span>
-          <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#666', letterSpacing: '0.08em', marginTop: '0.2rem' }}>
+          <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', color: '#94a3b8', fontWeight: 500, letterSpacing: '0.08em', marginTop: '0.25rem' }}>
             Use controls or arrow keys to navigate stages [ {activeIdx + 1} / {STAGES.length} ]
           </div>
         </div>
 
         {/* Timeline Node Selector Pills */}
-        <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: '0.45rem', flexWrap: 'wrap' }}>
           {STAGES.map((s, idx) => (
             <button
               key={s.num}
               onClick={() => setActiveIdx(idx)}
               style={{
                 fontFamily: 'JetBrains Mono, monospace',
-                fontSize: '0.5rem',
-                padding: '0.35rem 0.8rem',
+                fontSize: '0.5625rem',
+                fontWeight: 500,
+                padding: '0.35rem 0.85rem',
                 borderRadius: 999,
-                border: idx === activeIdx ? `1px solid ${s.accent}` : '1px solid rgba(255,255,255,0.07)',
-                background: idx === activeIdx ? `${s.accent}18` : 'rgba(255,255,255,0.02)',
-                color: idx === activeIdx ? s.accent : '#555',
+                border: idx === activeIdx ? `1px solid ${s.accent}` : '1px solid rgba(255,255,255,0.18)',
+                background: idx === activeIdx ? `${s.accent}25` : 'rgba(255,255,255,0.06)',
+                color: idx === activeIdx ? s.accent : '#cbd5e1',
                 cursor: 'pointer',
                 transition: 'all 0.45s cubic-bezier(0.16, 1, 0.3, 1)',
-                boxShadow: idx === activeIdx ? `0 0 12px ${s.accent}30` : 'none',
+                boxShadow: idx === activeIdx ? `0 0 12px ${s.accent}40` : 'none',
                 backdropFilter: 'blur(8px)',
               }}
               onMouseEnter={(e) => {
                 if (idx !== activeIdx) {
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.18)';
-                  e.currentTarget.style.color = '#aaa';
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)';
+                  e.currentTarget.style.color = '#ffffff';
                   e.currentTarget.style.transform = 'translateY(-2px)';
                 }
               }}
               onMouseLeave={(e) => {
                 if (idx !== activeIdx) {
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)';
-                  e.currentTarget.style.color = '#555';
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.18)';
+                  e.currentTarget.style.color = '#cbd5e1';
                   e.currentTarget.style.transform = 'translateY(0)';
                 }
               }}
@@ -192,13 +193,13 @@ export const Journey = () => {
               position: 'relative',
               zIndex: 2,
               maxWidth: 720,
-              background: 'rgba(15, 15, 15, 0.55)',
-              border: `1px solid ${stage.accent}20`,
+              background: 'rgba(13, 17, 28, 0.88)',
+              border: `1px solid ${stage.accent}35`,
               borderRadius: 16,
               padding: 'clamp(1.5rem, 3vw, 2.5rem)',
               backdropFilter: 'blur(20px)',
               WebkitBackdropFilter: 'blur(20px)',
-              boxShadow: `0 8px 48px rgba(0,0,0,0.5), 0 0 40px ${stage.accent}08, inset 0 1px 0 rgba(255,255,255,0.04)`,
+              boxShadow: `0 8px 48px rgba(0,0,0,0.6), 0 0 40px ${stage.accent}15, inset 0 1px 0 rgba(255,255,255,0.06)`,
             }}
           >
             <span
@@ -210,6 +211,7 @@ export const Journey = () => {
                 color: stage.accent,
                 display: 'block',
                 marginBottom: '1rem',
+                fontWeight: 600,
               }}
             >
               {stage.period}
@@ -222,7 +224,7 @@ export const Journey = () => {
                 fontSize: 'clamp(1.85rem, 4vw, 3.75rem)',
                 letterSpacing: '-0.02em',
                 lineHeight: 1.1,
-                color: '#f0ede6',
+                color: '#ffffff',
                 marginBottom: '1.5rem',
               }}
             >
@@ -232,7 +234,7 @@ export const Journey = () => {
             <p
               style={{
                 fontSize: 'clamp(0.9375rem, 1.2vw, 1.0625rem)',
-                color: '#888',
+                color: '#cbd5e1',
                 lineHeight: 1.75,
                 marginBottom: '2rem',
                 maxWidth: '54ch',
@@ -273,23 +275,24 @@ export const Journey = () => {
             style={{
               padding: '0.5rem 1rem',
               borderRadius: 6,
-              border: '1px solid rgba(255,255,255,0.1)',
-              background: 'rgba(255,255,255,0.03)',
-              color: '#f0ede6',
+              border: '1px solid rgba(255,255,255,0.22)',
+              background: 'rgba(255,255,255,0.08)',
+              color: '#f8fafc',
               fontFamily: 'JetBrains Mono, monospace',
               fontSize: '0.625rem',
+              fontWeight: 500,
               cursor: 'pointer',
               backdropFilter: 'blur(8px)',
               transition: 'all 0.45s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)';
-              e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.45)';
+              e.currentTarget.style.background = 'rgba(255,255,255,0.15)';
               e.currentTarget.style.transform = 'translateY(-2px)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)';
-              e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.22)';
+              e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
               e.currentTarget.style.transform = 'translateY(0)';
             }}
           >

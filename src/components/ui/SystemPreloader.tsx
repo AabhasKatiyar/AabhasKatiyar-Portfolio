@@ -223,7 +223,7 @@ export const SystemPreloader = ({ onComplete }: SystemPreloaderProps) => {
                 <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '1.75rem', fontWeight: 700, color: '#fff', display: 'block', lineHeight: 1, textShadow: '0 0 10px rgba(255,255,255,0.2)' }}>
                   {progress}%
                 </span>
-                <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#444', letterSpacing: '0.12em', textTransform: 'uppercase', marginTop: '0.2rem', display: 'block' }}>
+                <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#94a3b8', letterSpacing: '0.12em', textTransform: 'uppercase', marginTop: '0.2rem', display: 'block' }}>
                   Mainframe Loading
                 </span>
               </div>

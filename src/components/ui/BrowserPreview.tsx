@@ -73,11 +73,11 @@ export const BrowserPreview = ({ url, accentColor }: BrowserPreviewProps) => {
             </svg>
             https://
           </span>
-          <span style={{ color: '#aaa', fontWeight: 500 }}>{domain}</span>
+          <span style={{ color: '#ffffff', fontWeight: 600 }}>{domain}</span>
         </div>
 
         {/* Action icons / reload icon & popout */}
-        <div style={{ display: 'flex', gap: '0.4rem', color: '#666', alignItems: 'center', flexShrink: 0 }}>
+        <div style={{ display: 'flex', gap: '0.4rem', color: '#cbd5e1', alignItems: 'center', flexShrink: 0 }}>
           <button
             onClick={handleRefresh}
             title="Refresh Preview"
@@ -85,7 +85,7 @@ export const BrowserPreview = ({ url, accentColor }: BrowserPreviewProps) => {
               background: 'none',
               border: 'none',
               padding: '0.25rem',
-              color: '#666',
+              color: '#cbd5e1',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
@@ -95,10 +95,10 @@ export const BrowserPreview = ({ url, accentColor }: BrowserPreviewProps) => {
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.color = '#fff';
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.color = '#666';
+              e.currentTarget.style.color = '#cbd5e1';
               e.currentTarget.style.background = 'none';
             }}
           >
@@ -125,7 +125,7 @@ export const BrowserPreview = ({ url, accentColor }: BrowserPreviewProps) => {
               background: 'none',
               border: 'none',
               padding: '0.25rem',
-              color: '#666',
+              color: '#cbd5e1',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
@@ -139,7 +139,7 @@ export const BrowserPreview = ({ url, accentColor }: BrowserPreviewProps) => {
               e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.color = '#666';
+              e.currentTarget.style.color = '#cbd5e1';
               e.currentTarget.style.background = 'none';
             }}
           >
@@ -196,8 +196,9 @@ export const BrowserPreview = ({ url, accentColor }: BrowserPreviewProps) => {
             <span
               style={{
                 fontFamily: 'JetBrains Mono, monospace',
-                fontSize: '0.5625rem',
-                color: '#555',
+                fontSize: '0.625rem',
+                color: '#cbd5e1',
+                fontWeight: 600,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
               }}
@@ -225,12 +226,12 @@ export const BrowserPreview = ({ url, accentColor }: BrowserPreviewProps) => {
       {/* Browser Footer Status */}
       <div
         style={{
-          background: 'rgba(12, 12, 12, 0.9)',
-          borderTop: '1px solid rgba(255, 255, 255, 0.05)',
+          background: 'rgba(12, 12, 12, 0.95)',
+          borderTop: '1px solid rgba(255, 255, 255, 0.08)',
           padding: '0.5rem 1.25rem',
           fontFamily: 'JetBrains Mono, monospace',
-          fontSize: '0.5625rem',
-          color: '#444',
+          fontSize: '0.625rem',
+          color: '#94a3b8',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -238,9 +239,9 @@ export const BrowserPreview = ({ url, accentColor }: BrowserPreviewProps) => {
           gap: '0.5rem',
         }}
       >
-        <span style={{ fontSize: '0.5rem', color: '#333' }}>DIRECT LIVE PREVIEW MODE // ACTIVE</span>
-        <span style={{ fontSize: '0.53rem', color: '#555' }}>
-          Real-time iframe connection. If blocked, configure X-Frame-Options or click popout icon <span style={{ color: accentColor }}>↗</span> above
+        <span style={{ fontSize: '0.5625rem', color: '#94a3b8', fontWeight: 600 }}>DIRECT LIVE PREVIEW MODE // ACTIVE</span>
+        <span style={{ fontSize: '0.58rem', color: '#cbd5e1' }}>
+          Real-time iframe connection. If blocked, configure X-Frame-Options or click popout icon <span style={{ color: accentColor, fontWeight: 700 }}>↗</span> above
         </span>
       </div>
     </div>

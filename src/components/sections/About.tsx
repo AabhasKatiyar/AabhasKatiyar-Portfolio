@@ -114,10 +114,11 @@ export const About = () => {
               <p
                 style={{
                   fontFamily: 'Inter, sans-serif',
-                  fontSize: '1rem',
-                  lineHeight: 1.75,
-                  color: '#888',
+                  fontSize: '1.0625rem',
+                  lineHeight: 1.8,
+                  color: '#e2e8f0',
                   margin: 0,
+                  textShadow: '0 2px 10px rgba(0,0,0,0.7)',
                 }}
               >
                 I'm a first-year B.Tech IT student at KIET, Ghaziabad, who builds real software — not projects for a portfolio grade. I started with microcontrollers, writing C++ firmware to control motors and read sensors, and transitioned to full-stack web development because I wanted to ship complete systems.
@@ -128,13 +129,14 @@ export const About = () => {
               <p
                 style={{
                   fontFamily: 'Inter, sans-serif',
-                  fontSize: '1rem',
-                  lineHeight: 1.75,
-                  color: '#888',
+                  fontSize: '1.0625rem',
+                  lineHeight: 1.8,
+                  color: '#e2e8f0',
                   margin: 0,
+                  textShadow: '0 2px 10px rgba(0,0,0,0.7)',
                 }}
               >
-                I've built <strong style={{ color: '#f0ede6', fontWeight: 600 }}>GymLane</strong> — a multi-tenant gym management SaaS with real-time check-ins and PostgreSQL Row Level Security — and <strong style={{ color: '#f0ede6', fontWeight: 600 }}>Yappr</strong> — a real-time social feed with WebSocket pub/sub and optimistic UI. Both are functional, deployed products.
+                I've built <strong style={{ color: '#00e87a', fontWeight: 600 }}>GymLane</strong> — a multi-tenant gym management SaaS with real-time check-ins and PostgreSQL Row Level Security — and <strong style={{ color: '#ff3d6e', fontWeight: 600 }}>Yappr</strong> — a real-time social feed with WebSocket pub/sub and optimistic UI. Both are functional, deployed products.
               </p>
             </motion.div>
 
@@ -142,14 +144,16 @@ export const About = () => {
             <motion.div
               {...fadeUp(0.16)}
               style={{
-                background: 'rgba(15,15,15,0.6)',
-                border: '1px solid rgba(255,255,255,0.07)',
+                background: 'rgba(13, 17, 28, 0.88)',
+                border: '1px solid rgba(255,255,255,0.14)',
                 borderRadius: 12,
                 padding: '1.25rem 1.5rem',
                 display: 'flex',
                 gap: '1.5rem',
                 alignItems: 'center',
-                backdropFilter: 'blur(16px)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
                 flexWrap: 'wrap',
               }}
             >
@@ -159,20 +163,20 @@ export const About = () => {
                   height: 72,
                   borderRadius: '50%',
                   overflow: 'hidden',
-                  border: '2px solid rgba(155, 109, 255, 0.25)',
-                  boxShadow: '0 0 16px rgba(155, 109, 255, 0.15)',
+                  border: '2px solid rgba(155, 109, 255, 0.35)',
+                  boxShadow: '0 0 18px rgba(155, 109, 255, 0.25)',
                   background: '#111',
                   flexShrink: 0,
                   transition: 'all 0.3s ease',
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = '#9b6dff';
-                  e.currentTarget.style.boxShadow = '0 0 24px rgba(155, 109, 255, 0.35)';
+                  e.currentTarget.style.boxShadow = '0 0 24px rgba(155, 109, 255, 0.45)';
                   e.currentTarget.style.transform = 'scale(1.05)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(155, 109, 255, 0.25)';
-                  e.currentTarget.style.boxShadow = '0 0 16px rgba(155, 109, 255, 0.15)';
+                  e.currentTarget.style.borderColor = 'rgba(155, 109, 255, 0.35)';
+                  e.currentTarget.style.boxShadow = '0 0 18px rgba(155, 109, 255, 0.25)';
                   e.currentTarget.style.transform = 'scale(1)';
                 }}
               >
@@ -186,7 +190,7 @@ export const About = () => {
                   }} 
                 />
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', flex: 1, minWidth: '220px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', flex: 1, minWidth: '220px' }}>
                 {[
                   { label: 'Degree', value: 'B.Tech Information Technology' },
                   { label: 'College', value: 'KIET Group of Institutions' },
@@ -197,11 +201,12 @@ export const About = () => {
                     <span
                       style={{
                         fontFamily: 'JetBrains Mono, monospace',
-                        fontSize: '0.5rem',
-                        color: '#333',
+                        fontSize: '0.625rem',
+                        color: '#94a3b8',
                         letterSpacing: '0.1em',
                         textTransform: 'uppercase',
-                        minWidth: '60px',
+                        fontWeight: 600,
+                        minWidth: '65px',
                         flexShrink: 0,
                       }}
                     >
@@ -210,8 +215,9 @@ export const About = () => {
                     <span
                       style={{
                         fontFamily: mono ? 'JetBrains Mono, monospace' : 'Inter, sans-serif',
-                        fontSize: '0.8rem',
-                        color: '#888',
+                        fontSize: '0.85rem',
+                        color: '#f8fafc',
+                        fontWeight: 500,
                       }}
                     >
                       {value}
@@ -229,34 +235,37 @@ export const About = () => {
                 key={trait.title}
                 {...fadeUp(0.1 + i * 0.07)}
                 style={{
-                  background: 'rgba(15,15,15,0.55)',
-                  border: '1px solid rgba(255,255,255,0.06)',
+                  background: 'rgba(13, 17, 28, 0.85)',
+                  border: '1px solid rgba(255,255,255,0.12)',
                   borderRadius: 12,
-                  padding: '1.125rem 1.25rem',
+                  padding: '1.25rem 1.35rem',
                   display: 'flex',
                   gap: '1rem',
                   alignItems: 'flex-start',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
                   transition: 'border-color 0.3s ease, background 0.3s ease',
                   cursor: 'default',
                 }}
                 whileHover={{
-                  borderColor: `${trait.color}30`,
-                  backgroundColor: 'rgba(18,18,18,0.7)',
+                  borderColor: `${trait.color}50`,
+                  backgroundColor: 'rgba(18, 24, 40, 0.95)',
                   y: -3,
                 }}
               >
                 <div
                   style={{
                     color: trait.color,
-                    padding: '0.4rem',
+                    padding: '0.5rem',
                     borderRadius: 8,
-                    background: `${trait.color}10`,
-                    border: `1px solid ${trait.color}20`,
+                    background: `${trait.color}15`,
+                    border: `1px solid ${trait.color}35`,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     flexShrink: 0,
-                    marginTop: 1,
+                    marginTop: 2,
                   }}
                 >
                   {trait.icon}
@@ -265,11 +274,11 @@ export const About = () => {
                   <h4
                     style={{
                       fontFamily: 'var(--font-display)',
-                      fontSize: '0.9375rem',
+                      fontSize: '1rem',
                       fontWeight: 700,
-                      color: '#f0ede6',
+                      color: '#ffffff',
                       letterSpacing: '-0.01em',
-                      margin: '0 0 0.25rem 0',
+                      margin: '0 0 0.35rem 0',
                     }}
                   >
                     {trait.title}
@@ -277,9 +286,9 @@ export const About = () => {
                   <p
                     style={{
                       fontFamily: 'Inter, sans-serif',
-                      fontSize: '0.8125rem',
-                      color: '#555',
-                      lineHeight: 1.55,
+                      fontSize: '0.85rem',
+                      color: '#cbd5e1',
+                      lineHeight: 1.6,
                       margin: 0,
                     }}
                   >

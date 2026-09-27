@@ -219,14 +219,14 @@ export const ResumeModal = ({ isOpen, onClose }: ResumeModalProps) => {
                   </p>
                 </div>
                 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.75rem', color: '#888' }}>
-                  <a href="mailto:aabhas.katiyar.dev@gmail.com" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#f0ede6' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.75rem', color: '#cbd5e1' }}>
+                  <a href="mailto:aabhas.katiyar.dev@gmail.com" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#ffffff' }}>
                     <Mail size={12} className="text-[#c8ff00]" /> aabhas.katiyar.dev@gmail.com
                   </a>
-                  <a href="https://linkedin.com/in/aabhaskatiyar" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#f0ede6' }}>
+                  <a href="https://linkedin.com/in/aabhaskatiyar" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#ffffff' }}>
                     <LinkedinIcon size={12} className="text-[#c8ff00]" /> linkedin.com/in/aabhaskatiyar
                   </a>
-                  <a href="https://github.com/AabhasKatiyar" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#f0ede6' }}>
+                  <a href="https://github.com/AabhasKatiyar" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#ffffff' }}>
                     <GithubIcon size={12} className="text-[#c8ff00]" /> github.com/AabhasKatiyar
                   </a>
                 </div>
@@ -243,9 +243,9 @@ export const ResumeModal = ({ isOpen, onClose }: ResumeModalProps) => {
                       <GraduationCap size={16} className="text-[#c8ff00]" /> Education
                     </h2>
                     <div>
-                      <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#f0ede6', margin: '0 0 0.15rem 0' }}>B.Tech in Information Technology</h4>
-                      <p style={{ fontSize: '0.75rem', color: '#888', margin: '0 0 0.35rem 0' }}>KIET Group of Institutions, Ghaziabad | 2025 – 2029</p>
-                      <p style={{ fontSize: '0.75rem', color: '#aaa', margin: 0, lineHeight: 1.4 }}>
+                      <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#ffffff', margin: '0 0 0.15rem 0' }}>B.Tech in Information Technology</h4>
+                      <p style={{ fontSize: '0.75rem', color: '#cbd5e1', fontWeight: 500, margin: '0 0 0.35rem 0' }}>KIET Group of Institutions, Ghaziabad | 2025 – 2029</p>
+                      <p style={{ fontSize: '0.75rem', color: '#e2e8f0', margin: 0, lineHeight: 1.45 }}>
                         Focusing on core software algorithms, computer networking, relational database systems, and embedded computing logic.
                       </p>
                     </div>
@@ -264,8 +264,8 @@ export const ResumeModal = ({ isOpen, onClose }: ResumeModalProps) => {
                         { cat: 'Infrastructure', items: 'Git & GitHub, Cloudflare Pages, npm, Arduino IDE' },
                       ].map((item) => (
                         <div key={item.cat}>
-                          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.65rem', color: '#c8ff00', textTransform: 'uppercase', display: 'block', marginBottom: '0.15rem' }}>{item.cat}</span>
-                          <p style={{ fontSize: '0.8rem', color: '#f0ede6', margin: 0 }}>{item.items}</p>
+                          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.65rem', color: '#c8ff00', textTransform: 'uppercase', display: 'block', marginBottom: '0.15rem', fontWeight: 600 }}>{item.cat}</span>
+                          <p style={{ fontSize: '0.8rem', color: '#ffffff', margin: 0 }}>{item.items}</p>
                         </div>
                       ))}
                     </div>
@@ -276,7 +276,7 @@ export const ResumeModal = ({ isOpen, onClose }: ResumeModalProps) => {
                     <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 700, color: '#fff', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '0.5rem', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                       <Award size={16} className="text-[#c8ff00]" /> Milestones & Focus
                     </h2>
-                    <ul style={{ paddingLeft: '1rem', margin: 0, fontSize: '0.75rem', color: '#aaa', display: 'flex', flexDirection: 'column', gap: '0.5rem', lineHeight: 1.45 }}>
+                    <ul style={{ paddingLeft: '1rem', margin: 0, fontSize: '0.75rem', color: '#e2e8f0', display: 'flex', flexDirection: 'column', gap: '0.5rem', lineHeight: 1.45 }}>
                       <li><strong>Multi-Tenant Architectures</strong>: Deep familiarity with Postgres Row Level Security (RLS) configurations to secure user datasets natively.</li>
                       <li><strong>Embedded Microcontrollers</strong>: Experience programming C++ scripts on Arduino Uno and ESP32 with wireless integration.</li>
                       <li><strong>Independent SaaS Builder</strong>: Demonstrated capability to launch, debug, and support live database-backed applications.</li>
@@ -296,22 +296,22 @@ export const ResumeModal = ({ isOpen, onClose }: ResumeModalProps) => {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', margin: '0 0 0.15rem 0' }}>
-                          <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#f0ede6', margin: 0 }}>Embedded Logic Researcher</h4>
-                          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.65rem', color: '#c8ff00' }}>2025</span>
+                          <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#ffffff', margin: 0 }}>Embedded Logic Researcher</h4>
+                          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.65rem', color: '#c8ff00', fontWeight: 600 }}>2025</span>
                         </div>
-                        <p style={{ fontSize: '0.75rem', color: '#888', margin: '0 0 0.35rem 0' }}>C++ Embedded Labs</p>
-                        <p style={{ fontSize: '0.75rem', color: '#aaa', margin: 0, lineHeight: 1.4 }}>
+                        <p style={{ fontSize: '0.75rem', color: '#cbd5e1', fontWeight: 500, margin: '0 0 0.35rem 0' }}>C++ Embedded Labs</p>
+                        <p style={{ fontSize: '0.75rem', color: '#e2e8f0', margin: 0, lineHeight: 1.45 }}>
                           Experimented with microcontrollers, constructing hardware circuitry configurations, telemetry data streams, and SPI/I2C communication setups.
                         </p>
                       </div>
                       
                       <div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', margin: '0 0 0.15rem 0' }}>
-                          <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#f0ede6', margin: 0 }}>Independent Web Builder</h4>
-                          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.65rem', color: '#c8ff00' }}>2025</span>
+                          <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#ffffff', margin: 0 }}>Independent Web Builder</h4>
+                          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.65rem', color: '#c8ff00', fontWeight: 600 }}>2025</span>
                         </div>
-                        <p style={{ fontSize: '0.75rem', color: '#888', margin: '0 0 0.35rem 0' }}>Self-Initiated Projects</p>
-                        <p style={{ fontSize: '0.75rem', color: '#aaa', margin: 0, lineHeight: 1.4 }}>
+                        <p style={{ fontSize: '0.75rem', color: '#cbd5e1', fontWeight: 500, margin: '0 0 0.35rem 0' }}>Self-Initiated Projects</p>
+                        <p style={{ fontSize: '0.75rem', color: '#e2e8f0', margin: 0, lineHeight: 1.45 }}>
                           Created raw CSS/HTML websites to establish a foundational understanding of DOM mechanics and layout math before moving to frameworks.
                         </p>
                       </div>
@@ -325,22 +325,22 @@ export const ResumeModal = ({ isOpen, onClose }: ResumeModalProps) => {
                     </h2>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div>
-                        <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#f0ede6', margin: '0 0 0.15rem 0' }}>GymLane (Live SaaS Product)</h4>
-                        <p style={{ fontSize: '0.75rem', color: '#aaa', margin: 0, lineHeight: 1.4 }}>
+                        <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#ffffff', margin: '0 0 0.15rem 0' }}>GymLane (Live SaaS Product)</h4>
+                        <p style={{ fontSize: '0.75rem', color: '#e2e8f0', margin: 0, lineHeight: 1.45 }}>
                           Multi-tenant gym operations platform. Provides real-time websocket check-in logs, Postgres database isolation (Row Level Security), and operational dashboard.
                         </p>
                       </div>
                       
                       <div>
-                        <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#f0ede6', margin: '0 0 0.15rem 0' }}>Yappr (Social Feed Network)</h4>
-                        <p style={{ fontSize: '0.75rem', color: '#aaa', margin: 0, lineHeight: 1.4 }}>
+                        <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#ffffff', margin: '0 0 0.15rem 0' }}>Yappr (Social Feed Network)</h4>
+                        <p style={{ fontSize: '0.75rem', color: '#e2e8f0', margin: 0, lineHeight: 1.45 }}>
                           Microblogging social community. Features instant websocket text-post updates, multi-user auth, and real-time interactive liking mechanics.
                         </p>
                       </div>
 
                       <div>
-                        <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#f0ede6', margin: '0 0 0.15rem 0' }}>ESP32 WiFi Smart-Car</h4>
-                        <p style={{ fontSize: '0.75rem', color: '#aaa', margin: 0, lineHeight: 1.4 }}>
+                        <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#ffffff', margin: '0 0 0.15rem 0' }}>ESP32 WiFi Smart-Car</h4>
+                        <p style={{ fontSize: '0.75rem', color: '#e2e8f0', margin: 0, lineHeight: 1.45 }}>
                           Firmware-driven autonomous car serving a local HTTP browser steering app. Driven using PWM over DC motors and ESP32 SoftAP networks.
                         </p>
                       </div>

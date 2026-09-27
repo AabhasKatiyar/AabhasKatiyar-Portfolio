@@ -225,8 +225,8 @@ export const VerticalThread = () => {
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '0.4rem',
-                    opacity: isActive || isHovered ? 1 : 0.35,
+                    gap: '0.45rem',
+                    opacity: isActive || isHovered ? 1 : 0.8,
                     transform: `translateX(${isHovered ? '4px' : '0px'})`,
                     transition: 'opacity 0.3s ease, transform 0.3s ease',
                   }}
@@ -234,9 +234,9 @@ export const VerticalThread = () => {
                   <span
                     style={{
                       fontFamily: 'JetBrains Mono, monospace',
-                      fontSize: '0.52rem',
+                      fontSize: '0.58rem',
                       fontWeight: 600,
-                      color: isActive || isHovered ? world.color : '#888',
+                      color: isActive || isHovered ? world.color : '#cbd5e1',
                       letterSpacing: '0.05em',
                     }}
                   >
@@ -245,11 +245,11 @@ export const VerticalThread = () => {
                   <span
                     style={{
                       fontFamily: 'var(--font-display)',
-                      fontSize: '0.65rem',
+                      fontSize: '0.75rem',
                       fontWeight: 700,
-                      color: isActive || isHovered ? '#f0ede6' : '#666',
+                      color: isActive || isHovered ? '#ffffff' : '#94a3b8',
                       letterSpacing: '0.01em',
-                      textShadow: isActive || isHovered ? '0 0 10px rgba(255, 255, 255, 0.15)' : 'none',
+                      textShadow: isActive || isHovered ? '0 0 10px rgba(255, 255, 255, 0.25)' : 'none',
                     }}
                   >
                     {world.label}

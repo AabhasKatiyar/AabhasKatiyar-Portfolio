@@ -603,8 +603,8 @@ export const GlobalVideoCanvas = () => {
               }}
             />
             <span ref={miniFrameTextRef}>FRM 001</span>
-            <span ref={miniPercentTextRef} style={{ color: '#666' }}>(0%)</span>
-            <span style={{ color: '#888', fontSize: '0.55rem' }}>[EXPAND]</span>
+            <span ref={miniPercentTextRef} style={{ color: '#94a3b8' }}>(0%)</span>
+            <span style={{ color: '#cbd5e1', fontSize: '0.55rem' }}>[EXPAND]</span>
           </div>
         ) : (
           <>
@@ -661,7 +661,7 @@ export const GlobalVideoCanvas = () => {
                   onClick={scrollToTop}
                   style={{
                     background: 'transparent',
-                    color: '#888',
+                    color: '#cbd5e1',
                     border: 'none',
                     fontFamily: 'JetBrains Mono, monospace',
                     fontSize: '0.6rem',
@@ -669,8 +669,8 @@ export const GlobalVideoCanvas = () => {
                     padding: '0.25rem 0.4rem',
                     transition: 'color 0.2s ease',
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = '#f0ede6')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = '#888')}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = '#ffffff')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = '#cbd5e1')}
                   title="Scroll to top of website"
                 >
                   TOP ↑
@@ -680,7 +680,7 @@ export const GlobalVideoCanvas = () => {
                   onClick={scrollToBottom}
                   style={{
                     background: 'transparent',
-                    color: '#888',
+                    color: '#cbd5e1',
                     border: 'none',
                     fontFamily: 'JetBrains Mono, monospace',
                     fontSize: '0.6rem',
@@ -688,8 +688,8 @@ export const GlobalVideoCanvas = () => {
                     padding: '0.25rem 0.4rem',
                     transition: 'color 0.2s ease',
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = '#f0ede6')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = '#888')}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = '#ffffff')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = '#cbd5e1')}
                   title="Scroll to bottom of website"
                 >
                   BOTTOM ↓
@@ -701,7 +701,7 @@ export const GlobalVideoCanvas = () => {
                 style={{
                   fontFamily: 'JetBrains Mono, monospace',
                   fontSize: '0.6rem',
-                  color: '#999',
+                  color: '#cbd5e1',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '0.5rem',
@@ -711,7 +711,7 @@ export const GlobalVideoCanvas = () => {
                   FRAME <strong ref={frameNumberTextRef} style={{ color: '#00e87a' }}>001</strong> / 240
                 </span>
                 <span style={{ color: 'rgba(255,255,255,0.2)' }}>•</span>
-                <span ref={percentTextRef} style={{ color: '#f0ede6' }}>0%</span>
+                <span ref={percentTextRef} style={{ color: '#ffffff' }}>0%</span>
                 {loadPercent < 100 && (
                   <span ref={loadPercentTextRef} style={{ color: '#c8ff00', fontSize: '0.56rem' }}>
                     ({loadPercent}%)
@@ -722,7 +722,7 @@ export const GlobalVideoCanvas = () => {
                   style={{
                     background: 'transparent',
                     border: 'none',
-                    color: '#666',
+                    color: '#94a3b8',
                     cursor: 'pointer',
                     fontSize: '0.75rem',
                     lineHeight: 1,

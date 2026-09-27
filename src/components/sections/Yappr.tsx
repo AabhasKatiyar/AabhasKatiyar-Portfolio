@@ -136,32 +136,32 @@ export const Yappr = () => {
             <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#ff3d6e', display: 'block', marginBottom: '0.5rem' }}>
               05 — Projects · Yappr
             </span>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.75rem, 4vw, 3rem)', fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.1, color: '#f0ede6', margin: 0 }}>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.75rem, 4vw, 3rem)', fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.1, color: '#ffffff', margin: 0 }}>
               Real-time Social Feed with WebSocket Pub/Sub
             </h2>
           </div>
 
           {/* Problem / Solution */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#ff3d6e' }}>Problem</span>
-              <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.875rem', color: '#666', lineHeight: 1.6, margin: 0 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#ff3d6e', fontWeight: 600 }}>Problem</span>
+              <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.9375rem', color: '#cbd5e1', lineHeight: 1.65, margin: 0 }}>
                 Social feeds feel sluggish when every like or new post triggers a full network refetch — terrible UX on mobile connections.
               </p>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#00e87a' }}>Solution</span>
-              <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.875rem', color: '#666', lineHeight: 1.6, margin: 0 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#00e87a', fontWeight: 600 }}>Solution</span>
+              <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.9375rem', color: '#cbd5e1', lineHeight: 1.65, margin: 0 }}>
                 Optimistic UI renders state changes instantly in local memory. Supabase Realtime WebSockets deliver live posts. Database mutations happen asynchronously in the background.
               </p>
             </div>
           </div>
 
           {/* Tech stack */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', alignItems: 'center' }}>
-            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#333', letterSpacing: '0.1em', textTransform: 'uppercase', marginRight: '0.25rem' }}>Stack</span>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', alignItems: 'center' }}>
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', color: '#94a3b8', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', marginRight: '0.25rem' }}>Stack</span>
             {YAPPR_TECH.map((t) => (
-              <span key={t} style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#555', border: '1px solid rgba(255,61,110,0.15)', background: 'rgba(255,61,110,0.04)', padding: '0.2rem 0.6rem', borderRadius: 4 }}>{t}</span>
+              <span key={t} style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.6875rem', fontWeight: 500, color: '#f8fafc', border: '1px solid rgba(255,61,110,0.35)', background: 'rgba(255,61,110,0.08)', padding: '0.25rem 0.65rem', borderRadius: 5 }}>{t}</span>
             ))}
           </div>
 
@@ -197,20 +197,20 @@ export const Yappr = () => {
                 display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
                 fontFamily: 'JetBrains Mono, monospace', fontSize: '0.6875rem', fontWeight: 700,
                 padding: '0.65rem 1.4rem', borderRadius: 7, cursor: 'pointer',
-                border: previewOpen ? '1px solid rgba(255,61,110,0.5)' : '1px solid rgba(255,255,255,0.1)',
-                background: previewOpen ? '#ff3d6e' : 'rgba(255,255,255,0.03)',
-                color: previewOpen ? '#fff' : '#888',
+                border: previewOpen ? '1px solid rgba(255,61,110,0.5)' : '1px solid rgba(255,255,255,0.22)',
+                background: previewOpen ? '#ff3d6e' : 'rgba(255,255,255,0.08)',
+                color: previewOpen ? '#fff' : '#f8fafc',
                 transition: 'all 0.3s cubic-bezier(0.16,1,0.3,1)',
                 boxShadow: previewOpen ? '0 4px 20px rgba(255,61,110,0.3)' : 'none',
               }}
-              onMouseEnter={(e) => { if (!previewOpen) { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = '#fff'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
-              onMouseLeave={(e) => { if (!previewOpen) { e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; e.currentTarget.style.color = '#888'; e.currentTarget.style.transform = 'translateY(0)'; } }}
+              onMouseEnter={(e) => { if (!previewOpen) { e.currentTarget.style.background = 'rgba(255,255,255,0.14)'; e.currentTarget.style.color = '#fff'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
+              onMouseLeave={(e) => { if (!previewOpen) { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = '#f8fafc'; e.currentTarget.style.transform = 'translateY(0)'; } }}
             >
               {previewOpen ? '↑ Close Preview' : '🌐 Live Preview'}
             </button>
 
             {!sandboxOpen && !previewOpen && (
-              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#2a2a2a', letterSpacing: '0.08em' }}>
+              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', color: '#94a3b8', letterSpacing: '0.08em', fontWeight: 500 }}>
                 Test interactive dashboard or open live website
               </span>
             )}
@@ -255,33 +255,33 @@ export const Yappr = () => {
                   >
                     {/* Phone Top Bar */}
                     <div style={{ background: '#12070a', padding: '0.8rem 1.25rem 0.4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#555' }}>9:41</span>
+                      <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', color: '#94a3b8', fontWeight: 600 }}>9:41</span>
                       <div style={{ width: 70, height: 8, borderRadius: 999, background: '#1a0810' }} />
-                      <div style={{ width: 10, height: 6, borderRadius: 1, border: '1px solid #555' }} />
+                      <div style={{ width: 12, height: 7, borderRadius: 2, border: '1px solid #94a3b8' }} />
                     </div>
 
                     {/* App Header */}
-                    <div style={{ background: '#0e0508', borderBottom: '1px solid rgba(255,61,110,0.1)', padding: '0.6rem 1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ background: '#0e0508', borderBottom: '1px solid rgba(255,61,110,0.15)', padding: '0.6rem 1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1rem', color: '#ff3d6e', letterSpacing: '-0.01em', textShadow: '0 0 16px rgba(255,61,110,0.4)' }}>Yappr</span>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                         <span style={{ display: 'block', width: 5, height: 5, borderRadius: '50%', background: '#ff3d6e', boxShadow: '0 0 6px #ff3d6e', animation: 'pulse-dot 2s ease-in-out infinite' }} />
-                        <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.45rem', color: '#ff3d6e' }}>WS LIVE</span>
+                        <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#ff3d6e', fontWeight: 600 }}>WS LIVE</span>
                       </div>
                     </div>
 
                     {/* Composer */}
-                    <form onSubmit={handlePublishYap} style={{ background: '#080305', borderBottom: '1px solid rgba(255,255,255,0.03)', padding: '0.75rem 1rem' }}>
+                    <form onSubmit={handlePublishYap} style={{ background: '#080305', borderBottom: '1px solid rgba(255,255,255,0.06)', padding: '0.75rem 1rem' }}>
                       <textarea
                         value={draft}
                         onChange={(e) => setDraft(e.target.value.slice(0, MAX_CHARS))}
                         placeholder="What's on your mind?"
                         rows={2}
-                        style={{ width: '100%', background: 'transparent', border: 'none', color: '#fff', fontSize: '0.75rem', fontFamily: 'Inter, sans-serif', resize: 'none', outline: 'none', marginBottom: '0.375rem' }}
+                        style={{ width: '100%', background: 'transparent', border: 'none', color: '#fff', fontSize: '0.8125rem', fontFamily: 'Inter, sans-serif', resize: 'none', outline: 'none', marginBottom: '0.375rem' }}
                       />
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                           <svg width="16" height="16" viewBox="0 0 16 16">
-                            <circle cx="8" cy="8" r="6" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="2" />
+                            <circle cx="8" cy="8" r="6" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="2" />
                             <circle
                               cx="8" cy="8" r="6"
                               fill="none"
@@ -294,19 +294,19 @@ export const Yappr = () => {
                               style={{ transition: 'stroke-dashoffset 0.3s ease, stroke 0.3s ease' }}
                             />
                           </svg>
-                          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.45rem', color: '#555' }}>{MAX_CHARS - draft.length}</span>
+                          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#cbd5e1' }}>{MAX_CHARS - draft.length}</span>
                         </div>
                         <button
                           type="submit"
                           disabled={!draft.trim()}
                           style={{
-                            padding: '0.22rem 0.7rem',
+                            padding: '0.25rem 0.75rem',
                             borderRadius: 999,
                             border: 'none',
                             background: draft.trim() ? '#ff3d6e' : '#230a13',
-                            color: draft.trim() ? '#fff' : '#441425',
+                            color: draft.trim() ? '#fff' : '#662235',
                             fontFamily: 'var(--font-display)',
-                            fontSize: '0.625rem',
+                            fontSize: '0.6875rem',
                             fontWeight: 700,
                             cursor: draft.trim() ? 'pointer' : 'default',
                             transition: 'all 0.3s ease',
@@ -328,30 +328,30 @@ export const Yappr = () => {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, height: 0 }}
                             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                            style={{ padding: '0.65rem 1rem', borderBottom: '1px solid rgba(255,255,255,0.025)', display: 'flex', gap: '0.5rem' }}
+                            style={{ padding: '0.65rem 1rem', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', gap: '0.5rem' }}
                           >
-                            <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'rgba(255,61,110,0.12)', border: '1px solid rgba(255,61,110,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.875rem', flexShrink: 0 }}>
+                            <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'rgba(255,61,110,0.15)', border: '1px solid rgba(255,61,110,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.875rem', flexShrink: 0 }}>
                               {yap.avatar}
                             </div>
                             <div style={{ flex: 1, minWidth: 0 }}>
                               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.125rem' }}>
-                                <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.6875rem', color: '#fff', fontWeight: 600 }}>{yap.author}</span>
-                                <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.4rem', color: '#444' }}>{yap.handle}</span>
+                                <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.75rem', color: '#fff', fontWeight: 600 }}>{yap.author}</span>
+                                <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#94a3b8' }}>{yap.handle}</span>
                               </div>
-                              <p style={{ fontSize: '0.625rem', color: '#888', lineHeight: 1.5, wordBreak: 'break-word' }}>{yap.body}</p>
+                              <p style={{ fontSize: '0.75rem', color: '#f8fafc', lineHeight: 1.5, wordBreak: 'break-word', margin: '0.15rem 0' }}>{yap.body}</p>
                               <button
                                 onClick={() => toggleLike(yap.id)}
                                 style={{
                                   background: 'none', border: 'none', cursor: 'pointer',
-                                  fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem',
-                                  color: yap.liked ? '#ff3d6e' : '#444',
+                                  fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem',
+                                  color: yap.liked ? '#ff3d6e' : '#94a3b8',
                                   marginTop: '0.3rem', display: 'flex', alignItems: 'center', gap: '0.2rem',
                                   transition: 'color 0.25s ease, transform 0.25s ease',
                                 }}
                                 onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.15)'; }}
                                 onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
                               >
-                                <span style={{ fontSize: '0.625rem' }}>{yap.liked ? '♥' : '♡'}</span>
+                                <span style={{ fontSize: '0.6875rem' }}>{yap.liked ? '♥' : '♡'}</span>
                                 <span>{yap.likes}</span>
                               </button>
                             </div>
@@ -369,8 +369,8 @@ export const Yappr = () => {
                   viewport={{ once: true }}
                   transition={{ delay: 0.12, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                   style={{
-                    background: 'rgba(10, 5, 7, 0.85)',
-                    border: '1px solid rgba(255,61,110,0.14)',
+                    background: 'rgba(13, 17, 28, 0.88)',
+                    border: '1px solid rgba(255,61,110,0.2)',
                     borderRadius: 16,
                     padding: '1.5rem',
                     minHeight: 340,
@@ -378,12 +378,12 @@ export const Yappr = () => {
                     flexDirection: 'column',
                     justifyContent: 'space-between',
                     backdropFilter: 'blur(20px)',
-                    boxShadow: '0 8px 48px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.03)',
+                    boxShadow: '0 8px 48px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)',
                   }}
                 >
                   <div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.6rem', marginBottom: '1rem' }}>
-                      <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#555' }}>Real-time WebSocket Packet Feed</span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.6rem', marginBottom: '1rem' }}>
+                      <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', color: '#cbd5e1', fontWeight: 600 }}>Real-time WebSocket Packet Feed</span>
                       <div style={{ display: 'flex', gap: '0.3rem' }}>
                         <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#ff3d6e' }} />
                         <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#f59e0b' }} />
@@ -391,26 +391,26 @@ export const Yappr = () => {
                       </div>
                     </div>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem' }}>
                       <AnimatePresence>
                         {packetStream.map((packet, idx) => (
                           <motion.div
                             key={`${packet}-${idx}`}
                             initial={{ opacity: 0, y: 8 }}
-                            animate={{ opacity: idx === 0 ? 1 : 0.5 - idx * 0.06, y: 0 }}
+                            animate={{ opacity: idx === 0 ? 1 : 0.65 - idx * 0.06, y: 0 }}
                             exit={{ opacity: 0, y: -6 }}
                             transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
                             style={{
-                              color: packet.includes('TX_') ? '#ff3d6e' : packet.includes('RX_') ? '#00e87a' : '#555',
+                              color: packet.includes('TX_') ? '#ff3d6e' : packet.includes('RX_') ? '#00e87a' : '#cbd5e1',
                               display: 'flex', alignItems: 'center', gap: '0.4rem',
-                              padding: '0.2rem 0.4rem', borderRadius: 4,
+                              padding: '0.25rem 0.5rem', borderRadius: 4,
                               background: idx === 0
-                                ? (packet.includes('TX_') ? 'rgba(255,61,110,0.06)' : packet.includes('RX_') ? 'rgba(0,232,122,0.06)' : 'rgba(255,255,255,0.02)')
+                                ? (packet.includes('TX_') ? 'rgba(255,61,110,0.1)' : packet.includes('RX_') ? 'rgba(0,232,122,0.1)' : 'rgba(255,255,255,0.05)')
                                 : 'transparent',
                               transition: 'background 0.3s ease',
                             }}
                           >
-                            <span style={{ opacity: 0.4 }}>&gt;</span>
+                            <span style={{ opacity: 0.6 }}>&gt;</span>
                             <span>{packet}</span>
                           </motion.div>
                         ))}
@@ -418,9 +418,9 @@ export const Yappr = () => {
                     </div>
                   </div>
 
-                  <div style={{ borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '1rem', marginTop: '1.5rem' }}>
-                    <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.8125rem', fontWeight: 700, color: '#ff3d6e', marginBottom: '0.4rem', textShadow: '0 0 12px rgba(255,61,110,0.3)' }}>Optimistic State Rendering</div>
-                    <p style={{ fontSize: '0.75rem', color: '#555', lineHeight: 1.65 }}>
+                  <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '1rem', marginTop: '1.5rem' }}>
+                    <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.875rem', fontWeight: 700, color: '#ff3d6e', marginBottom: '0.4rem', textShadow: '0 0 12px rgba(255,61,110,0.3)' }}>Optimistic State Rendering</div>
+                    <p style={{ fontSize: '0.8125rem', color: '#cbd5e1', lineHeight: 1.65 }}>
                       Likes and post updates render locally immediately, bypassing database network trip delays to maintain a responsive interface.
                     </p>
                   </div>

@@ -108,13 +108,13 @@ const CarSimulator = () => {
         onBlur={() => setFocused(false)}
         style={{ width: '100%', maxWidth: 320, borderRadius: 6, border: `1px solid ${focused ? 'rgba(0,232,122,0.4)' : 'rgba(255,255,255,0.05)'}`, display: 'block', cursor: 'crosshair', outline: 'none' }}
       />
-      <div style={{ display: 'flex', gap: '1.25rem', marginTop: '0.625rem', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', letterSpacing: '0.08em' }}>
-        <span style={{ color: '#444' }}>SPD <span style={{ color: '#f59e0b' }}>{readout.speed}</span></span>
-        <span style={{ color: '#444' }}>HDG <span style={{ color: '#f59e0b' }}>{readout.heading}°</span></span>
-        <span style={{ color: '#444' }}>PWM <span style={{ color: '#00e87a' }}>{readout.pwm}</span></span>
-        <span style={{ color: '#444' }}>CMD <span style={{ color: '#00e87a' }}>{readout.cmd}</span></span>
+      <div style={{ display: 'flex', gap: '1.25rem', marginTop: '0.625rem', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', letterSpacing: '0.08em' }}>
+        <span style={{ color: '#94a3b8', fontWeight: 600 }}>SPD <span style={{ color: '#f59e0b' }}>{readout.speed}</span></span>
+        <span style={{ color: '#94a3b8', fontWeight: 600 }}>HDG <span style={{ color: '#f59e0b' }}>{readout.heading}°</span></span>
+        <span style={{ color: '#94a3b8', fontWeight: 600 }}>PWM <span style={{ color: '#00e87a' }}>{readout.pwm}</span></span>
+        <span style={{ color: '#94a3b8', fontWeight: 600 }}>CMD <span style={{ color: '#00e87a' }}>{readout.cmd}</span></span>
       </div>
-      <div style={{ marginTop: '0.375rem', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#444', letterSpacing: '0.06em' }}>
+      <div style={{ marginTop: '0.375rem', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#94a3b8', letterSpacing: '0.06em' }}>
         Click canvas then steer car with WASD
       </div>
     </div>
@@ -143,22 +143,22 @@ const Calculator = () => {
       ].map((s) => (
         <div key={s.label}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.2rem' }}>
-            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', letterSpacing: '0.1em', color: '#444' }}>{s.label}</span>
-            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#888' }}>{s.unit}</span>
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', letterSpacing: '0.1em', color: '#94a3b8', fontWeight: 600 }}>{s.label}</span>
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#f8fafc', fontWeight: 500 }}>{s.unit}</span>
           </div>
           <input type="range" min={s.min} max={s.max} value={s.value} onChange={(e) => s.set(Number(e.target.value))} style={{ width: '100%', accentColor: '#f59e0b' }} />
         </div>
       ))}
-      <div style={{ background: 'rgba(245,158,11,0.05)', border: '1px solid rgba(245,158,11,0.15)', borderRadius: 6, padding: '0.625rem 0.75rem', display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.25rem' }}>
+      <div style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.25)', borderRadius: 6, padding: '0.625rem 0.75rem', display: 'flex', flexDirection: 'column', gap: '0.25rem', marginTop: '0.25rem' }}>
         {[
           { l: 'Subtotal', v: `$${subtotal.toFixed(2)}`, dim: true },
           { l: `Discount (${discount}%)`, v: `-$${discountAmt.toFixed(2)}`, dim: true },
           { l: `Tax (${tax}%)`, v: `+$${taxAmt.toFixed(2)}`, dim: true },
           { l: 'TOTAL', v: `$${total.toFixed(2)}`, dim: false },
         ].map((row) => (
-          <div key={row.l} style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem' }}>
-            <span style={{ color: row.dim ? '#444' : '#f0ede6' }}>{row.l}</span>
-            <span style={{ color: row.dim ? '#555' : '#f59e0b', fontWeight: row.dim ? 400 : 700 }}>{row.v}</span>
+          <div key={row.l} style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem' }}>
+            <span style={{ color: row.dim ? '#94a3b8' : '#ffffff', fontWeight: row.dim ? 500 : 700 }}>{row.l}</span>
+            <span style={{ color: row.dim ? '#cbd5e1' : '#f59e0b', fontWeight: row.dim ? 500 : 700 }}>{row.v}</span>
           </div>
         ))}
       </div>
@@ -186,7 +186,7 @@ export const EngineeringLab = () => {
         <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#f59e0b' }}>
           06 — Engineering Lab
         </span>
-        <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(2rem, 5vw, 4.25rem)', letterSpacing: '-0.01em', lineHeight: 1.15, color: '#f0ede6', marginTop: '0.75rem' }}>
+        <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(2rem, 5vw, 4.25rem)', letterSpacing: '-0.01em', lineHeight: 1.15, color: '#ffffff', marginTop: '0.75rem' }}>
           Tactile prototypes & retrospectives.
         </h2>
       </motion.div>
@@ -260,8 +260,8 @@ export const EngineeringLab = () => {
           transition={{ delay: 0.2, duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
           whileHover={{ y: -6, scale: 1.01 }}
           style={{
-            background: 'rgba(13, 13, 15, 0.75)',
-            border: '1px solid rgba(255,255,255,0.06)',
+            background: 'rgba(13, 17, 28, 0.88)',
+            border: '1px solid rgba(255,255,255,0.12)',
             borderRadius: 14,
             padding: '1.5rem',
             display: 'flex',
@@ -269,36 +269,36 @@ export const EngineeringLab = () => {
             justifyContent: 'space-between',
             gap: '1rem',
             backdropFilter: 'blur(20px)',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
             transition: 'box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
-          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 20px rgba(200,255,0,0.08), 0 24px 64px rgba(0,0,0,0.55)'; }}
-          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 32px rgba(0,0,0,0.4)'; }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 20px rgba(200,255,0,0.15), 0 24px 64px rgba(0,0,0,0.55)'; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 32px rgba(0,0,0,0.5)'; }}
         >
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#888', letterSpacing: '0.12em' }}>RETROSPECTIVE // FAILURES</span>
+              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#cbd5e1', fontWeight: 600, letterSpacing: '0.12em' }}>RETROSPECTIVE // FAILURES</span>
               <div style={{ display: 'flex', gap: '0.25rem' }}>
-                <button onClick={() => setMistakeTab('gym')} style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', background: mistakeTab === 'gym' ? 'rgba(255,255,255,0.08)' : 'transparent', color: '#fff', border: 'none', padding: '0.15rem 0.35rem', borderRadius: 3, cursor: 'pointer' }}>Gym</button>
-                <button onClick={() => setMistakeTab('yappr')} style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', background: mistakeTab === 'yappr' ? 'rgba(255,255,255,0.08)' : 'transparent', color: '#fff', border: 'none', padding: '0.15rem 0.35rem', borderRadius: 3, cursor: 'pointer' }}>Yappr</button>
+                <button onClick={() => setMistakeTab('gym')} style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', background: mistakeTab === 'gym' ? 'rgba(255,255,255,0.16)' : 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.15)', padding: '0.2rem 0.5rem', borderRadius: 4, cursor: 'pointer' }}>Gym</button>
+                <button onClick={() => setMistakeTab('yappr')} style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', background: mistakeTab === 'yappr' ? 'rgba(255,255,255,0.16)' : 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.15)', padding: '0.2rem 0.5rem', borderRadius: 4, cursor: 'pointer' }}>Yappr</button>
               </div>
             </div>
             <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.125rem', fontWeight: 700, letterSpacing: '-0.01em', color: '#fff', marginTop: '0.375rem', marginBottom: '0.5rem' }}>Mistakes I Made</h3>
             
             <AnimatePresence mode="wait">
               {mistakeTab === 'gym' ? (
-                <motion.div key="gym" initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ fontSize: '0.75rem', color: '#666', lineHeight: 1.6 }}>
-                  <div style={{ color: '#ff3d6e', marginBottom: '0.25rem' }}>❌ Error: Client-side subscription checks</div>
-                  <p>Initially verified active plan status solely in client-side widgets. Exposed gym revenue data to local DOM script manipulation.</p>
-                  <div style={{ color: '#00e87a', marginTop: '0.5rem', marginBottom: '0.25rem' }}>✓ Rebuilt: Strict Postgres RLS policy</div>
-                  <p>Shifted security filters directly into Postgres using Supabase Auth JWT matches. Safe, tamper-proof isolation.</p>
+                <motion.div key="gym" initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ fontSize: '0.8125rem', color: '#cbd5e1', lineHeight: 1.65 }}>
+                  <div style={{ color: '#ff3d6e', marginBottom: '0.25rem', fontWeight: 600 }}>❌ Error: Client-side subscription checks</div>
+                  <p style={{ margin: '0 0 0.5rem 0' }}>Initially verified active plan status solely in client-side widgets. Exposed gym revenue data to local DOM script manipulation.</p>
+                  <div style={{ color: '#00e87a', marginTop: '0.5rem', marginBottom: '0.25rem', fontWeight: 600 }}>✓ Rebuilt: Strict Postgres RLS policy</div>
+                  <p style={{ margin: 0 }}>Shifted security filters directly into Postgres using Supabase Auth JWT matches. Safe, tamper-proof isolation.</p>
                 </motion.div>
               ) : (
-                <motion.div key="yappr" initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ fontSize: '0.75rem', color: '#666', lineHeight: 1.6 }}>
-                  <div style={{ color: '#ff3d6e', marginBottom: '0.25rem' }}>❌ Error: Heavy network updates on post updates</div>
-                  <p>Initially re-fetched the entire timeline feed on every new post mutation. Created massive network lag on mobile browsers.</p>
-                  <div style={{ color: '#00e87a', marginTop: '0.5rem', marginBottom: '0.25rem' }}>✓ Rebuilt: Local optimistic state array insertion</div>
-                  <p>Prepended draft data to timeline state memory, executing DB mutations asynchronously in the background. Lag feels zero.</p>
+                <motion.div key="yappr" initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ fontSize: '0.8125rem', color: '#cbd5e1', lineHeight: 1.65 }}>
+                  <div style={{ color: '#ff3d6e', marginBottom: '0.25rem', fontWeight: 600 }}>❌ Error: Heavy network updates on post updates</div>
+                  <p style={{ margin: '0 0 0.5rem 0' }}>Initially re-fetched the entire timeline feed on every new post mutation. Created massive network lag on mobile browsers.</p>
+                  <div style={{ color: '#00e87a', marginTop: '0.5rem', marginBottom: '0.25rem', fontWeight: 600 }}>✓ Rebuilt: Local optimistic state array insertion</div>
+                  <p style={{ margin: 0 }}>Prepended draft data to timeline state memory, executing DB mutations asynchronously in the background. Lag feels zero.</p>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -313,8 +313,8 @@ export const EngineeringLab = () => {
           transition={{ delay: 0.25, duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
           whileHover={{ y: -6, scale: 1.01 }}
           style={{
-            background: 'rgba(12, 12, 12, 0.75)',
-            border: '1px solid rgba(200,255,0,0.08)',
+            background: 'rgba(13, 17, 28, 0.88)',
+            border: '1px solid rgba(200,255,0,0.18)',
             borderRadius: 14,
             padding: '1.5rem',
             display: 'flex',
@@ -322,16 +322,16 @@ export const EngineeringLab = () => {
             justifyContent: 'space-between',
             gap: '1rem',
             backdropFilter: 'blur(20px)',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
             transition: 'box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
-          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 20px rgba(200,255,0,0.12), 0 24px 64px rgba(0,0,0,0.55)'; }}
-          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 32px rgba(0,0,0,0.4)'; }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 20px rgba(200,255,0,0.18), 0 24px 64px rgba(0,0,0,0.55)'; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 32px rgba(0,0,0,0.5)'; }}
         >
           <div>
-            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#c8ff00', letterSpacing: '0.12em' }}>COLLEAGUE STATEMENT // AI COLLAB</span>
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#c8ff00', letterSpacing: '0.12em', fontWeight: 600 }}>COLLEAGUE STATEMENT // AI COLLAB</span>
             <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.125rem', fontWeight: 700, letterSpacing: '-0.01em', color: '#fff', marginTop: '0.25rem', marginBottom: '0.5rem' }}>Honest AI Engineering</h3>
-            <p style={{ fontSize: '0.75rem', color: '#666', lineHeight: 1.6 }}>
+            <p style={{ fontSize: '0.8125rem', color: '#cbd5e1', lineHeight: 1.65, margin: 0 }}>
               AI accelerated implementation, boilerplate setup, and component layout iterations. Architectural decisions, system design patterns, firmware interfaces, and security validation rules were directed and verified by me.
             </p>
           </div>

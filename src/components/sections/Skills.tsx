@@ -99,8 +99,8 @@ export const Skills = () => {
           <p
             style={{
               fontFamily: 'Inter, sans-serif',
-              fontSize: '0.9375rem',
-              color: '#555',
+              fontSize: '1rem',
+              color: '#cbd5e1',
               lineHeight: 1.7,
               marginTop: '1rem',
               maxWidth: '50ch',
@@ -123,17 +123,19 @@ export const Skills = () => {
               key={group.category}
               {...fadeUp(0.08 + gi * 0.07)}
               style={{
-                background: 'rgba(15,15,15,0.6)',
-                border: '1px solid rgba(255,255,255,0.06)',
+                background: 'rgba(13, 17, 28, 0.88)',
+                border: '1px solid rgba(255,255,255,0.12)',
                 borderRadius: 14,
                 padding: '1.5rem',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '1.125rem',
-                backdropFilter: 'blur(16px)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
                 transition: 'border-color 0.3s ease',
               }}
-              whileHover={{ borderColor: `${group.color}30`, y: -4 }}
+              whileHover={{ borderColor: `${group.color}60`, y: -4 }}
             >
               {/* Category header */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -143,16 +145,16 @@ export const Skills = () => {
                     height: 8,
                     borderRadius: '50%',
                     background: group.color,
-                    boxShadow: `0 0 8px ${group.color}99`,
+                    boxShadow: `0 0 10px ${group.color}`,
                     flexShrink: 0,
                   }}
                 />
                 <h3
                   style={{
                     fontFamily: 'var(--font-display)',
-                    fontSize: '0.9375rem',
+                    fontSize: '1rem',
                     fontWeight: 700,
-                    color: '#f0ede6',
+                    color: '#ffffff',
                     letterSpacing: '-0.01em',
                     margin: 0,
                   }}
@@ -162,31 +164,32 @@ export const Skills = () => {
               </div>
 
               {/* Skill chips */}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                 {group.skills.map((skill) => (
                   <span
                     key={skill}
                     style={{
                       fontFamily: 'JetBrains Mono, monospace',
-                      fontSize: '0.625rem',
+                      fontSize: '0.6875rem',
+                      fontWeight: 500,
                       letterSpacing: '0.03em',
-                      padding: '0.3rem 0.65rem',
-                      borderRadius: 5,
-                      border: '1px solid rgba(255,255,255,0.07)',
-                      color: '#666',
-                      background: 'rgba(255,255,255,0.025)',
+                      padding: '0.35rem 0.75rem',
+                      borderRadius: 6,
+                      border: '1px solid rgba(255,255,255,0.18)',
+                      color: '#f8fafc',
+                      background: 'rgba(255,255,255,0.07)',
                       transition: 'all 0.2s ease',
                       cursor: 'default',
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.color = group.color;
-                      e.currentTarget.style.borderColor = `${group.color}40`;
-                      e.currentTarget.style.background = `${group.color}08`;
+                      e.currentTarget.style.borderColor = `${group.color}60`;
+                      e.currentTarget.style.background = `${group.color}15`;
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.color = '#666';
-                      e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)';
-                      e.currentTarget.style.background = 'rgba(255,255,255,0.025)';
+                      e.currentTarget.style.color = '#f8fafc';
+                      e.currentTarget.style.borderColor = 'rgba(255,255,255,0.18)';
+                      e.currentTarget.style.background = 'rgba(255,255,255,0.07)';
                     }}
                   >
                     {skill}
@@ -202,10 +205,11 @@ export const Skills = () => {
           {...fadeUp(0.3)}
           style={{
             fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '0.5625rem',
-            color: '#2a2a2a',
+            fontSize: '0.6875rem',
+            color: '#94a3b8',
             letterSpacing: '0.08em',
             textAlign: 'center',
+            fontWeight: 500,
           }}
         >
           All skills above have been applied in real shipped projects — GymLane, Yappr, or ESP32 firmware builds.

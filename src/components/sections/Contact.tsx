@@ -77,13 +77,13 @@ export const Contact = () => {
         viewport={{ once: true }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         style={{
-          background: 'rgba(10, 10, 10, 0.75)',
-          border: '1px solid rgba(200,255,0,0.1)',
+          background: 'rgba(13, 17, 28, 0.88)',
+          border: '1px solid rgba(200,255,0,0.2)',
           borderRadius: 16,
           padding: 'clamp(1.5rem, 4vw, 3rem) clamp(1.5rem, 4vw, 3rem)',
           backdropFilter: 'blur(24px)',
           WebkitBackdropFilter: 'blur(24px)',
-          boxShadow: '0 0 60px rgba(200,255,0,0.05), 0 32px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.04)',
+          boxShadow: '0 0 60px rgba(200,255,0,0.06), 0 32px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.06)',
           maxWidth: 700,
           width: '100%',
           display: 'flex',
@@ -93,13 +93,13 @@ export const Contact = () => {
         }}
       >
         {/* Terminal bar */}
-        <div style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.75rem', marginBottom: '0.5rem' }}>
+        <div style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.75rem', marginBottom: '0.5rem' }}>
           <div style={{ display: 'flex', gap: '0.3rem' }}>
             <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#ff3d6e' }} />
             <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#f59e0b' }} />
             <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#00e87a' }} />
           </div>
-          <span style={{ flex: 1, textAlign: 'center', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', color: '#333', letterSpacing: '0.1em' }}>
+          <span style={{ flex: 1, textAlign: 'center', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', color: '#94a3b8', letterSpacing: '0.1em', fontWeight: 600 }}>
             aabhas@portfolio:~$ contact --open-inbox
           </span>
         </div>
@@ -110,7 +110,7 @@ export const Contact = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.6875rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#333' }}
+          style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.8125rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#cbd5e1', fontWeight: 500 }}
         >
           Internships · collaborations · projects — inbox is open
         </motion.p>
@@ -135,7 +135,7 @@ export const Contact = () => {
               fontWeight: 700,
               fontSize: 'clamp(1.1rem, 3vw, 3rem)',
               letterSpacing: '-0.015em',
-              color: hovered ? '#c8ff00' : '#f0ede6',
+              color: hovered ? '#c8ff00' : '#ffffff',
               transition: 'color 0.4s ease, text-shadow 0.4s ease',
               lineHeight: 1.05,
               padding: '0.5rem 0',
@@ -178,13 +178,14 @@ export const Contact = () => {
                   fontSize: '0.6875rem',
                   letterSpacing: '0.06em',
                   color: '#c8ff00',
-                  background: 'rgba(200,255,0,0.08)',
-                  border: '1px solid rgba(200,255,0,0.25)',
-                  boxShadow: '0 0 16px rgba(200,255,0,0.15)',
-                  padding: '0.3rem 0.85rem',
+                  background: 'rgba(200,255,0,0.12)',
+                  border: '1px solid rgba(200,255,0,0.35)',
+                  boxShadow: '0 0 16px rgba(200,255,0,0.2)',
+                  padding: '0.35rem 0.95rem',
                   borderRadius: 5,
                   whiteSpace: 'nowrap',
                   marginTop: '0.5rem',
+                  fontWeight: 600,
                 }}
               >
                 ✓ Copied to clipboard
@@ -198,14 +199,14 @@ export const Contact = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3, duration: 0.6 }}
-          style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.6125rem', color: '#2a2a2a', letterSpacing: '0.04em' }}
+          style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.75rem', color: '#94a3b8', letterSpacing: '0.04em' }}
         >
           Click to copy · or{' '}
           <a
             href={`mailto:${EMAIL}`}
-            style={{ color: '#444', textDecoration: 'underline', transition: 'color 0.3s ease' }}
+            style={{ color: '#cbd5e1', textDecoration: 'underline', transition: 'color 0.3s ease', fontWeight: 600 }}
             onMouseEnter={(e) => (e.currentTarget.style.color = '#c8ff00')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = '#444')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = '#cbd5e1')}
           >
             open mail client
           </a>
@@ -230,10 +231,11 @@ export const Contact = () => {
               rel="noreferrer"
               style={{
                 fontFamily: 'JetBrains Mono, monospace',
-                fontSize: '0.6875rem',
+                fontSize: '0.75rem',
                 letterSpacing: '0.1em',
                 textTransform: 'uppercase',
-                color: '#444',
+                color: '#cbd5e1',
+                fontWeight: 600,
                 transition: 'color 0.3s ease, text-shadow 0.3s ease',
                 display: 'flex',
                 alignItems: 'center',
@@ -244,7 +246,7 @@ export const Contact = () => {
                 e.currentTarget.style.textShadow = '0 0 12px rgba(200,255,0,0.4)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.color = '#444';
+                e.currentTarget.style.color = '#cbd5e1';
                 e.currentTarget.style.textShadow = 'none';
               }}
             >
@@ -264,9 +266,10 @@ export const Contact = () => {
           position: 'absolute',
           bottom: 'clamp(1.5rem, 3vw, 2.5rem)',
           fontFamily: 'JetBrains Mono, monospace',
-          fontSize: '0.5rem',
+          fontSize: '0.6875rem',
           letterSpacing: '0.12em',
-          color: '#1a1a1a',
+          color: '#94a3b8',
+          fontWeight: 500,
         }}
       >
         Aabhas Katiyar · B.Tech IT · KIET Group of Institutions · 2025–2029

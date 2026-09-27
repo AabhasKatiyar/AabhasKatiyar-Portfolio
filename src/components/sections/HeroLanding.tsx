@@ -114,29 +114,45 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
         {/* ── LEFT: Main identity ── */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
           {/* Status badge */}
-          <motion.div {...fadeUp(0)} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <span
+          <motion.div {...fadeUp(0)} style={{ display: 'flex', alignItems: 'center' }}>
+            <div
               style={{
-                display: 'inline-block',
-                width: 7,
-                height: 7,
-                borderRadius: '50%',
-                background: '#00e87a',
-                boxShadow: '0 0 10px #00e87a',
-                animation: 'pulse-dot 2s ease-in-out infinite',
-              }}
-            />
-            <span
-              style={{
-                fontFamily: 'JetBrains Mono, monospace',
-                fontSize: '0.6rem',
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-                color: '#00e87a',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.6rem',
+                background: 'rgba(0, 232, 122, 0.12)',
+                border: '1px solid rgba(0, 232, 122, 0.35)',
+                padding: '0.35rem 0.85rem',
+                borderRadius: 999,
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                boxShadow: '0 0 20px rgba(0, 232, 122, 0.15)',
               }}
             >
-              Available for internships &amp; collaborations
-            </span>
+              <span
+                style={{
+                  display: 'inline-block',
+                  width: 7,
+                  height: 7,
+                  borderRadius: '50%',
+                  background: '#00e87a',
+                  boxShadow: '0 0 10px #00e87a',
+                  animation: 'pulse-dot 2s ease-in-out infinite',
+                }}
+              />
+              <span
+                style={{
+                  fontFamily: 'JetBrains Mono, monospace',
+                  fontSize: '0.625rem',
+                  fontWeight: 600,
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  color: '#00e87a',
+                }}
+              >
+                Available for internships &amp; collaborations
+              </span>
+            </div>
           </motion.div>
 
           {/* Name */}
@@ -149,13 +165,14 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
                 fontWeight: 700,
                 letterSpacing: '-0.01em',
                 lineHeight: 1.08,
-                color: '#f0ede6',
+                color: '#ffffff',
                 margin: 0,
+                textShadow: '0 4px 24px rgba(0,0,0,0.8)',
               }}
             >
               Aabhas
               <br />
-              <span style={{ color: '#00e87a', textShadow: '0 0 40px rgba(0,232,122,0.2)' }}>
+              <span style={{ color: '#00e87a', textShadow: '0 0 40px rgba(0,232,122,0.35)' }}>
                 Katiyar
               </span>
             </motion.h1>
@@ -166,11 +183,12 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
             <p
               style={{
                 fontFamily: 'Inter, sans-serif',
-                fontSize: 'clamp(1rem, 2.2vw, 1.2rem)',
-                fontWeight: 500,
-                color: '#f0ede6',
+                fontSize: 'clamp(1.1rem, 2.4vw, 1.35rem)',
+                fontWeight: 600,
+                color: '#ffffff',
                 margin: 0,
                 lineHeight: 1.35,
+                textShadow: '0 2px 10px rgba(0,0,0,0.9)',
               }}
             >
               Full-Stack Developer &amp; IoT Engineer
@@ -178,12 +196,12 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
             <p
               style={{
                 fontFamily: 'Inter, sans-serif',
-                fontSize: 'clamp(0.9375rem, 1.8vw, 1rem)',
-                color: '#b8c2d1',
+                fontSize: 'clamp(0.95rem, 1.9vw, 1.05rem)',
+                color: '#e2e8f0',
                 margin: 0,
                 lineHeight: 1.7,
                 maxWidth: '44ch',
-                textShadow: '0 2px 10px rgba(0,0,0,0.85)',
+                textShadow: '0 2px 12px rgba(0,0,0,0.95)',
               }}
             >
               I build production web systems and embedded firmware — from multi-tenant Supabase SaaS to ESP32 microcontrollers.
@@ -197,27 +215,28 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
                 key={tech}
                 style={{
                   fontFamily: 'JetBrains Mono, monospace',
-                  fontSize: '0.625rem',
-                  color: '#e2e8f0',
-                  border: '1px solid rgba(255,255,255,0.14)',
-                  padding: '0.3rem 0.7rem',
-                  borderRadius: 5,
-                  background: 'rgba(12, 16, 25, 0.75)',
-                  backdropFilter: 'blur(10px)',
-                  WebkitBackdropFilter: 'blur(10px)',
+                  fontSize: '0.65rem',
+                  fontWeight: 600,
+                  color: '#f8fafc',
+                  border: '1px solid rgba(255,255,255,0.22)',
+                  padding: '0.35rem 0.75rem',
+                  borderRadius: 6,
+                  background: 'rgba(15, 23, 42, 0.85)',
+                  backdropFilter: 'blur(12px)',
+                  WebkitBackdropFilter: 'blur(12px)',
                   letterSpacing: '0.04em',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
                   transition: 'all 0.25s ease',
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.color = '#00e87a';
-                  e.currentTarget.style.borderColor = 'rgba(0,232,122,0.4)';
-                  e.currentTarget.style.background = 'rgba(0,232,122,0.1)';
+                  e.currentTarget.style.borderColor = 'rgba(0,232,122,0.5)';
+                  e.currentTarget.style.background = 'rgba(0,232,122,0.15)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.color = '#e2e8f0';
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.14)';
-                  e.currentTarget.style.background = 'rgba(12, 16, 25, 0.75)';
+                  e.currentTarget.style.color = '#f8fafc';
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.22)';
+                  e.currentTarget.style.background = 'rgba(15, 23, 42, 0.85)';
                 }}
               >
                 {tech}
@@ -244,48 +263,48 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
                 letterSpacing: '0.06em',
                 cursor: 'pointer',
                 transition: 'all 0.3s cubic-bezier(0.16,1,0.3,1)',
-                boxShadow: '0 4px 20px rgba(0,232,122,0.2)',
+                boxShadow: '0 4px 20px rgba(0,232,122,0.3)',
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'translateY(-2px)';
-                e.currentTarget.style.boxShadow = '0 8px 28px rgba(0,232,122,0.35)';
+                e.currentTarget.style.boxShadow = '0 8px 28px rgba(0,232,122,0.45)';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,232,122,0.2)';
+                e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,232,122,0.3)';
               }}
             >
               <FileSVG /> View Resume
             </button>
-
             <button
               onClick={handleExplore}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.4rem',
-                background: 'rgba(15, 20, 30, 0.65)',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255,255,255,0.18)',
+                background: 'rgba(20, 27, 45, 0.85)',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                border: '1px solid rgba(255,255,255,0.25)',
                 borderRadius: 7,
                 padding: '0.75rem 1.5rem',
-                color: '#e2e8f0',
+                color: '#f8fafc',
                 fontFamily: 'JetBrains Mono, monospace',
                 fontSize: '0.6875rem',
                 fontWeight: 600,
                 letterSpacing: '0.06em',
                 cursor: 'pointer',
+                boxShadow: '0 4px 16px rgba(0,0,0,0.5)',
                 transition: 'all 0.3s cubic-bezier(0.16,1,0.3,1)',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
-                e.currentTarget.style.color = '#f0ede6';
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.45)';
+                e.currentTarget.style.color = '#00e87a';
                 e.currentTarget.style.transform = 'translateY(-2px)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
-                e.currentTarget.style.color = '#888';
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
+                e.currentTarget.style.color = '#f8fafc';
                 e.currentTarget.style.transform = 'translateY(0)';
               }}
             >
@@ -307,7 +326,7 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
                 rel="noreferrer"
                 title={label}
                 style={{
-                  color: '#3a3a3a',
+                  color: '#94a3b8',
                   transition: 'color 0.25s ease, transform 0.25s ease',
                   display: 'flex',
                   alignItems: 'center',
@@ -317,7 +336,7 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
                   e.currentTarget.style.transform = 'translateY(-2px)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.color = '#3a3a3a';
+                  e.currentTarget.style.color = '#94a3b8';
                   e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
@@ -333,20 +352,20 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.75, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           style={{
-            background: 'rgba(15,15,15,0.65)',
-            border: '1px solid rgba(255,255,255,0.07)',
+            background: 'rgba(13, 17, 28, 0.88)',
+            border: '1px solid rgba(255,255,255,0.14)',
             borderRadius: 16,
             padding: '2rem',
             backdropFilter: 'blur(24px)',
             WebkitBackdropFilter: 'blur(24px)',
-            boxShadow: '0 8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04)',
+            boxShadow: '0 12px 48px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.08)',
             display: 'flex',
             flexDirection: 'column',
             gap: '1.5rem',
           }}
         >
           {/* Header */}
-          <div style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '1.25rem' }}>
+          <div style={{ borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1.25rem' }}>
             <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', marginBottom: '1.25rem' }}>
               <div 
                 style={{
@@ -354,20 +373,20 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
                   height: 64,
                   borderRadius: '50%',
                   overflow: 'hidden',
-                  border: '2px solid rgba(0, 232, 122, 0.25)',
-                  boxShadow: '0 0 16px rgba(0, 232, 122, 0.15)',
+                  border: '2px solid rgba(0, 232, 122, 0.35)',
+                  boxShadow: '0 0 18px rgba(0, 232, 122, 0.25)',
                   background: '#111',
                   flexShrink: 0,
                   transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = '#00e87a';
-                  e.currentTarget.style.boxShadow = '0 0 24px rgba(0, 232, 122, 0.35)';
+                  e.currentTarget.style.boxShadow = '0 0 24px rgba(0, 232, 122, 0.45)';
                   e.currentTarget.style.transform = 'scale(1.08) rotate(3deg)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(0, 232, 122, 0.25)';
-                  e.currentTarget.style.boxShadow = '0 0 16px rgba(0, 232, 122, 0.15)';
+                  e.currentTarget.style.borderColor = 'rgba(0, 232, 122, 0.35)';
+                  e.currentTarget.style.boxShadow = '0 0 18px rgba(0, 232, 122, 0.25)';
                   e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
                 }}
               >
@@ -385,10 +404,11 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
                 <p
                   style={{
                     fontFamily: 'JetBrains Mono, monospace',
-                    fontSize: '0.5625rem',
-                    color: '#333',
+                    fontSize: '0.625rem',
+                    color: '#94a3b8',
                     letterSpacing: '0.14em',
                     textTransform: 'uppercase',
+                    fontWeight: 600,
                     margin: 0,
                   }}
                 >
@@ -399,7 +419,7 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
                     fontFamily: 'var(--font-display)',
                     fontSize: '1.25rem',
                     fontWeight: 700,
-                    color: '#f0ede6',
+                    color: '#ffffff',
                     letterSpacing: '-0.015em',
                     margin: '0.15rem 0 0 0',
                   }}
@@ -408,7 +428,7 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
                 </h3>
               </div>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
               {[
                 { label: 'Role', value: 'Software & IoT Engineer' },
                 { label: 'Education', value: 'B.Tech IT — KIET (2025–2029)' },
@@ -419,11 +439,12 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
                   <span
                     style={{
                       fontFamily: 'JetBrains Mono, monospace',
-                      fontSize: '0.5625rem',
-                      color: '#333',
+                      fontSize: '0.625rem',
+                      color: '#94a3b8',
                       letterSpacing: '0.06em',
                       textTransform: 'uppercase',
-                      minWidth: '70px',
+                      fontWeight: 600,
+                      minWidth: '75px',
                       flexShrink: 0,
                     }}
                   >
@@ -433,8 +454,8 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
                     style={{
                       fontFamily: 'Inter, sans-serif',
                       fontSize: '0.8125rem',
-                      color: accent || '#888',
-                      fontWeight: accent ? 600 : 400,
+                      color: accent || '#f8fafc',
+                      fontWeight: accent ? 600 : 500,
                       textShadow: accent ? `0 0 12px ${accent}44` : 'none',
                     }}
                   >
@@ -450,10 +471,11 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
             <p
               style={{
                 fontFamily: 'JetBrains Mono, monospace',
-                fontSize: '0.5625rem',
-                color: '#333',
+                fontSize: '0.625rem',
+                color: '#94a3b8',
                 letterSpacing: '0.14em',
                 textTransform: 'uppercase',
+                fontWeight: 600,
                 marginBottom: '0.75rem',
               }}
             >
@@ -471,29 +493,29 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
                     display: 'flex',
                     alignItems: 'center',
                     gap: '0.75rem',
-                    padding: '0.6rem 0.75rem',
+                    padding: '0.65rem 0.85rem',
                     borderRadius: 8,
-                    border: '1px solid rgba(255,255,255,0.04)',
-                    background: 'rgba(255,255,255,0.02)',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                    background: 'rgba(255,255,255,0.04)',
                     textDecoration: 'none',
                     transition: 'all 0.25s ease',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = `${color}30`;
-                    e.currentTarget.style.background = `${color}05`;
+                    e.currentTarget.style.borderColor = `${color}60`;
+                    e.currentTarget.style.background = `${color}12`;
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)';
-                    e.currentTarget.style.background = 'rgba(255,255,255,0.02)';
+                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
+                    e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
                   }}
                 >
                   <span
                     style={{
-                      width: 7,
-                      height: 7,
+                      width: 8,
+                      height: 8,
                       borderRadius: '50%',
                       background: color,
-                      boxShadow: `0 0 8px ${color}`,
+                      boxShadow: `0 0 10px ${color}`,
                       flexShrink: 0,
                       animation: 'pulse-dot 2s ease-in-out infinite',
                     }}
@@ -502,9 +524,9 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
                     <div
                       style={{
                         fontFamily: 'var(--font-display)',
-                        fontSize: '0.8125rem',
+                        fontSize: '0.875rem',
                         fontWeight: 700,
-                        color: '#f0ede6',
+                        color: '#ffffff',
                         letterSpacing: '-0.01em',
                       }}
                     >
@@ -513,9 +535,9 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
                     <div
                       style={{
                         fontFamily: 'Inter, sans-serif',
-                        fontSize: '0.6875rem',
-                        color: '#555',
-                        marginTop: 1,
+                        fontSize: '0.75rem',
+                        color: '#cbd5e1',
+                        marginTop: 2,
                       }}
                     >
                       {desc}
@@ -529,7 +551,7 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
           {/* Scroll cue */}
           <div
             style={{
-              borderTop: '1px solid rgba(255,255,255,0.05)',
+              borderTop: '1px solid rgba(255,255,255,0.1)',
               paddingTop: '1rem',
               display: 'flex',
               alignItems: 'center',
@@ -539,9 +561,10 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
             <span
               style={{
                 fontFamily: 'JetBrains Mono, monospace',
-                fontSize: '0.5625rem',
-                color: '#2a2a2a',
+                fontSize: '0.625rem',
+                color: '#94a3b8',
                 letterSpacing: '0.1em',
+                fontWeight: 500,
               }}
             >
               Scroll to explore full portfolio ↓
