@@ -91,9 +91,9 @@ export const FloatingNav = () => {
   const getTabY = (worldId: string) => {
     const isActive = activeWorld === worldId;
     const isHovered = hovered === worldId;
-    if (isActive) return 24;
-    if (isHovered) return 21;
-    return 18;
+    if (isActive) return 21;
+    if (isHovered) return 19;
+    return 16;
   };
 
   const generatePath = () => {
@@ -107,7 +107,7 @@ export const FloatingNav = () => {
       const xc = (x0 + x1) / 2;
       
       const isTense = activeWorld === WORLDS[i].id || activeWorld === WORLDS[i+1].id || hovered === WORLDS[i].id || hovered === WORLDS[i+1].id;
-      const sag = isTense ? 1 : 3;
+      const sag = isTense ? 1 : 2.5;
       const yc = (y0 + y1) / 2 + sag;
       
       d += ` Q ${xc} ${yc}, ${x1} ${y1}`;
@@ -140,24 +140,24 @@ export const FloatingNav = () => {
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         style={{
           pointerEvents: 'auto',
-          width: '100%',
-          maxWidth: 960,
+          width: 'fit-content',
+          maxWidth: 'calc(100% - 1rem)',
           background: scrolled
-            ? 'rgba(9, 13, 24, 0.75)'
-            : 'rgba(9, 13, 24, 0.58)',
+            ? 'rgba(9, 13, 24, 0.78)'
+            : 'rgba(9, 13, 24, 0.62)',
           backdropFilter: 'blur(20px) saturate(190%)',
           WebkitBackdropFilter: 'blur(20px) saturate(190%)',
           border: '1px solid rgba(255, 255, 255, 0.1)',
           borderRadius: 9999,
           boxShadow: scrolled
-            ? '0 16px 40px -10px rgba(0, 0, 0, 0.65), 0 0 24px rgba(200, 255, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.15)'
+            ? '0 16px 40px -10px rgba(0, 0, 0, 0.65), 0 0 20px rgba(200, 255, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.14)'
             : '0 8px 24px -6px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
-          padding: '0.35rem clamp(0.5rem, 1.5vw, 1.1rem)',
+          padding: '0.24rem 0.55rem',
           transition: 'background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease',
         }}
         className="floating-nav-bar"
       >
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.35rem', width: '100%' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', width: 'auto' }}>
           
           {/* Brand */}
           <a
@@ -165,18 +165,21 @@ export const FloatingNav = () => {
             style={{
               fontFamily: 'var(--font-display)',
               fontWeight: 800,
-              fontSize: '0.95rem',
+              fontSize: '0.875rem',
               letterSpacing: '-0.02em',
               color: activeColor,
               transition: 'color 0.4s ease, text-shadow 0.4s ease',
-              textShadow: `0 0 16px ${activeColor}66`,
+              textShadow: `0 0 14px ${activeColor}66`,
               textDecoration: 'none',
               flexShrink: 0,
-              padding: '0.2rem 0.4rem',
+              padding: '0.15rem 0.35rem',
             }}
           >
             AK
           </a>
+
+          {/* Micro divider */}
+          <div style={{ width: 1, height: 12, background: 'rgba(255, 255, 255, 0.12)', flexShrink: 0 }} />
 
           {/* Scrollable Nav Tabs Container */}
           <div
@@ -185,16 +188,13 @@ export const FloatingNav = () => {
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: 'clamp(0.12rem, 0.6vw, 0.3rem)',
               overflowX: 'auto',
               scrollbarWidth: 'none',
               msOverflowStyle: 'none',
               WebkitOverflowScrolling: 'touch',
-              padding: '0.1rem 0.2rem',
               position: 'relative',
-              flex: 1,
+              flex: '1 1 auto',
               minWidth: 0,
-              justifyContent: 'center',
             }}
           >
             <div
@@ -202,7 +202,7 @@ export const FloatingNav = () => {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 'clamp(0.12rem, 0.6vw, 0.3rem)',
+                gap: 'clamp(0.08rem, 0.4vw, 0.2rem)',
                 position: 'relative',
                 flexShrink: 0,
               }}
@@ -227,8 +227,8 @@ export const FloatingNav = () => {
                       id="nav-thread-glow"
                       gradientUnits="userSpaceOnUse"
                       animate={{
-                        x1: activeCenterX - 45,
-                        x2: activeCenterX + 45,
+                        x1: activeCenterX - 40,
+                        x2: activeCenterX + 40,
                       }}
                       transition={{ type: 'spring', stiffness: 90, damping: 14 }}
                     >
@@ -242,7 +242,7 @@ export const FloatingNav = () => {
                   <motion.path
                     d={pathD}
                     fill="none"
-                    stroke="rgba(255, 255, 255, 0.06)"
+                    stroke="rgba(255, 255, 255, 0.05)"
                     strokeWidth="1"
                     transition={{ type: 'spring', stiffness: 90, damping: 14 }}
                   />
@@ -252,7 +252,7 @@ export const FloatingNav = () => {
                     d={pathD}
                     fill="none"
                     stroke="url(#nav-thread-glow)"
-                    strokeWidth="2"
+                    strokeWidth="1.75"
                     transition={{ type: 'spring', stiffness: 90, damping: 14 }}
                     style={{
                       filter: `drop-shadow(0 0 5px ${activeColor}bb)`,
@@ -264,10 +264,10 @@ export const FloatingNav = () => {
                     d={pathD}
                     fill="none"
                     stroke={activeColor}
-                    strokeWidth="2"
-                    strokeDasharray="8 45"
+                    strokeWidth="1.75"
+                    strokeDasharray="6 40"
                     animate={{
-                      strokeDashoffset: [0, -106],
+                      strokeDashoffset: [0, -92],
                     }}
                     transition={{
                       duration: 3.5,
@@ -297,8 +297,8 @@ export const FloatingNav = () => {
                       display: 'flex',
                       flexDirection: 'column',
                       alignItems: 'center',
-                      gap: '0.15rem',
-                      padding: 'clamp(0.2rem, 0.6vw, 0.32rem) clamp(0.35rem, 1vw, 0.6rem)',
+                      gap: '0.1rem',
+                      padding: '0.18rem clamp(0.3rem, 0.8vw, 0.45rem)',
                       borderRadius: 9999,
                       textDecoration: 'none',
                       transition: 'all 0.25s ease',
@@ -312,7 +312,7 @@ export const FloatingNav = () => {
                     <span
                       style={{
                         fontFamily: 'JetBrains Mono, monospace',
-                        fontSize: 'clamp(0.58rem, 1.2vw, 0.6875rem)',
+                        fontSize: 'clamp(0.58rem, 1.1vw, 0.64rem)',
                         fontWeight: isActive ? 700 : 600,
                         letterSpacing: '0.07em',
                         textTransform: 'uppercase',
@@ -340,7 +340,7 @@ export const FloatingNav = () => {
                         boxShadow: `0 0 6px ${world.color}`,
                         transformOrigin: 'center',
                         position: 'absolute',
-                        bottom: 2,
+                        bottom: 1.5,
                         left: '20%',
                       }}
                     />
@@ -350,13 +350,16 @@ export const FloatingNav = () => {
             </div>
           </div>
 
+          {/* Micro divider */}
+          <div style={{ width: 1, height: 12, background: 'rgba(255, 255, 255, 0.12)', flexShrink: 0 }} />
+
           {/* Right side: live ping dot */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', flexShrink: 0, paddingRight: '0.2rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', flexShrink: 0, padding: '0 0.25rem' }}>
             <span
               style={{
                 display: 'block',
-                width: 6,
-                height: 6,
+                width: 5,
+                height: 5,
                 borderRadius: '50%',
                 background: activeColor,
                 boxShadow: `0 0 8px ${activeColor}`,
@@ -367,10 +370,10 @@ export const FloatingNav = () => {
               className="hidden sm:inline"
               style={{
                 fontFamily: 'JetBrains Mono, monospace',
-                fontSize: '0.5625rem',
+                fontSize: '0.52rem',
                 color: '#94a3b8',
                 fontWeight: 600,
-                letterSpacing: '0.1em',
+                letterSpacing: '0.08em',
               }}
             >
               LIVE

@@ -603,9 +603,10 @@
 
   /* FloatingNav: sleek and compact on mobile */
   .floating-nav-bar {
-    width: calc(100% - 1rem) !important;
-    top: 0.5rem !important;
-    padding: 0.35rem 0.65rem !important;
+    width: fit-content !important;
+    max-width: calc(100% - 1rem) !important;
+    top: 0.4rem !important;
+    padding: 0.2rem 0.5rem !important;
   }
 
   /* Hide scrollbars on mobile nav tabs */
