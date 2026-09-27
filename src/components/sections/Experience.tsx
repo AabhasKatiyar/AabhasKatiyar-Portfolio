@@ -18,11 +18,11 @@ interface TimelineItem {
 
 const TIMELINE: TimelineItem[] = [
   {
-    period: '2025 – 2029',
+    period: '2024 – 2028',
     role: 'B.Tech — Information Technology',
     org: 'KIET Group of Institutions, Ghaziabad',
-    desc: 'Core courses: Data Structures & Algorithms, Computer Networks, DBMS, Operating Systems, IoT. Currently in first year.',
-    tags: ['DSA', 'Networking', 'DBMS', 'OS', 'IoT'],
+    desc: 'Core courses: Data Structures & Algorithms, Computer Networks, DBMS, Operating Systems, Web Technologies. Currently in 2nd year.',
+    tags: ['DSA', 'Networking', 'DBMS', 'OS', 'Web Eng'],
     color: '#00e87a',
   },
   {
@@ -43,11 +43,11 @@ const TIMELINE: TimelineItem[] = [
   },
   {
     period: '2025',
-    role: 'ESP32 Hardware Projects',
-    org: 'Personal research',
-    desc: 'Programmed ESP32 and Arduino microcontrollers in C++. Projects include a WiFi-controlled smart car with PWM motor drivers and browser-based steering interface.',
-    tags: ['C++', 'ESP32', 'Arduino', 'PWM', 'WiFi HTTP'],
-    color: '#f59e0b',
+    role: 'Full-Stack Web Systems & Performance',
+    org: 'Independent engineering',
+    desc: 'Engineered high-performance web systems featuring scroll-synchronized GPU canvas pipelines, responsive design architectures, and edge deployment automation via Cloudflare.',
+    tags: ['React', 'Vite', 'Cloudflare Pages', 'Web Performance', 'Edge'],
+    color: '#c8ff00',
   },
 ];
 

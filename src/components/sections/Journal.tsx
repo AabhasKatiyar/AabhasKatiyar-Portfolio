@@ -16,18 +16,18 @@ export const Journal: React.FC = () => {
 
   const posts: JournalPost[] = [
     {
-      title: "Switched to JS",
+      title: "Mastering Vanilla JavaScript",
       date: "Oct 12, 2025",
-      excerpt: "Migrating firmware control scripts to standard browser scripts...",
-      content: "Transitioned from bare-metal C++ structures to vanilla JavaScript. Learned the intricacies of DOM manipulation, asynchronous loops, event binding, and how to interface client socket packages to control remote hardware configurations dynamically.",
+      excerpt: "Deep dive into browser internals and the JavaScript event loop...",
+      content: "Dedicated time to master vanilla JavaScript fundamentals: DOM manipulation, asynchronous promises, event loops, closures, and custom event dispatching before jumping into framework abstractions.",
       tag: "JavaScript"
     },
     {
-      title: "ESP32 Remote Prototyping",
+      title: "Deep Dive into Postgres RLS",
       date: "Sept 28, 2025",
-      excerpt: "Wiring the SoftAP router and driving motor shields wirelessly...",
-      content: "Configured the ESP32 server module to spin up a local WiFi Access Point (AP). Programmed dynamic endpoints to receive direction parameters and mapped those signals onto digital PWM outputs, governing the velocity of connected chassis wheels.",
-      tag: "IoT & C++"
+      excerpt: "Moving security filters from frontend code into Postgres policies...",
+      content: "Configured Postgres Row Level Security (RLS) policies on the GymLane database. Instead of verifying membership status in frontend widgets, shifted authorization directly into Postgres using Supabase Auth JWT matches. Safe, tamper-proof multi-tenant isolation.",
+      tag: "Database & Security"
     },
     {
       title: "Portfolio Architecture Design",

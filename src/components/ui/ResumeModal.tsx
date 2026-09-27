@@ -215,7 +215,7 @@ export const ResumeModal = ({ isOpen, onClose }: ResumeModalProps) => {
                     Aabhas Katiyar
                   </h1>
                   <p style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.8rem', color: '#c8ff00', textTransform: 'uppercase', letterSpacing: '0.12em', margin: 0 }}>
-                    Full-Stack Software Developer & IoT Engineer
+                    Full-Stack Software Developer
                   </p>
                 </div>
                 
@@ -244,9 +244,9 @@ export const ResumeModal = ({ isOpen, onClose }: ResumeModalProps) => {
                     </h2>
                     <div>
                       <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#ffffff', margin: '0 0 0.15rem 0' }}>B.Tech in Information Technology</h4>
-                      <p style={{ fontSize: '0.75rem', color: '#cbd5e1', fontWeight: 500, margin: '0 0 0.35rem 0' }}>KIET Group of Institutions, Ghaziabad | 2025 – 2029</p>
+                      <p style={{ fontSize: '0.75rem', color: '#cbd5e1', fontWeight: 500, margin: '0 0 0.35rem 0' }}>KIET Group of Institutions, Ghaziabad | 2024 – 2028 (2nd Year)</p>
                       <p style={{ fontSize: '0.75rem', color: '#e2e8f0', margin: 0, lineHeight: 1.45 }}>
-                        Focusing on core software algorithms, computer networking, relational database systems, and embedded computing logic.
+                        Focusing on core software algorithms, computer networking, relational database systems, and modern web architectures.
                       </p>
                     </div>
                   </div>
@@ -258,10 +258,10 @@ export const ResumeModal = ({ isOpen, onClose }: ResumeModalProps) => {
                     </h2>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                       {[
-                        { cat: 'Languages', items: 'JavaScript, TypeScript, C/C++, SQL, HTML/CSS' },
+                        { cat: 'Languages', items: 'JavaScript, TypeScript, SQL, HTML/CSS' },
                         { cat: 'Frontend', items: 'React, Vite, Tailwind CSS v4, Framer Motion' },
                         { cat: 'Backend & Data', items: 'Supabase, PostgreSQL, RLS Policies, Node.js' },
-                        { cat: 'Infrastructure', items: 'Git & GitHub, Cloudflare Pages, npm, Arduino IDE' },
+                        { cat: 'Infrastructure', items: 'Git & GitHub, Cloudflare Pages, npm, Vite, Postman' },
                       ].map((item) => (
                         <div key={item.cat}>
                           <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.65rem', color: '#c8ff00', textTransform: 'uppercase', display: 'block', marginBottom: '0.15rem', fontWeight: 600 }}>{item.cat}</span>
@@ -278,7 +278,7 @@ export const ResumeModal = ({ isOpen, onClose }: ResumeModalProps) => {
                     </h2>
                     <ul style={{ paddingLeft: '1rem', margin: 0, fontSize: '0.75rem', color: '#e2e8f0', display: 'flex', flexDirection: 'column', gap: '0.5rem', lineHeight: 1.45 }}>
                       <li><strong>Multi-Tenant Architectures</strong>: Deep familiarity with Postgres Row Level Security (RLS) configurations to secure user datasets natively.</li>
-                      <li><strong>Embedded Microcontrollers</strong>: Experience programming C++ scripts on Arduino Uno and ESP32 with wireless integration.</li>
+                      <li><strong>Real-Time Systems</strong>: Architected WebSocket pub/sub feeds and sub-50ms reactive state pipelines with optimistic updates.</li>
                       <li><strong>Independent SaaS Builder</strong>: Demonstrated capability to launch, debug, and support live database-backed applications.</li>
                     </ul>
                   </div>
@@ -296,12 +296,12 @@ export const ResumeModal = ({ isOpen, onClose }: ResumeModalProps) => {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       <div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', margin: '0 0 0.15rem 0' }}>
-                          <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#ffffff', margin: 0 }}>Embedded Logic Researcher</h4>
+                          <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#ffffff', margin: 0 }}>Full-Stack Web Systems Engineer</h4>
                           <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.65rem', color: '#c8ff00', fontWeight: 600 }}>2025</span>
                         </div>
-                        <p style={{ fontSize: '0.75rem', color: '#cbd5e1', fontWeight: 500, margin: '0 0 0.35rem 0' }}>C++ Embedded Labs</p>
+                        <p style={{ fontSize: '0.75rem', color: '#cbd5e1', fontWeight: 500, margin: '0 0 0.35rem 0' }}>Independent Engineering</p>
                         <p style={{ fontSize: '0.75rem', color: '#e2e8f0', margin: 0, lineHeight: 1.45 }}>
-                          Experimented with microcontrollers, constructing hardware circuitry configurations, telemetry data streams, and SPI/I2C communication setups.
+                          Engineered high-performance web systems featuring scroll-synchronized GPU canvas pipelines, responsive design architectures, and edge deployment automation via Cloudflare.
                         </p>
                       </div>
                       
@@ -339,9 +339,9 @@ export const ResumeModal = ({ isOpen, onClose }: ResumeModalProps) => {
                       </div>
 
                       <div>
-                        <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#ffffff', margin: '0 0 0.15rem 0' }}>ESP32 WiFi Smart-Car</h4>
+                        <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#ffffff', margin: '0 0 0.15rem 0' }}>Portfolio Interactive Canvas Engine</h4>
                         <p style={{ fontSize: '0.75rem', color: '#e2e8f0', margin: 0, lineHeight: 1.45 }}>
-                          Firmware-driven autonomous car serving a local HTTP browser steering app. Driven using PWM over DC motors and ESP32 SoftAP networks.
+                          Scroll-driven 240-frame preloaded video canvas with custom lerping physics, GPU acceleration, WebP asset streaming, and responsive glassmorphism.
                         </p>
                       </div>
                     </div>

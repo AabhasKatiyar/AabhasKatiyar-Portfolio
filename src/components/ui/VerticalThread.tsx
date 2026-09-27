@@ -6,9 +6,10 @@ const WORLDS = [
   { id: 'about',        label: 'About',    color: '#9b6dff', shortLabel: '01' },
   { id: 'skills',       label: 'Skills',   color: '#ff3d6e', shortLabel: '02' },
   { id: 'experience',   label: 'Timeline', color: '#00e87a', shortLabel: '03' },
-  { id: 'gymlane',      label: 'Products', color: '#ff3d6e', shortLabel: '04' },
-  { id: 'archive',      label: 'Lab',      color: '#f59e0b', shortLabel: '05' },
-  { id: 'contact',      label: 'Contact',  color: '#c8ff00', shortLabel: '06' },
+  { id: 'gymlane',      label: 'GymLane',  color: '#00e87a', shortLabel: '04' },
+  { id: 'yappr',        label: 'Yappr',    color: '#ff3d6e', shortLabel: '05' },
+  { id: 'archive',      label: 'Lab',      color: '#f59e0b', shortLabel: '06' },
+  { id: 'contact',      label: 'Contact',  color: '#c8ff00', shortLabel: '07' },
 ];
 
 export const VerticalThread = () => {
@@ -32,17 +33,6 @@ export const VerticalThread = () => {
       obs.observe(el);
       observers.push(obs);
     });
-
-    // Custom observer for yappr to highlight products too
-    const yapprEl = document.getElementById('yappr');
-    if (yapprEl) {
-      const obs = new IntersectionObserver(
-        ([entry]) => { if (entry.isIntersecting) setActiveWorld('gymlane'); },
-        { threshold: 0.15, rootMargin: '-20% 0px -20% 0px' }
-      );
-      obs.observe(yapprEl);
-      observers.push(obs);
-    }
 
     return () => observers.forEach((o) => o.disconnect());
   }, []);

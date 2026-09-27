@@ -44,7 +44,7 @@ const ArrowDownSVG = () => (
   </svg>
 );
 
-const TECH_STACK = ['React', 'TypeScript', 'Supabase', 'PostgreSQL', 'C++', 'ESP32'];
+const TECH_STACK = ['React', 'TypeScript', 'Supabase', 'PostgreSQL', 'Node.js', 'Next.js'];
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 18 },
@@ -194,7 +194,7 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
                 textShadow: '0 2px 10px rgba(0,0,0,0.9)',
               }}
             >
-              Full-Stack Developer &amp; IoT Engineer
+              Full-Stack Software Developer
             </p>
             <p
               style={{
@@ -207,7 +207,7 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
                 textShadow: '0 2px 12px rgba(0,0,0,0.95)',
               }}
             >
-              I build production web systems and embedded firmware — from multi-tenant Supabase SaaS to ESP32 microcontrollers.
+              I build production web systems — from multi-tenant Supabase SaaS architectures to real-time interactive web applications.
             </p>
           </motion.div>
 
@@ -446,8 +446,8 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
               {[
-                { label: 'Role', value: 'Software & IoT Engineer' },
-                { label: 'Education', value: 'B.Tech IT — KIET (2025–2029)' },
+                { label: 'Role', value: 'Full-Stack Software Developer' },
+                { label: 'Education', value: 'B.Tech IT — KIET (2024–2028, 2nd Year)' },
                 { label: 'Location', value: 'Ghaziabad, India' },
                 { label: 'Status', value: 'Open to opportunities', accent: '#00e87a' },
               ].map(({ label, value, accent }) => (

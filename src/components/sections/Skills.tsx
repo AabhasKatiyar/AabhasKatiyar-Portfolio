@@ -30,9 +30,9 @@ const SKILL_GROUPS: SkillGroup[] = [
     skills: ['Supabase', 'PostgreSQL', 'Row Level Security (RLS)', 'Supabase Auth', 'Realtime Subscriptions'],
   },
   {
-    category: 'Hardware & Tools',
+    category: 'Cloud & Tooling',
     color: '#9b6dff',
-    skills: ['Arduino IDE', 'ESP32', 'C++ Firmware', 'WASD Motor Control', 'Git & GitHub', 'Cloudflare Pages'],
+    skills: ['Git & GitHub', 'Cloudflare Pages', 'Node.js', 'REST APIs', 'Postman', 'Vercel'],
   },
 ];
 
@@ -212,7 +212,7 @@ export const Skills = () => {
             fontWeight: 500,
           }}
         >
-          All skills above have been applied in real shipped projects — GymLane, Yappr, or ESP32 firmware builds.
+          All skills above have been applied in real shipped projects — GymLane, Yappr, and modern web platforms.
         </motion.p>
       </div>
     </section>

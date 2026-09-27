@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Code2, Cpu, Rocket, Database } from 'lucide-react';
+import { Code2, Zap, Rocket, Database } from 'lucide-react';
 import pfpImage from '../../assets/pfp.png';
 
 const fadeUp = (delay = 0) => ({
@@ -17,9 +17,9 @@ const TRAITS = [
     color: '#00e87a',
   },
   {
-    icon: <Cpu size={18} />,
-    title: 'Hardware + Software',
-    desc: 'C++ firmware on ESP32/Arduino alongside React frontends — both layers.',
+    icon: <Zap size={18} />,
+    title: 'Real-Time Systems',
+    desc: 'WebSocket pub/sub pipelines, optimistic mutations, and reactive state sync.',
     color: '#f59e0b',
   },
   {
@@ -121,7 +121,7 @@ export const About = () => {
                   textShadow: '0 2px 10px rgba(0,0,0,0.7)',
                 }}
               >
-                I'm a first-year B.Tech IT student at KIET, Ghaziabad, who builds real software — not projects for a portfolio grade. I started with microcontrollers, writing C++ firmware to control motors and read sensors, and transitioned to full-stack web development because I wanted to ship complete systems.
+                I'm a second-year B.Tech IT student at KIET, Ghaziabad, who builds real software — not projects for a portfolio grade. I focus on full-stack web engineering, architecting multi-tenant database systems, real-time data pipelines, and responsive web applications from database schemas to production UIs.
               </p>
             </motion.div>
 
@@ -194,7 +194,7 @@ export const About = () => {
                 {[
                   { label: 'Degree', value: 'B.Tech Information Technology' },
                   { label: 'College', value: 'KIET Group of Institutions' },
-                  { label: 'Year', value: '2025 – 2029 (1st year)' },
+                  { label: 'Year', value: '2024 – 2028 (2nd Year)' },
                   { label: 'Contact', value: 'aabhas.katiyar.dev@gmail.com', mono: true },
                 ].map(({ label, value, mono }) => (
                   <div key={label} style={{ display: 'flex', gap: '1rem', alignItems: 'baseline' }}>
