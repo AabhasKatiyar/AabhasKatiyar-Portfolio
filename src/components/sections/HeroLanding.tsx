@@ -99,6 +99,7 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
       />
 
       <div
+        className="hero-grid-container"
         style={{
           maxWidth: 1100,
           width: '100%',
@@ -159,6 +160,7 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
           {/* Name */}
           <div>
             <motion.h1
+              className="hero-name-title"
               {...fadeUp(0.05)}
               style={{
                 fontFamily: 'var(--font-display)',
@@ -246,16 +248,22 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
           </motion.div>
 
           {/* CTA Buttons */}
-          <motion.div {...fadeUp(0.2)} style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginTop: '0.5rem' }}>
+          <motion.div
+            className="hero-cta-group"
+            {...fadeUp(0.2)}
+            style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginTop: '0.5rem' }}
+          >
             <button
+              className="hero-btn-primary"
               onClick={onViewResume}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '0.4rem',
+                justifyContent: 'center',
+                gap: '0.45rem',
                 background: '#00e87a',
                 border: 'none',
-                borderRadius: 7,
+                borderRadius: 8,
                 padding: '0.75rem 1.5rem',
                 color: '#060d08',
                 fontFamily: 'JetBrains Mono, monospace',
@@ -278,16 +286,18 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
               <FileSVG /> View Resume
             </button>
             <button
+              className="hero-btn-secondary"
               onClick={handleExplore}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '0.4rem',
+                justifyContent: 'center',
+                gap: '0.45rem',
                 background: 'rgba(20, 27, 45, 0.85)',
                 backdropFilter: 'blur(12px)',
                 WebkitBackdropFilter: 'blur(12px)',
                 border: '1px solid rgba(255,255,255,0.25)',
-                borderRadius: 7,
+                borderRadius: 8,
                 padding: '0.75rem 1.5rem',
                 color: '#f8fafc',
                 fontFamily: 'JetBrains Mono, monospace',
@@ -314,7 +324,11 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
           </motion.div>
 
           {/* Social links */}
-          <motion.div {...fadeUp(0.25)} style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
+          <motion.div
+            className="hero-social-links"
+            {...fadeUp(0.25)}
+            style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}
+          >
             {[
               { href: 'https://github.com/AabhasKatiyar', icon: <GithubSVG />, label: 'GitHub' },
               { href: 'https://linkedin.com/in/aabhaskatiyar', icon: <LinkedinSVG />, label: 'LinkedIn' },

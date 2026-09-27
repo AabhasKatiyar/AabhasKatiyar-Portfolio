@@ -534,57 +534,80 @@
 }
 
 /* ================================================
-   MOBILE RESPONSIVE FIXES
+   MOBILE & TABLET RESPONSIVE FIXES
    ================================================ */
 
-/* Hide the right profile card on mobile — the hero left column is enough */
-@media (max-width: 767px) {
+/* Hide duplicate Quick Profile card on screens under 1024px (mobile & tablet) */
+@media (max-width: 1023px) {
   .hero-profile-card {
     display: none !important;
   }
-
-  /* Hero section: single column, proper bottom clearance for HUD dock */
-  #hero-landing {
-    padding-top: 5rem !important;
-    padding-bottom: 5.5rem !important; /* clearance for minimized HUD dock */
-    padding-left: 1.5rem !important;
-    padding-right: 1.5rem !important;
-    min-height: 100svh !important;
-  }
-
-  /* Hero grid: full-width single column */
-  #hero-landing > div > div:not([aria-hidden]) {
+  .hero-grid-container {
     grid-template-columns: 1fr !important;
-    gap: 1.5rem !important;
+    gap: 1.75rem !important;
+    max-width: 620px !important;
+    margin: 0 auto !important;
+  }
+}
+
+/* Mobile phones (< 768px) */
+@media (max-width: 767px) {
+  /* Hide the HUD dock completely on mobile phones so it never covers content */
+  .hud-dock {
+    display: none !important;
   }
 
-  /* Status badge: allow text to wrap cleanly */
-  #hero-landing .hero-status-badge {
-    flex-wrap: wrap !important;
-    border-radius: 10px !important;
-    padding: 0.45rem 0.85rem !important;
+  /* Hero section: clean mobile spacing, centered, no bottom obstruction */
+  #hero-landing {
+    padding-top: 4.5rem !important;
+    padding-bottom: 3rem !important;
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+    min-height: 100svh !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* Status badge: compact tech badge */
+  .hero-status-badge {
+    padding: 0.32rem 0.75rem !important;
+    gap: 0.45rem !important;
+    border-radius: 999px !important;
     max-width: 100% !important;
   }
+  .hero-status-badge span:last-child {
+    font-size: 0.58rem !important;
+    letter-spacing: 0.08em !important;
+  }
 
-  /* Section padding — every major section on mobile */
+  /* Hero Name Title */
+  .hero-name-title {
+    font-size: clamp(2.4rem, 10vw, 3.4rem) !important;
+    line-height: 1.05 !important;
+  }
+
+  /* Social links */
+  .hero-social-links {
+    gap: 1.5rem !important;
+    margin-top: 0.25rem !important;
+  }
+
+  /* Section padding — compact and consistent across all mobile views */
   section {
     padding-left: 1.25rem !important;
     padding-right: 1.25rem !important;
+    padding-top: 4.5rem !important;
+    padding-bottom: 4.5rem !important;
   }
 
-  /* HUD dock: stay clear of nav safe areas */
-  .hud-dock {
-    bottom: max(0.75rem, env(safe-area-inset-bottom, 0.75rem)) !important;
-    width: min(96%, 480px) !important;
-  }
-
-  /* FloatingNav: keep it tight */
+  /* FloatingNav: sleek and compact */
   .floating-nav-bar {
-    padding: 0.4rem 0.85rem !important;
-    gap: 1rem !important;
+    padding: 0.4rem 0.75rem !important;
+    gap: 0.75rem !important;
   }
 
-  /* VerticalThread: hide on very small mobile */
+  /* VerticalThread: hidden on mobile */
   .vertical-thread {
     display: none !important;
   }
@@ -600,14 +623,27 @@
   }
 }
 
-/* Tablet tweaks (768px – 1023px) */
-@media (min-width: 768px) and (max-width: 1023px) {
-  #hero-landing {
-    padding-bottom: 5rem !important;
+/* Button layout for small mobile screens */
+@media (max-width: 640px) {
+  .hero-cta-group {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    width: 100% !important;
+    gap: 0.65rem !important;
   }
+  .hero-btn-primary,
+  .hero-btn-secondary {
+    width: 100% !important;
+    padding: 0.75rem 0.5rem !important;
+    font-size: 0.66rem !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+  }
+}
 
-  #hero-landing > div > div:not([aria-hidden]) {
-    gap: 2.5rem !important;
+@media (max-width: 360px) {
+  .hero-cta-group {
+    grid-template-columns: 1fr !important;
   }
 }
 
