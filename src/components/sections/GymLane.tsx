@@ -123,7 +123,7 @@ export const GymLane = () => {
             <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#00e87a', display: 'block', marginBottom: '0.5rem' }}>
               04 — Projects · GymLane
             </span>
-            <h2 style={{ fontFamily: 'Syne, sans-serif', fontSize: 'clamp(1.75rem, 4vw, 3rem)', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.05, color: '#f0ede6', margin: 0 }}>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.75rem, 4vw, 3rem)', fontWeight: 700, letterSpacing: '-0.01em', lineHeight: 1.15, color: '#f0ede6', margin: 0 }}>
               Multi-tenant Gym Management SaaS
             </h2>
           </div>
@@ -234,7 +234,7 @@ export const GymLane = () => {
                 backdropFilter: 'blur(16px)',
               }}
             >
-              <h3 style={{ fontFamily: 'Syne, sans-serif', fontSize: '1.25rem', color: '#ff3d6e', fontWeight: 700, marginBottom: '0.75rem' }}>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', color: '#ff3d6e', fontWeight: 700, letterSpacing: '-0.01em', marginBottom: '0.75rem' }}>
                 The Traditional Friction
               </h3>
               <p style={{ fontSize: '0.9375rem', color: '#888', lineHeight: 1.7 }}>
@@ -337,7 +337,7 @@ export const GymLane = () => {
                     <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#00e87a', letterSpacing: '0.1em' }}>{layer.label}</span>
                     <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.45rem', color: '#444' }}>{layer.tech}</span>
                   </div>
-                  <h4 style={{ fontFamily: 'Syne, sans-serif', fontSize: '0.875rem', color: '#fff', fontWeight: 700 }}>{layer.title}</h4>
+                  <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '0.875rem', color: '#fff', fontWeight: 700, letterSpacing: '-0.01em' }}>{layer.title}</h4>
                 </motion.div>
               ))}
 

@@ -82,11 +82,11 @@ export const Skills = () => {
           </span>
           <h2
             style={{
-              fontFamily: 'Syne, sans-serif',
+              fontFamily: 'var(--font-display)',
               fontSize: 'clamp(2rem, 5vw, 3.75rem)',
-              fontWeight: 800,
-              letterSpacing: '-0.04em',
-              lineHeight: 1.05,
+              fontWeight: 700,
+              letterSpacing: '-0.01em',
+              lineHeight: 1.15,
               color: '#f0ede6',
               margin: 0,
             }}
@@ -149,10 +149,11 @@ export const Skills = () => {
                 />
                 <h3
                   style={{
-                    fontFamily: 'Syne, sans-serif',
+                    fontFamily: 'var(--font-display)',
                     fontSize: '0.9375rem',
                     fontWeight: 700,
                     color: '#f0ede6',
+                    letterSpacing: '-0.01em',
                     margin: 0,
                   }}
                 >

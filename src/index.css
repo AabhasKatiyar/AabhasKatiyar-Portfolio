@@ -1,9 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600&family=JetBrains+Mono:wght@400;500&display=swap');
-
 @import "tailwindcss";
 
 @theme {
-  --font-display: 'Syne', system-ui, sans-serif;
+  --font-display: 'Sora', 'Space Grotesk', system-ui, sans-serif;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
@@ -91,10 +89,32 @@
   }
 }
 
+:root {
+  --font-display: 'Sora', 'Space Grotesk', system-ui, sans-serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
 /* ================================================
    GLOBAL RESET & BASE
    ================================================ */
 @layer base {
+  @font-face {
+    font-family: 'Clash Display';
+    src: url('/fonts/ClashDisplay-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Clash Display';
+    src: url('/fonts/ClashDisplay-Semibold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+
   *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
@@ -115,9 +135,9 @@
 
   h1, h2, h3, h4 {
     font-family: var(--font-display);
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1.05;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
     color: var(--text-1);
   }
 
@@ -137,8 +157,8 @@
   font-family: var(--font-display);
   font-size: clamp(3.5rem, 11vw, 12rem);
   font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 0.95;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
   color: var(--text-1);
 }
 
@@ -146,8 +166,8 @@
   font-family: var(--font-display);
   font-size: clamp(2.5rem, 6vw, 7rem);
   font-weight: 800;
-  letter-spacing: -0.035em;
-  line-height: 1;
+  letter-spacing: -0.02em;
+  line-height: 1.06;
   color: var(--text-1);
 }
 
@@ -155,8 +175,8 @@
   font-family: var(--font-display);
   font-size: clamp(1.75rem, 3.5vw, 3.5rem);
   font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
   color: var(--text-1);
 }
 

@@ -244,11 +244,11 @@ export const VerticalThread = () => {
                   </span>
                   <span
                     style={{
-                      fontFamily: 'Syne, sans-serif',
+                      fontFamily: 'var(--font-display)',
                       fontSize: '0.65rem',
                       fontWeight: 700,
                       color: isActive || isHovered ? '#f0ede6' : '#666',
-                      letterSpacing: '0.02em',
+                      letterSpacing: '0.01em',
                       textShadow: isActive || isHovered ? '0 0 10px rgba(255, 255, 255, 0.15)' : 'none',
                     }}
                   >

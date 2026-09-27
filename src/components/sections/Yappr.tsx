@@ -136,7 +136,7 @@ export const Yappr = () => {
             <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5625rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#ff3d6e', display: 'block', marginBottom: '0.5rem' }}>
               05 — Projects · Yappr
             </span>
-            <h2 style={{ fontFamily: 'Syne, sans-serif', fontSize: 'clamp(1.75rem, 4vw, 3rem)', fontWeight: 800, letterSpacing: '-0.03em', lineHeight: 1.05, color: '#f0ede6', margin: 0 }}>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.75rem, 4vw, 3rem)', fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.1, color: '#f0ede6', margin: 0 }}>
               Real-time Social Feed with WebSocket Pub/Sub
             </h2>
           </div>
@@ -262,7 +262,7 @@ export const Yappr = () => {
 
                     {/* App Header */}
                     <div style={{ background: '#0e0508', borderBottom: '1px solid rgba(255,61,110,0.1)', padding: '0.6rem 1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: '1rem', color: '#ff3d6e', letterSpacing: '-0.02em', textShadow: '0 0 16px rgba(255,61,110,0.4)' }}>Yappr</span>
+                      <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1rem', color: '#ff3d6e', letterSpacing: '-0.01em', textShadow: '0 0 16px rgba(255,61,110,0.4)' }}>Yappr</span>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                         <span style={{ display: 'block', width: 5, height: 5, borderRadius: '50%', background: '#ff3d6e', boxShadow: '0 0 6px #ff3d6e', animation: 'pulse-dot 2s ease-in-out infinite' }} />
                         <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.45rem', color: '#ff3d6e' }}>WS LIVE</span>
@@ -305,7 +305,7 @@ export const Yappr = () => {
                             border: 'none',
                             background: draft.trim() ? '#ff3d6e' : '#230a13',
                             color: draft.trim() ? '#fff' : '#441425',
-                            fontFamily: 'Syne, sans-serif',
+                            fontFamily: 'var(--font-display)',
                             fontSize: '0.625rem',
                             fontWeight: 700,
                             cursor: draft.trim() ? 'pointer' : 'default',
@@ -335,7 +335,7 @@ export const Yappr = () => {
                             </div>
                             <div style={{ flex: 1, minWidth: 0 }}>
                               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.125rem' }}>
-                                <span style={{ fontFamily: 'Syne, sans-serif', fontSize: '0.6875rem', color: '#fff', fontWeight: 600 }}>{yap.author}</span>
+                                <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.6875rem', color: '#fff', fontWeight: 600 }}>{yap.author}</span>
                                 <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.4rem', color: '#444' }}>{yap.handle}</span>
                               </div>
                               <p style={{ fontSize: '0.625rem', color: '#888', lineHeight: 1.5, wordBreak: 'break-word' }}>{yap.body}</p>
@@ -419,7 +419,7 @@ export const Yappr = () => {
                   </div>
 
                   <div style={{ borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '1rem', marginTop: '1.5rem' }}>
-                    <div style={{ fontFamily: 'Syne, sans-serif', fontSize: '0.8125rem', fontWeight: 700, color: '#ff3d6e', marginBottom: '0.4rem', textShadow: '0 0 12px rgba(255,61,110,0.3)' }}>Optimistic State Rendering</div>
+                    <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.8125rem', fontWeight: 700, color: '#ff3d6e', marginBottom: '0.4rem', textShadow: '0 0 12px rgba(255,61,110,0.3)' }}>Optimistic State Rendering</div>
                     <p style={{ fontSize: '0.75rem', color: '#555', lineHeight: 1.65 }}>
                       Likes and post updates render locally immediately, bypassing database network trip delays to maintain a responsive interface.
                     </p>

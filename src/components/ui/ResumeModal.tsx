@@ -142,7 +142,7 @@ export const ResumeModal = ({ isOpen, onClose }: ResumeModalProps) => {
               }}
               className="no-print"
             >
-              <h3 style={{ fontFamily: 'Syne, sans-serif', fontSize: '1rem', fontWeight: 700, color: '#fff', margin: 0 }}>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 700, color: '#fff', margin: 0 }}>
                 Interactive Curriculum Vitae
               </h3>
               
@@ -211,7 +211,7 @@ export const ResumeModal = ({ isOpen, onClose }: ResumeModalProps) => {
               {/* Header Info */}
               <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1.5rem', borderBottom: '2px solid rgba(255,255,255,0.08)', paddingBottom: '1.5rem', marginBottom: '1.5rem' }}>
                 <div>
-                  <h1 style={{ fontFamily: 'Syne, sans-serif', fontSize: '2.25rem', fontWeight: 800, margin: '0 0 0.25rem 0', color: '#fff', letterSpacing: '-0.02em' }}>
+                  <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.25rem', fontWeight: 700, margin: '0 0 0.25rem 0', color: '#fff', letterSpacing: '-0.02em' }}>
                     Aabhas Katiyar
                   </h1>
                   <p style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.8rem', color: '#c8ff00', textTransform: 'uppercase', letterSpacing: '0.12em', margin: 0 }}>
@@ -239,7 +239,7 @@ export const ResumeModal = ({ isOpen, onClose }: ResumeModalProps) => {
                   
                   {/* Education */}
                   <div>
-                    <h2 style={{ fontFamily: 'Syne, sans-serif', fontSize: '1rem', fontWeight: 700, color: '#fff', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '0.5rem', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 700, color: '#fff', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '0.5rem', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                       <GraduationCap size={16} className="text-[#c8ff00]" /> Education
                     </h2>
                     <div>
@@ -253,7 +253,7 @@ export const ResumeModal = ({ isOpen, onClose }: ResumeModalProps) => {
 
                   {/* Skills Grid */}
                   <div>
-                    <h2 style={{ fontFamily: 'Syne, sans-serif', fontSize: '1rem', fontWeight: 700, color: '#fff', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '0.5rem', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 700, color: '#fff', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '0.5rem', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                       <Code2 size={16} className="text-[#c8ff00]" /> Professional Skills
                     </h2>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -273,7 +273,7 @@ export const ResumeModal = ({ isOpen, onClose }: ResumeModalProps) => {
 
                   {/* Achievements */}
                   <div>
-                    <h2 style={{ fontFamily: 'Syne, sans-serif', fontSize: '1rem', fontWeight: 700, color: '#fff', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '0.5rem', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 700, color: '#fff', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '0.5rem', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                       <Award size={16} className="text-[#c8ff00]" /> Milestones & Focus
                     </h2>
                     <ul style={{ paddingLeft: '1rem', margin: 0, fontSize: '0.75rem', color: '#aaa', display: 'flex', flexDirection: 'column', gap: '0.5rem', lineHeight: 1.45 }}>
@@ -290,7 +290,7 @@ export const ResumeModal = ({ isOpen, onClose }: ResumeModalProps) => {
                   
                   {/* Experience */}
                   <div>
-                    <h2 style={{ fontFamily: 'Syne, sans-serif', fontSize: '1rem', fontWeight: 700, color: '#fff', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '0.5rem', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 700, color: '#fff', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '0.5rem', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                       <Briefcase size={16} className="text-[#c8ff00]" /> Professional Background
                     </h2>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -320,7 +320,7 @@ export const ResumeModal = ({ isOpen, onClose }: ResumeModalProps) => {
 
                   {/* Core Projects */}
                   <div>
-                    <h2 style={{ fontFamily: 'Syne, sans-serif', fontSize: '1rem', fontWeight: 700, color: '#fff', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '0.5rem', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 700, color: '#fff', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '0.5rem', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                       <Code2 size={16} className="text-[#c8ff00]" /> Featured Projects
                     </h2>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>

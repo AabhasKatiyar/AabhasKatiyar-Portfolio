@@ -167,11 +167,11 @@ export const Journey = () => {
             position: 'absolute',
             right: 0,
             bottom: -20,
-            fontFamily: 'Syne, sans-serif',
-            fontWeight: 800,
+            fontFamily: 'var(--font-display)',
+            fontWeight: 700,
             fontSize: 'clamp(10rem, 24vw, 24rem)',
             color: 'rgba(255,255,255,0.03)',
-            letterSpacing: '-0.06em',
+            letterSpacing: '-0.03em',
             lineHeight: 1,
             userSelect: 'none',
             pointerEvents: 'none',
@@ -217,10 +217,10 @@ export const Journey = () => {
 
             <h2
               style={{
-                fontFamily: 'Syne, sans-serif',
-                fontWeight: 800,
+                fontFamily: 'var(--font-display)',
+                fontWeight: 700,
                 fontSize: 'clamp(1.85rem, 4vw, 3.75rem)',
-                letterSpacing: '-0.035em',
+                letterSpacing: '-0.02em',
                 lineHeight: 1.1,
                 color: '#f0ede6',
                 marginBottom: '1.5rem',

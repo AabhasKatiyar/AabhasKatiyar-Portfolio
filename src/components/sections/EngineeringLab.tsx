@@ -186,7 +186,7 @@ export const EngineeringLab = () => {
         <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.625rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#f59e0b' }}>
           06 — Engineering Lab
         </span>
-        <h2 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: 'clamp(2rem, 5vw, 4.5rem)', letterSpacing: '-0.04em', lineHeight: 1, color: '#f0ede6', marginTop: '0.75rem' }}>
+        <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(2rem, 5vw, 4.25rem)', letterSpacing: '-0.01em', lineHeight: 1.15, color: '#f0ede6', marginTop: '0.75rem' }}>
           Tactile prototypes & retrospectives.
         </h2>
       </motion.div>
@@ -218,7 +218,7 @@ export const EngineeringLab = () => {
         >
           <div>
             <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#00e87a', letterSpacing: '0.12em' }}>SANDBOX 01 // HARDWARE DRIVER</span>
-            <h3 style={{ fontFamily: 'Syne, sans-serif', fontSize: '1.125rem', fontWeight: 700, color: '#fff', marginTop: '0.25rem' }}>ESP32 Vector Simulation</h3>
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.125rem', fontWeight: 700, letterSpacing: '-0.01em', color: '#fff', marginTop: '0.25rem' }}>ESP32 Vector Simulation</h3>
           </div>
           <CarSimulator />
         </motion.div>
@@ -247,7 +247,7 @@ export const EngineeringLab = () => {
         >
           <div>
             <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#f59e0b', letterSpacing: '0.12em' }}>SANDBOX 02 // REACTIVE STATE</span>
-            <h3 style={{ fontFamily: 'Syne, sans-serif', fontSize: '1.125rem', fontWeight: 700, color: '#fff', marginTop: '0.25rem' }}>Discount Price Calculator</h3>
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.125rem', fontWeight: 700, letterSpacing: '-0.01em', color: '#fff', marginTop: '0.25rem' }}>Discount Price Calculator</h3>
           </div>
           <Calculator />
         </motion.div>
@@ -283,7 +283,7 @@ export const EngineeringLab = () => {
                 <button onClick={() => setMistakeTab('yappr')} style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', background: mistakeTab === 'yappr' ? 'rgba(255,255,255,0.08)' : 'transparent', color: '#fff', border: 'none', padding: '0.15rem 0.35rem', borderRadius: 3, cursor: 'pointer' }}>Yappr</button>
               </div>
             </div>
-            <h3 style={{ fontFamily: 'Syne, sans-serif', fontSize: '1.125rem', fontWeight: 700, color: '#fff', marginTop: '0.375rem', marginBottom: '0.5rem' }}>Mistakes I Made</h3>
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.125rem', fontWeight: 700, letterSpacing: '-0.01em', color: '#fff', marginTop: '0.375rem', marginBottom: '0.5rem' }}>Mistakes I Made</h3>
             
             <AnimatePresence mode="wait">
               {mistakeTab === 'gym' ? (
@@ -330,7 +330,7 @@ export const EngineeringLab = () => {
         >
           <div>
             <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.5rem', color: '#c8ff00', letterSpacing: '0.12em' }}>COLLEAGUE STATEMENT // AI COLLAB</span>
-            <h3 style={{ fontFamily: 'Syne, sans-serif', fontSize: '1.125rem', fontWeight: 700, color: '#fff', marginTop: '0.25rem', marginBottom: '0.5rem' }}>Honest AI Engineering</h3>
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.125rem', fontWeight: 700, letterSpacing: '-0.01em', color: '#fff', marginTop: '0.25rem', marginBottom: '0.5rem' }}>Honest AI Engineering</h3>
             <p style={{ fontSize: '0.75rem', color: '#666', lineHeight: 1.6 }}>
               AI accelerated implementation, boilerplate setup, and component layout iterations. Architectural decisions, system design patterns, firmware interfaces, and security validation rules were directed and verified by me.
             </p>

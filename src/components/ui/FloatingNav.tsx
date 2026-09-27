@@ -137,10 +137,10 @@ export const FloatingNav = () => {
             <a
               href="#hero-landing"
               style={{
-                fontFamily: 'Syne, sans-serif',
-                fontWeight: 800,
+                fontFamily: 'var(--font-display)',
+                fontWeight: 700,
                 fontSize: '1rem',
-                letterSpacing: '-0.02em',
+                letterSpacing: '-0.01em',
                 color: activeColor,
                 transition: 'color 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
                 textShadow: `0 0 20px ${activeColor}55`,
