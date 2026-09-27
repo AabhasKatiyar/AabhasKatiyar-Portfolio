@@ -305,8 +305,12 @@ export const GlobalVideoCanvas = () => {
   // Unified Scroll Position Listener (Zero React Re-renders!)
   useEffect(() => {
     let unbindLenis: (() => void) | undefined;
+    let lenisBound = false;
 
     const onScrollPosition = (progress: number) => {
+      // During active auto-scroll, the playback loop drives position directly with precision
+      if (isPlayingRef.current) return;
+
       const clamped = Math.max(0, Math.min(1, progress));
       const target = clamped * (TOTAL_FRAMES - 1);
       targetFrameRef.current = target;
@@ -321,8 +325,9 @@ export const GlobalVideoCanvas = () => {
       }
     };
 
-    // Native scroll fallback
+    // Native scroll fallback: disabled when Lenis is running or when auto-scrolling
     const handleNativeScroll = () => {
+      if (isPlayingRef.current || lenisBound) return;
       const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
       const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
       onScrollPosition(scrollY / maxScroll);
@@ -332,7 +337,9 @@ export const GlobalVideoCanvas = () => {
     const connectLenis = () => {
       const lenis = window.__lenis;
       if (lenis) {
+        lenisBound = true;
         unbindLenis = lenis.on('scroll', (e: { progress?: number; scroll?: number; limit?: number }) => {
+          if (isPlayingRef.current) return;
           const p = typeof e.progress === 'number'
             ? e.progress
             : (e.scroll !== undefined && e.limit ? e.scroll / Math.max(1, e.limit) : 0);
@@ -359,17 +366,22 @@ export const GlobalVideoCanvas = () => {
     let animId: number;
 
     const loop = () => {
-      const diff = targetFrameRef.current - currentFrameRef.current;
-      const absDiff = Math.abs(diff);
-
-      if (absDiff < 0.005) {
+      if (isPlayingRef.current) {
+        // Direct assignment during auto-play: ZERO lag, ZERO interpolation jitter
         currentFrameRef.current = targetFrameRef.current;
       } else {
-        // Dynamic adaptive smoothing:
-        // Speeds up during fast scrolls to prevent rubber-banding lag,
-        // softens down during micro-scrolls for cinematic analog smoothness.
-        const factor = absDiff > 18 ? 0.40 : absDiff > 6 ? 0.30 : 0.22;
-        currentFrameRef.current += diff * factor;
+        const diff = targetFrameRef.current - currentFrameRef.current;
+        const absDiff = Math.abs(diff);
+
+        if (absDiff < 0.005) {
+          currentFrameRef.current = targetFrameRef.current;
+        } else {
+          // Dynamic adaptive smoothing:
+          // Speeds up during fast scrolls to prevent rubber-banding lag,
+          // softens down during micro-scrolls for cinematic analog smoothness.
+          const factor = absDiff > 18 ? 0.40 : absDiff > 6 ? 0.30 : 0.22;
+          currentFrameRef.current += diff * factor;
+        }
       }
 
       const roundedFrame = Math.round(currentFrameRef.current);
@@ -407,43 +419,72 @@ export const GlobalVideoCanvas = () => {
     return () => cancelAnimationFrame(animId);
   }, [renderFrameToCanvas]);
 
-  // Handle Auto-Scroll through Lenis
+  // Smooth Timestamp-Driven Auto-Scroll Playback Loop (Zero Stutter, Continuous Frame Stream)
   useEffect(() => {
     isPlayingRef.current = isPlaying;
+    if (!isPlaying) return;
 
-    if (isPlaying) {
-      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-      const currentY = window.scrollY;
-      const remaining = Math.max(0, maxScroll - currentY);
+    let animId: number;
+    let lastTime = performance.now();
 
-      if (remaining < 20) {
-        if (window.__lenis) {
-          window.__lenis.scrollTo(0, { immediate: true });
-        } else {
-          window.scrollTo(0, 0);
+    // Check if we are near the bottom of page; if so, wrap to top before starting
+    const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    if (window.scrollY >= maxScroll - 15 || currentFrameRef.current >= TOTAL_FRAMES - 2) {
+      currentFrameRef.current = 0;
+      targetFrameRef.current = 0;
+      if (window.__lenis) {
+        window.__lenis.scrollTo(0, { immediate: true });
+      } else {
+        window.scrollTo(0, 0);
+      }
+    }
+
+    // Playback rate: 15 frames per second for smooth, fluid video progression (~16s full cycle)
+    const FPS = 15;
+
+    const tick = (now: number) => {
+      const dt = Math.min(0.08, Math.max(0.001, (now - lastTime) / 1000));
+      lastTime = now;
+
+      const nextFrame = currentFrameRef.current + dt * FPS;
+
+      if (nextFrame >= TOTAL_FRAMES - 1) {
+        currentFrameRef.current = TOTAL_FRAMES - 1;
+        targetFrameRef.current = TOTAL_FRAMES - 1;
+        setIsPlaying(false);
+        return;
+      }
+
+      currentFrameRef.current = nextFrame;
+      targetFrameRef.current = nextFrame;
+
+      const progress = nextFrame / (TOTAL_FRAMES - 1);
+      const currentMaxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const targetY = progress * currentMaxScroll;
+
+      if (window.__lenis) {
+        window.__lenis.scrollTo(targetY, { immediate: true });
+      } else {
+        window.scrollTo(0, targetY);
+      }
+
+      // Aggressively lookahead preload upcoming 16 frames so the playback head never starves
+      const curIdx = Math.round(nextFrame);
+      for (let i = curIdx; i <= Math.min(TOTAL_FRAMES - 1, curIdx + 16); i++) {
+        if (!imagesRef.current[i]) {
+          loadAndDecodeImage(i);
         }
       }
 
-      const lenis = window.__lenis;
-      if (lenis) {
-        const distance = remaining < 20 ? maxScroll : remaining;
-        const duration = Math.max(2, distance / 220);
+      animId = requestAnimationFrame(tick);
+    };
 
-        lenis.scrollTo(maxScroll, {
-          duration,
-          easing: (t: number) => t,
-          onComplete: () => {
-            setIsPlaying(false);
-          },
-        });
-      }
-    } else {
-      if (window.__lenis) {
-        window.__lenis.stop();
-        window.__lenis.start();
-      }
-    }
-  }, [isPlaying]);
+    animId = requestAnimationFrame(tick);
+
+    return () => {
+      cancelAnimationFrame(animId);
+    };
+  }, [isPlaying, loadAndDecodeImage]);
 
   // Pause auto-scroll on manual user interaction
   useEffect(() => {
@@ -455,10 +496,12 @@ export const GlobalVideoCanvas = () => {
 
     window.addEventListener('wheel', handleUserInteract, { passive: true });
     window.addEventListener('touchstart', handleUserInteract, { passive: true });
+    window.addEventListener('keydown', handleUserInteract, { passive: true });
 
     return () => {
       window.removeEventListener('wheel', handleUserInteract);
       window.removeEventListener('touchstart', handleUserInteract);
+      window.removeEventListener('keydown', handleUserInteract);
     };
   }, []);
 
