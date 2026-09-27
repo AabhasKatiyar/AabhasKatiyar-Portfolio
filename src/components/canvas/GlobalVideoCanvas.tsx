@@ -79,6 +79,23 @@ export const GlobalVideoCanvas = () => {
       canvas.height = targetHeight;
     }
 
+    // Explicitly lock CSS display width & height directly on the canvas element.
+    // On touch devices: lock to exact screen pixels so CSS NEVER stretches or zooms the canvas
+    // when the mobile address bar or toolbar expands or collapses during scroll!
+    if (isTouch) {
+      canvas.style.position = 'absolute';
+      canvas.style.top = '0px';
+      canvas.style.left = '0px';
+      canvas.style.width = `${displayWidth}px`;
+      canvas.style.height = `${displayHeight}px`;
+    } else {
+      canvas.style.position = 'absolute';
+      canvas.style.top = '0px';
+      canvas.style.left = '0px';
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+    }
+
     const imgWidth = 1920;
     const imgHeight = 1080;
     const imgRatio = imgWidth / imgHeight;
@@ -324,9 +341,12 @@ export const GlobalVideoCanvas = () => {
       }
     };
 
-    // Native scroll fallback: disabled when Lenis is running or when auto-scrolling
+    // Native scroll fallback: immediate 0ms hardware response on mobile touch!
     const handleNativeScroll = () => {
-      if (isPlayingRef.current || lenisBound) return;
+      if (isPlayingRef.current) return;
+      const isTouch = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+      // On mobile touch, ALWAYS update immediately from native scroll to eliminate lag
+      if (!isTouch && lenisBound) return;
       const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
       const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
       onScrollPosition(scrollY / maxScroll);
@@ -376,9 +396,12 @@ export const GlobalVideoCanvas = () => {
           currentFrameRef.current = targetFrameRef.current;
         } else {
           // Dynamic adaptive smoothing:
-          // Speeds up during fast scrolls to prevent rubber-banding lag,
-          // softens down during micro-scrolls for cinematic analog smoothness.
-          const factor = absDiff > 18 ? 0.40 : absDiff > 6 ? 0.30 : 0.22;
+          // On mobile touch, track finger touch with high responsiveness (no trailing lag or 'sliding')
+          // On desktop, soften for cinematic analog mousewheel smoothness.
+          const isTouch = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+          const factor = isTouch
+            ? (absDiff > 10 ? 0.65 : 0.45)
+            : (absDiff > 18 ? 0.40 : absDiff > 6 ? 0.30 : 0.22);
           currentFrameRef.current += diff * factor;
         }
       }
@@ -551,9 +574,10 @@ export const GlobalVideoCanvas = () => {
           position: 'fixed',
           top: 0,
           left: 0,
+          right: 0,
+          bottom: 0,
           width: '100vw',
-          height: '100lvh',
-          minHeight: '100vh',
+          height: '100%',
           zIndex: 0,
           pointerEvents: 'none',
           overflow: 'hidden',
@@ -566,9 +590,8 @@ export const GlobalVideoCanvas = () => {
             position: 'absolute',
             top: 0,
             left: 0,
-            width: '100%',
-            height: '100%',
             pointerEvents: 'none',
+            display: 'block',
           }}
         />
 
