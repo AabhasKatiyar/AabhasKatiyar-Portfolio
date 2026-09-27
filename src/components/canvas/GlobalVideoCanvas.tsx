@@ -15,7 +15,7 @@ export const GlobalVideoCanvas = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [currentFrameDisplay, setCurrentFrameDisplay] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [hudMinimized, setHudMinimized] = useState(false);
+  const [hudMinimized, setHudMinimized] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
 
   const targetFrameRef = useRef(0);
   const currentFrameRef = useRef(0);
@@ -76,22 +76,51 @@ export const GlobalVideoCanvas = () => {
     const imgRatio = imgWidth / imgHeight;
     const canvasRatio = displayWidth / displayHeight;
 
+    // Aspect ratio & framing calculation
     let drawW: number;
     let drawH: number;
     let drawX: number;
     let drawY: number;
 
-    if (canvasRatio > imgRatio) {
-      drawW = displayWidth;
-      drawH = displayWidth / imgRatio;
-      drawX = 0;
-      drawY = (displayHeight - drawH) / 2;
-    } else {
-      drawH = displayHeight;
-      drawW = displayHeight * imgRatio;
+    const isPortrait = canvasRatio < 1.0;
+
+    if (isPortrait) {
+      // SMART MOBILE/PORTRAIT FRAMING:
+      // In 1920x1080 landscape, Aabhas's head and the halo occupy the central ~50% of the width.
+      // With simple cover on mobile, 74% of the width was cut off, zooming excessively into his face.
+      // Here we frame so his entire head, curly hair, shoulders, and the halo are comfortably visible!
+      const subjectSpan = 0.50; // Central subject width ratio
+      const targetSubjectWidth = Math.min(displayWidth * 0.94, 460);
+      drawW = targetSubjectWidth / subjectSpan;
+      drawH = drawW / imgRatio;
+
+      // Ensure good vertical presence on taller phones
+      if (drawH < displayHeight * 0.54) {
+        drawH = displayHeight * 0.54;
+        drawW = drawH * imgRatio;
+      }
+
       drawX = (displayWidth - drawW) / 2;
-      drawY = 0;
+      // Positioned nicely in the upper portion so the face frames behind the hero title
+      drawY = (displayHeight - drawH) * 0.28;
+    } else {
+      // Desktop / Landscape: full cinematic cover
+      if (canvasRatio > imgRatio) {
+        drawW = displayWidth;
+        drawH = displayWidth / imgRatio;
+        drawX = 0;
+        drawY = (displayHeight - drawH) / 2;
+      } else {
+        drawH = displayHeight;
+        drawW = displayHeight * imgRatio;
+        drawX = (displayWidth - drawW) / 2;
+        drawY = 0;
+      }
     }
+
+    // Fill canvas background before drawing image to eliminate any edge artifacts
+    ctx.fillStyle = '#070a13';
+    ctx.fillRect(0, 0, targetWidth, targetHeight);
 
     ctx.drawImage(
       img,
@@ -171,23 +200,49 @@ export const GlobalVideoCanvas = () => {
     };
   }, [getFrameUrl, renderFrameToCanvas]);
 
-  // Global Full-Page Scroll Listener
-  // Maps 0% at the very top of document to 100% at the very bottom
+  // Global Full-Page Scroll Listener (Supports both Native Touch and Lenis Events)
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
+    const updateFromScroll = () => {
+      const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
       const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
       const progress = Math.max(0, Math.min(1, scrollY / maxScroll));
 
       setScrollProgress(progress);
-      const frameTarget = Math.round(progress * (TOTAL_FRAMES - 1));
-      targetFrameRef.current = frameTarget;
+      targetFrameRef.current = Math.round(progress * (TOTAL_FRAMES - 1));
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
+    // 1. Native scroll & touch events
+    window.addEventListener('scroll', updateFromScroll, { passive: true });
+    window.addEventListener('touchmove', updateFromScroll, { passive: true });
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    // 2. Hook directly into Lenis for mobile touch synchronization
+    let unbindLenis: (() => void) | undefined;
+    let retryCount = 0;
+    const bindLenis = () => {
+      const lenis = window.__lenis;
+      if (lenis) {
+        unbindLenis = lenis.on('scroll', (e: { progress?: number; scroll?: number; limit?: number }) => {
+          const p = typeof e.progress === 'number'
+            ? e.progress
+            : (e.scroll !== undefined && e.limit ? e.scroll / Math.max(1, e.limit) : 0);
+          const clamped = Math.max(0, Math.min(1, p));
+          setScrollProgress(clamped);
+          targetFrameRef.current = Math.round(clamped * (TOTAL_FRAMES - 1));
+        });
+      } else if (retryCount < 20) {
+        retryCount++;
+        setTimeout(bindLenis, 80);
+      }
+    };
+    bindLenis();
+
+    updateFromScroll();
+
+    return () => {
+      window.removeEventListener('scroll', updateFromScroll);
+      window.removeEventListener('touchmove', updateFromScroll);
+      if (unbindLenis) unbindLenis();
+    };
   }, []);
 
   // Handle Auto-Scroll through Lenis for zero-jitter, 60fps velocity
@@ -240,10 +295,12 @@ export const GlobalVideoCanvas = () => {
     };
 
     window.addEventListener('wheel', handleUserInteract, { passive: true });
+    window.addEventListener('touchstart', handleUserInteract, { passive: true });
     window.addEventListener('touchmove', handleUserInteract, { passive: true });
 
     return () => {
       window.removeEventListener('wheel', handleUserInteract);
+      window.removeEventListener('touchstart', handleUserInteract);
       window.removeEventListener('touchmove', handleUserInteract);
     };
   }, []);
@@ -253,6 +310,8 @@ export const GlobalVideoCanvas = () => {
 
   useEffect(() => {
     let animId: number;
+    const isTouch = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+    const lerpFactor = isTouch ? 0.45 : 0.28;
 
     const loop = () => {
       // Lerp towards scroll position
@@ -260,7 +319,7 @@ export const GlobalVideoCanvas = () => {
       if (Math.abs(diff) < 0.05) {
         currentFrameRef.current = targetFrameRef.current;
       } else {
-        currentFrameRef.current += diff * 0.28;
+        currentFrameRef.current += diff * lerpFactor;
       }
 
       const roundedFrame = Math.round(currentFrameRef.current);
@@ -438,22 +497,22 @@ export const GlobalVideoCanvas = () => {
         className="no-print"
         style={{
           position: 'fixed',
-          bottom: '1.25rem',
+          bottom: 'max(1rem, env(safe-area-inset-bottom, 1rem))',
           left: '50%',
           transform: 'translateX(-50%)',
           zIndex: 85,
-          width: hudMinimized ? 'auto' : 'min(94%, 580px)',
-          background: 'rgba(11, 14, 22, 0.82)',
+          width: hudMinimized ? 'auto' : 'min(92%, 520px)',
+          background: 'rgba(11, 14, 22, 0.88)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
+          border: '1px solid rgba(255, 255, 255, 0.12)',
           borderRadius: 14,
-          padding: hudMinimized ? '0.45rem 0.85rem' : '0.65rem 1rem',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.65), 0 0 1px 1px rgba(255, 255, 255, 0.05)',
+          padding: hudMinimized ? '0.4rem 0.85rem' : '0.6rem 0.95rem',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.7), 0 0 1px 1px rgba(255, 255, 255, 0.05)',
           display: 'flex',
           flexDirection: 'column',
-          gap: '0.4rem',
-          transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+          gap: '0.35rem',
+          transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
       >
         {hudMinimized ? (

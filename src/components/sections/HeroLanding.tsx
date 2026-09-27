@@ -178,11 +178,12 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
             <p
               style={{
                 fontFamily: 'Inter, sans-serif',
-                fontSize: '0.9375rem',
-                color: '#666',
+                fontSize: 'clamp(0.9375rem, 1.8vw, 1rem)',
+                color: '#b8c2d1',
                 margin: 0,
                 lineHeight: 1.7,
-                maxWidth: '42ch',
+                maxWidth: '44ch',
+                textShadow: '0 2px 10px rgba(0,0,0,0.85)',
               }}
             >
               I build production web systems and embedded firmware — from multi-tenant Supabase SaaS to ESP32 microcontrollers.
@@ -190,30 +191,33 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
           </motion.div>
 
           {/* Tech stack tags */}
-          <motion.div {...fadeUp(0.15)} style={{ display: 'flex', flexWrap: 'wrap', gap: '0.45rem' }}>
+          <motion.div {...fadeUp(0.15)} style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
             {TECH_STACK.map((tech) => (
               <span
                 key={tech}
                 style={{
                   fontFamily: 'JetBrains Mono, monospace',
                   fontSize: '0.625rem',
-                  color: '#555',
-                  border: '1px solid rgba(255,255,255,0.07)',
-                  padding: '0.25rem 0.65rem',
-                  borderRadius: 4,
-                  background: 'rgba(255,255,255,0.02)',
+                  color: '#e2e8f0',
+                  border: '1px solid rgba(255,255,255,0.14)',
+                  padding: '0.3rem 0.7rem',
+                  borderRadius: 5,
+                  background: 'rgba(12, 16, 25, 0.75)',
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)',
                   letterSpacing: '0.04em',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
                   transition: 'all 0.25s ease',
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.color = '#00e87a';
-                  e.currentTarget.style.borderColor = 'rgba(0,232,122,0.3)';
-                  e.currentTarget.style.background = 'rgba(0,232,122,0.04)';
+                  e.currentTarget.style.borderColor = 'rgba(0,232,122,0.4)';
+                  e.currentTarget.style.background = 'rgba(0,232,122,0.1)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.color = '#555';
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)';
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.02)';
+                  e.currentTarget.style.color = '#e2e8f0';
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.14)';
+                  e.currentTarget.style.background = 'rgba(12, 16, 25, 0.75)';
                 }}
               >
                 {tech}
@@ -260,11 +264,13 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.4rem',
-                background: 'transparent',
-                border: '1px solid rgba(255,255,255,0.12)',
+                background: 'rgba(15, 20, 30, 0.65)',
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255,255,255,0.18)',
                 borderRadius: 7,
                 padding: '0.75rem 1.5rem',
-                color: '#888',
+                color: '#e2e8f0',
                 fontFamily: 'JetBrains Mono, monospace',
                 fontSize: '0.6875rem',
                 fontWeight: 600,
