@@ -667,8 +667,8 @@
 
   /* Hero section: 100% full-screen cover with face framed in open center stage */
   #hero-landing {
-    padding-top: clamp(340px, 56svh, 450px) !important;
-    padding-bottom: max(1.75rem, env(safe-area-inset-bottom, 1.75rem)) !important;
+    padding-top: clamp(290px, 45svh, 350px) !important;
+    padding-bottom: max(3.5rem, calc(env(safe-area-inset-bottom, 0px) + 2.75rem)) !important;
     padding-left: 1.25rem !important;
     padding-right: 1.25rem !important;
     min-height: 100svh !important;
@@ -688,10 +688,11 @@
     background: linear-gradient(
       to bottom,
       transparent 0%,
-      transparent 38%,
-      rgba(7, 10, 19, 0.45) 52%,
-      rgba(7, 10, 19, 0.9) 72%,
-      rgba(7, 10, 19, 0.98) 100%
+      transparent 30%,
+      rgba(7, 10, 19, 0.4) 42%,
+      rgba(7, 10, 19, 0.88) 58%,
+      rgba(7, 10, 19, 0.98) 74%,
+      #070a13 100%
     );
     pointer-events: none;
     z-index: 1;

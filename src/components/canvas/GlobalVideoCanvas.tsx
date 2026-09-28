@@ -49,19 +49,9 @@ export const GlobalVideoCanvas = () => {
     // Cap DPR to 1.5 on mobile to save GPU fill-rate, 2.0 on desktop
     const dpr = Math.min(window.devicePixelRatio || 1, isTouch ? 1.5 : 2.0);
     
-    // Stable viewport dimensions:
-    // On mobile touch devices, lock height to the full physical screen dimension so the canvas
-    // is rendered for the full display once and NEVER re-scales or zooms when the address bar moves!
+    // Stable viewport dimensions strictly based on client viewport (NEVER hardware screen.height)
     const displayWidth = window.innerWidth || document.documentElement.clientWidth;
-    let displayHeight = window.innerHeight || document.documentElement.clientHeight;
-
-    if (isTouch && typeof window !== 'undefined') {
-      const screenH = window.screen?.height || 0;
-      const isPortrait = displayWidth < displayHeight;
-      if (isPortrait && screenH > displayHeight) {
-        displayHeight = screenH;
-      }
-    }
+    const displayHeight = window.innerHeight || document.documentElement.clientHeight;
 
     const targetWidth = Math.round(displayWidth * dpr);
     const targetHeight = Math.round(displayHeight * dpr);
@@ -71,22 +61,12 @@ export const GlobalVideoCanvas = () => {
       canvas.height = targetHeight;
     }
 
-    // Explicitly lock CSS display width & height directly on the canvas element.
-    // On touch devices: lock to exact screen pixels so CSS NEVER stretches or zooms the canvas
-    // when the mobile address bar or toolbar expands or collapses during scroll!
-    if (isTouch) {
-      canvas.style.position = 'absolute';
-      canvas.style.top = '0px';
-      canvas.style.left = '0px';
-      canvas.style.width = `${displayWidth}px`;
-      canvas.style.height = `${displayHeight}px`;
-    } else {
-      canvas.style.position = 'absolute';
-      canvas.style.top = '0px';
-      canvas.style.left = '0px';
-      canvas.style.width = '100%';
-      canvas.style.height = '100%';
-    }
+    // Keep canvas 100% mapped to fixed viewport container on all devices
+    canvas.style.position = 'absolute';
+    canvas.style.top = '0px';
+    canvas.style.left = '0px';
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
 
     const imgWidth = 1920;
     const imgHeight = 1080;
@@ -98,18 +78,30 @@ export const GlobalVideoCanvas = () => {
     let drawX: number;
     let drawY: number;
 
-    // Universal 100% full-screen cover geometry:
-    // Ensures video canvas fills the entire screen edge-to-edge with zero letterboxing or dark bars
     if (canvasRatio > imgRatio) {
+      // Landscape viewports (Desktop & Tablet landscape)
       drawW = displayWidth;
       drawH = displayWidth / imgRatio;
       drawX = 0;
       drawY = (displayHeight - drawH) / 2;
     } else {
-      drawH = displayHeight;
-      drawW = displayHeight * imgRatio;
-      drawX = (displayWidth - drawW) / 2;
-      drawY = 0;
+      // Portrait / tall mobile viewports (< 768px in portrait)
+      // On narrow mobile screens, scaling by 100% full height causes excessive horizontal crop and zooms into the face.
+      // We calibrate width to displayWidth * 2.25 so the face width consistently stays at the exact natural ~46-48%
+      // seen on laptop browser mobile view, with zero letterboxing and seamless dark chest/bottom fade.
+      const isMobilePortrait = displayWidth < 768 && displayWidth < displayHeight;
+      if (isMobilePortrait) {
+        drawW = Math.max(displayWidth * 2.25, 780);
+        drawH = drawW / imgRatio;
+        drawX = (displayWidth - drawW) / 2;
+        drawY = 0;
+      } else {
+        // Standard full-cover geometry for desktop / tablet
+        drawH = displayHeight;
+        drawW = displayHeight * imgRatio;
+        drawX = (displayWidth - drawW) / 2;
+        drawY = 0;
+      }
     }
 
     metricsRef.current = {
