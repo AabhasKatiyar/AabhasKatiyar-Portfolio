@@ -667,92 +667,109 @@
 
   /* Hero section: 100% full-screen cover with face framed in open center stage */
   #hero-landing {
-    padding-top: 3.2rem !important;
-    padding-bottom: 2rem !important;
-    padding-left: 1.15rem !important;
-    padding-right: 1.15rem !important;
+    padding-top: clamp(340px, 56svh, 450px) !important;
+    padding-bottom: max(1.75rem, env(safe-area-inset-bottom, 1.75rem)) !important;
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
     min-height: 100svh !important;
+    box-sizing: border-box !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: flex-start !important;
+    position: relative !important;
+  }
+
+  /* Seamless cinematic dark gradient lift on mobile to ensure razor-sharp text legibility on dark chest */
+  #hero-landing::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 38%,
+      rgba(7, 10, 19, 0.45) 52%,
+      rgba(7, 10, 19, 0.9) 72%,
+      rgba(7, 10, 19, 0.98) 100%
+    );
+    pointer-events: none;
+    z-index: 1;
   }
 
   .hero-grid-container {
     display: flex !important;
     flex-direction: column !important;
-    gap: 0 !important;
+    gap: 2rem !important;
     max-width: 480px !important;
-    width: 100% !important;
-  }
-
-  .hero-identity-col {
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: space-between !important;
-    min-height: calc(100svh - 4.8rem) !important;
     width: 100% !important;
     position: relative !important;
     z-index: 2 !important;
   }
 
-  /* Top Group: sits cleanly above forehead in hair/halo area */
-  .hero-identity-top {
+  .hero-identity-col {
     display: flex !important;
     flex-direction: column !important;
-    gap: 0.45rem !important;
-  }
-
-  /* Bottom Group: sits cleanly on dark shirt/chest below chin */
-  .hero-identity-bottom {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 0.55rem !important;
-    padding-bottom: 0.4rem !important;
+    justify-content: flex-start !important;
+    gap: 0.6rem !important;
+    min-height: auto !important;
+    width: 100% !important;
+    position: relative !important;
+    z-index: 2 !important;
   }
 
   /* Status badge: compact tech badge */
   .hero-status-badge {
-    padding: 0.18rem 0.55rem !important;
+    padding: 0.16rem 0.52rem !important;
     gap: 0.35rem !important;
     border-radius: 999px !important;
     max-width: fit-content !important;
   }
   .hero-status-badge span:last-child {
     font-size: 0.5rem !important;
-    letter-spacing: 0.08em !important;
+    letter-spacing: 0.07em !important;
   }
 
-  /* Hero Name Title */
+  /* Hero Name Title: sleek single-line on mobile */
   .hero-name-title {
-    font-size: clamp(2rem, 8vw, 2.4rem) !important;
-    line-height: 1.03 !important;
+    font-size: clamp(1.75rem, 6vw, 2.05rem) !important;
+    line-height: 1.1 !important;
+    white-space: nowrap !important;
+  }
+  .hero-name-br {
+    display: none !important;
   }
 
-  /* Tagline text */
+  /* Role + Tagline */
+  .hero-role-tagline-group {
+    gap: 0.28rem !important;
+  }
+  .hero-role-text {
+    font-size: 0.85rem !important;
+    line-height: 1.2 !important;
+    color: #e2e8f0 !important;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.9) !important;
+  }
   .hero-tagline-text {
-    font-size: 0.78rem !important;
+    font-size: 0.74rem !important;
     line-height: 1.4 !important;
-    max-width: 40ch !important;
+    max-width: 38ch !important;
+    color: #94a3b8 !important;
   }
 
-  /* Tech stack pills: exactly 2 balanced rows on mobile (3 items each) */
+  /* Tech stack pills */
   .hero-tech-pills {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    max-width: 300px !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
     gap: 0.25rem !important;
+    max-width: 100% !important;
     width: 100% !important;
   }
   .hero-tech-pill-item {
-    text-align: center !important;
-    justify-content: center !important;
-    display: flex !important;
-    align-items: center !important;
-    padding: 0.18rem 0.28rem !important;
     font-size: 0.55rem !important;
+    padding: 0.18rem 0.42rem !important;
+    border-radius: 5px !important;
     white-space: nowrap !important;
-    box-sizing: border-box !important;
   }
 
   /* CTA Buttons: side-by-side on normal phones */
@@ -760,14 +777,14 @@
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
-    gap: 0.55rem !important;
+    gap: 0.6rem !important;
     width: 100% !important;
-    max-width: 310px !important;
+    max-width: 320px !important;
   }
   .hero-btn-primary,
   .hero-btn-secondary {
     flex: 1 1 0 !important;
-    padding: 0.62rem 0.4rem !important;
+    padding: 0.6rem 0.45rem !important;
     font-size: 0.64rem !important;
     justify-content: center !important;
     white-space: nowrap !important;
@@ -776,13 +793,13 @@
 
   /* Social links below buttons */
   .hero-social-links {
-    gap: 1.25rem !important;
-    margin-top: 0.05rem !important;
+    gap: 1.2rem !important;
+    margin-top: 0.1rem !important;
   }
 
   /* Profile Card: positioned in flow directly below the hero screen */
   .hero-profile-card {
-    margin-top: 3.5rem !important;
+    margin-top: 2rem !important;
     padding: 0.85rem 1.05rem !important;
     gap: 0.55rem !important;
     border-radius: 16px !important;
