@@ -98,41 +98,6 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
         }}
       />
 
-      {/* Selective face lighting - 5-10% subtle local lift to eyes, nose bridge, cheekbones, and jaw area */}
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute',
-          top: '40%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: 'clamp(240px, 22vw, 340px)',
-          height: 'clamp(260px, 25vw, 380px)',
-          borderRadius: '50%',
-          background:
-            'radial-gradient(ellipse 50% 55% at 50% 48%, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.05) 50%, transparent 80%)',
-          mixBlendMode: 'soft-light',
-          pointerEvents: 'none',
-          zIndex: 1,
-        }}
-      />
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute',
-          top: '39%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: 'clamp(160px, 15vw, 220px)',
-          height: 'clamp(180px, 16vw, 240px)',
-          borderRadius: '50%',
-          background: 'radial-gradient(ellipse at 50% 46%, rgba(255, 255, 255, 0.08) 0%, transparent 75%)',
-          mixBlendMode: 'screen',
-          pointerEvents: 'none',
-          zIndex: 1,
-        }}
-      />
-
       <div
         className="hero-grid-container"
         style={{
