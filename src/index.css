@@ -563,16 +563,13 @@
    MOBILE & TABLET RESPONSIVE FIXES
    ================================================ */
 
-/* Hide duplicate Quick Profile card on screens under 1024px (mobile & tablet) */
-@media (max-width: 1023px) {
+/* Responsive adjustments for left-anchored hero profile card */
+@media (max-width: 768px) {
   .hero-profile-card {
-    display: none !important;
+    max-width: 100% !important;
   }
-  .hero-grid-container {
-    grid-template-columns: 1fr !important;
-    gap: 1.75rem !important;
-    max-width: 620px !important;
-    margin: 0 auto !important;
+  .hero-identity-col {
+    max-width: 100% !important;
   }
 }
 
