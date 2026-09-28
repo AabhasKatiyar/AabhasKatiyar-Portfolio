@@ -79,24 +79,34 @@ export const GlobalVideoCanvas = () => {
     let drawY: number;
 
     if (canvasRatio > imgRatio) {
-      // Landscape viewports (Desktop & Tablet landscape)
+      // Landscape viewports (Desktop & Tablet landscape) — fill width, overflow height
       drawW = displayWidth;
       drawH = displayWidth / imgRatio;
       drawX = 0;
       drawY = (displayHeight - drawH) / 2;
     } else {
-      // Portrait / tall mobile viewports (< 768px in portrait)
-      // On narrow mobile screens, scaling by 100% full height causes excessive horizontal crop and zooms into the face.
-      // We calibrate width to displayWidth * 2.25 so the face width consistently stays at the exact natural ~46-48%
-      // seen on laptop browser mobile view, with zero letterboxing and seamless dark chest/bottom fade.
+      // Portrait / tall viewports (mobile phones, narrow browser windows)
+      // COVER rule: drawH must always equal displayHeight so NO dark void ever appears at bottom.
+      // To show the face at natural proportions (~46% width) AND keep full cover:
+      //   step 1 — cover height: drawH = displayHeight, drawW = displayHeight * imgRatio
+      //   step 2 — if drawW is narrower than displayWidth * 2.0, scale UP uniformly by 2.0x displayWidth
+      //             so the face occupies ~46-48% of screen width (matching laptop browser preview)
+      //   step 3 — center horizontally (drawX always negative = cropped off sides)
+      //   drawY = 0 always (face starts at top, chest/dark area fills bottom via CSS gradient)
       const isMobilePortrait = displayWidth < 768 && displayWidth < displayHeight;
       if (isMobilePortrait) {
-        drawW = Math.max(displayWidth * 2.25, 780);
-        drawH = drawW / imgRatio;
-        drawX = (displayWidth - drawW) / 2;
+        // Compute the minimum cover height baseline
+        const baseW = displayHeight * imgRatio; // width if we just covered height
+        // We want final drawW to be ~displayWidth*2.25 for natural face size,
+        // but MUST ensure drawH >= displayHeight always.
+        // Scale factor relative to cover-height baseline:
+        const targetDrawW = Math.max(displayWidth * 2.25, baseW, 780);
+        drawW = targetDrawW;
+        drawH = drawW / imgRatio; // always >= displayHeight since drawW >= baseW
+        drawX = (displayWidth - drawW) / 2; // always negative — correct horizontal centering
         drawY = 0;
       } else {
-        // Standard full-cover geometry for desktop / tablet
+        // Standard full-cover geometry for desktop / tablet portrait (768–1024px)
         drawH = displayHeight;
         drawW = displayHeight * imgRatio;
         drawX = (displayWidth - drawW) / 2;
@@ -333,6 +343,19 @@ export const GlobalVideoCanvas = () => {
       }
     };
 
+    // Cache maxScroll once and only update when viewport WIDTH changes (not on address-bar resize).
+    // On mobile the address-bar expand/collapse fires resize events that change innerHeight by ~56px —
+    // if we re-read maxScroll every scroll event the denominator jumps causing sudden frame position leaps.
+    let cachedMaxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    let lastCachedWidth = window.innerWidth;
+    const refreshMaxScroll = () => {
+      if (Math.abs(window.innerWidth - lastCachedWidth) > 10) {
+        lastCachedWidth = window.innerWidth;
+        cachedMaxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      }
+    };
+    window.addEventListener('resize', refreshMaxScroll, { passive: true });
+
     // Native scroll fallback: immediate 0ms hardware response on mobile touch!
     const handleNativeScroll = () => {
       if (isPlayingRef.current) return;
@@ -340,8 +363,7 @@ export const GlobalVideoCanvas = () => {
       // On mobile touch, ALWAYS update immediately from native scroll to eliminate lag
       if (!isTouch && lenisBound) return;
       const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
-      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-      onScrollPosition(scrollY / maxScroll);
+      onScrollPosition(scrollY / cachedMaxScroll);
     };
 
     let retryCount = 0;
@@ -368,6 +390,7 @@ export const GlobalVideoCanvas = () => {
 
     return () => {
       window.removeEventListener('scroll', handleNativeScroll);
+      window.removeEventListener('resize', refreshMaxScroll);
       if (unbindLenis) unbindLenis();
     };
   }, [loadImage]);
@@ -387,12 +410,13 @@ export const GlobalVideoCanvas = () => {
         if (absDiff < 0.005) {
           currentFrameRef.current = targetFrameRef.current;
         } else {
-          // Dynamic adaptive smoothing:
-          // On mobile touch, track finger touch with high responsiveness (no trailing lag or 'sliding')
-          // On desktop, soften for cinematic analog mousewheel smoothness.
+          // Adaptive smoothing:
+          // On mobile touch: factor = 1.0 (instant snap) — eliminates ALL frame-slide/stretch artifacts
+          // because the native scroll position is the ground truth; any lerp causes visual drift.
+          // On desktop mousewheel: gentle ease for cinematic analog feel.
           const isTouch = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
           const factor = isTouch
-            ? (absDiff > 10 ? 0.65 : 0.45)
+            ? 1.0
             : (absDiff > 18 ? 0.40 : absDiff > 6 ? 0.30 : 0.22);
           currentFrameRef.current += diff * factor;
         }
