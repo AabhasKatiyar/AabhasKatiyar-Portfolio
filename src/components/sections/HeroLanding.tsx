@@ -124,89 +124,98 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
             flex: '1 1 420px',
           }}
         >
-          {/* Status badge - slightly smaller for optimal visual hierarchy */}
-          <motion.div {...fadeUp(0)} style={{ display: 'flex', alignItems: 'center' }}>
-            <div
-              className="hero-status-badge"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.45rem',
-                background: 'rgba(0, 232, 122, 0.08)',
-                border: '1px solid rgba(0, 232, 122, 0.25)',
-                padding: '0.22rem 0.65rem',
-                borderRadius: 999,
-                backdropFilter: 'blur(12px)',
-                WebkitBackdropFilter: 'blur(12px)',
-                boxShadow: '0 0 14px rgba(0, 232, 122, 0.08)',
-              }}
-            >
-              <span
+          {/* Top Group: Status, Name, Role */}
+          <div className="hero-identity-top" style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+            {/* Status badge - slightly smaller for optimal visual hierarchy */}
+            <motion.div {...fadeUp(0)} style={{ display: 'flex', alignItems: 'center' }}>
+              <div
+                className="hero-status-badge"
                 style={{
-                  display: 'inline-block',
-                  width: 5,
-                  height: 5,
-                  borderRadius: '50%',
-                  background: '#00e87a',
-                  boxShadow: '0 0 8px #00e87a',
-                  animation: 'pulse-dot 2s ease-in-out infinite',
-                }}
-              />
-              <span
-                style={{
-                  fontFamily: 'JetBrains Mono, monospace',
-                  fontSize: '0.5625rem',
-                  fontWeight: 600,
-                  letterSpacing: '0.08em',
-                  textTransform: 'uppercase',
-                  color: '#00e87a',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.45rem',
+                  background: 'rgba(0, 232, 122, 0.08)',
+                  border: '1px solid rgba(0, 232, 122, 0.25)',
+                  padding: '0.22rem 0.65rem',
+                  borderRadius: 999,
+                  backdropFilter: 'blur(12px)',
+                  WebkitBackdropFilter: 'blur(12px)',
+                  boxShadow: '0 0 14px rgba(0, 232, 122, 0.08)',
                 }}
               >
-                Available for internships &amp; collaborations
-              </span>
-            </div>
-          </motion.div>
+                <span
+                  style={{
+                    display: 'inline-block',
+                    width: 5,
+                    height: 5,
+                    borderRadius: '50%',
+                    background: '#00e87a',
+                    boxShadow: '0 0 8px #00e87a',
+                    animation: 'pulse-dot 2s ease-in-out infinite',
+                  }}
+                />
+                <span
+                  style={{
+                    fontFamily: 'JetBrains Mono, monospace',
+                    fontSize: '0.5625rem',
+                    fontWeight: 600,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    color: '#00e87a',
+                  }}
+                >
+                  Available for internships &amp; collaborations
+                </span>
+              </div>
+            </motion.div>
 
-          {/* Name */}
-          <div>
-            <motion.h1
-              className="hero-name-title"
-              {...fadeUp(0.05)}
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(2.6rem, 5.2vw, 4.6rem)',
-                fontWeight: 700,
-                letterSpacing: '-0.015em',
-                lineHeight: 1.06,
-                color: '#ffffff',
-                margin: 0,
-                textShadow: '0 4px 24px rgba(0,0,0,0.85)',
-              }}
-            >
-              Aabhas
-              <br />
-              <span style={{ color: '#00e87a', textShadow: '0 0 40px rgba(0,232,122,0.45)' }}>
-                Katiyar
-              </span>
-            </motion.h1>
+            {/* Name */}
+            <div>
+              <motion.h1
+                className="hero-name-title"
+                {...fadeUp(0.05)}
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 'clamp(2.6rem, 5.2vw, 4.6rem)',
+                  fontWeight: 700,
+                  letterSpacing: '-0.015em',
+                  lineHeight: 1.06,
+                  color: '#ffffff',
+                  margin: 0,
+                  textShadow: '0 4px 24px rgba(0,0,0,0.85)',
+                }}
+              >
+                Aabhas
+                <br />
+                <span style={{ color: '#00e87a', textShadow: '0 0 40px rgba(0,232,122,0.45)' }}>
+                  Katiyar
+                </span>
+              </motion.h1>
+            </div>
+
+            {/* Role */}
+            <motion.div {...fadeUp(0.1)}>
+              <p
+                style={{
+                  fontFamily: 'Inter, sans-serif',
+                  fontSize: 'clamp(1.1rem, 2.2vw, 1.3rem)',
+                  fontWeight: 600,
+                  color: '#ffffff',
+                  margin: 0,
+                  lineHeight: 1.3,
+                  textShadow: '0 2px 10px rgba(0,0,0,0.9)',
+                }}
+              >
+                Software Developer &amp; IT Student
+              </p>
+            </motion.div>
           </div>
 
-          {/* Role + tagline */}
-          <motion.div {...fadeUp(0.1)} style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-            <p
-              style={{
-                fontFamily: 'Inter, sans-serif',
-                fontSize: 'clamp(1.1rem, 2.2vw, 1.3rem)',
-                fontWeight: 600,
-                color: '#ffffff',
-                margin: 0,
-                lineHeight: 1.3,
-                textShadow: '0 2px 10px rgba(0,0,0,0.9)',
-              }}
-            >
-              Software Developer &amp; IT Student
-            </p>
-            <p
+          {/* Bottom Group: Tagline, Tech Stack, Buttons, Socials */}
+          <div className="hero-identity-bottom" style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+            <motion.p
+              {...fadeUp(0.12)}
+              className="hero-tagline-text"
               style={{
                 fontFamily: 'Inter, sans-serif',
                 fontSize: 'clamp(0.9rem, 1.5vw, 1rem)',
@@ -218,159 +227,159 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
               }}
             >
               I build modern web experiences while exploring AI, software engineering, and emerging technologies.
-            </p>
-          </motion.div>
+            </motion.p>
 
-          {/* Tech stack tags - 2 balanced rows on mobile, compact single row on desktop */}
-          <motion.div {...fadeUp(0.15)} className="hero-tech-pills">
-            {TECH_STACK.map((tech) => (
-              <span
-                key={tech}
-                className="hero-tech-pill-item"
+            {/* Tech stack tags - 2 balanced rows on mobile, compact single row on desktop */}
+            <motion.div {...fadeUp(0.15)} className="hero-tech-pills">
+              {TECH_STACK.map((tech) => (
+                <span
+                  key={tech}
+                  className="hero-tech-pill-item"
+                  style={{
+                    fontFamily: 'JetBrains Mono, monospace',
+                    fontSize: '0.62rem',
+                    fontWeight: 600,
+                    color: '#f8fafc',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    padding: '0.24rem 0.52rem',
+                    borderRadius: 6,
+                    background: 'rgba(15, 23, 42, 0.75)',
+                    backdropFilter: 'blur(12px)',
+                    WebkitBackdropFilter: 'blur(12px)',
+                    letterSpacing: '0.02em',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
+                    transition: 'all 0.25s ease',
+                    whiteSpace: 'nowrap',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = '#00e87a';
+                    e.currentTarget.style.borderColor = 'rgba(0,232,122,0.5)';
+                    e.currentTarget.style.background = 'rgba(0,232,122,0.15)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = '#f8fafc';
+                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)';
+                    e.currentTarget.style.background = 'rgba(15, 23, 42, 0.75)';
+                  }}
+                >
+                  {tech}
+                </span>
+              ))}
+            </motion.div>
+
+            {/* CTA Buttons */}
+            <motion.div
+              className="hero-cta-group"
+              {...fadeUp(0.2)}
+              style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.85rem' }}
+            >
+              <button
+                className="hero-btn-primary"
+                onClick={onViewResume}
                 style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.45rem',
+                  background: '#00e87a',
+                  border: 'none',
+                  borderRadius: 8,
+                  padding: '0.72rem 1.45rem',
+                  color: '#060d08',
                   fontFamily: 'JetBrains Mono, monospace',
-                  fontSize: '0.62rem',
-                  fontWeight: 600,
-                  color: '#f8fafc',
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  padding: '0.24rem 0.52rem',
-                  borderRadius: 6,
-                  background: 'rgba(15, 23, 42, 0.75)',
-                  backdropFilter: 'blur(12px)',
-                  WebkitBackdropFilter: 'blur(12px)',
-                  letterSpacing: '0.02em',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
-                  transition: 'all 0.25s ease',
-                  whiteSpace: 'nowrap',
+                  fontSize: '0.6875rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.06em',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s cubic-bezier(0.16,1,0.3,1)',
+                  boxShadow: '0 4px 20px rgba(0,232,122,0.3)',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.color = '#00e87a';
-                  e.currentTarget.style.borderColor = 'rgba(0,232,122,0.5)';
-                  e.currentTarget.style.background = 'rgba(0,232,122,0.15)';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 8px 28px rgba(0,232,122,0.45)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.color = '#f8fafc';
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)';
-                  e.currentTarget.style.background = 'rgba(15, 23, 42, 0.75)';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,232,122,0.3)';
                 }}
               >
-                {tech}
-              </span>
-            ))}
-          </motion.div>
-
-          {/* CTA Buttons */}
-          <motion.div
-            className="hero-cta-group"
-            {...fadeUp(0.2)}
-            style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.85rem', marginTop: '0.15rem' }}
-          >
-            <button
-              className="hero-btn-primary"
-              onClick={onViewResume}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '0.45rem',
-                background: '#00e87a',
-                border: 'none',
-                borderRadius: 8,
-                padding: '0.72rem 1.45rem',
-                color: '#060d08',
-                fontFamily: 'JetBrains Mono, monospace',
-                fontSize: '0.6875rem',
-                fontWeight: 700,
-                letterSpacing: '0.06em',
-                cursor: 'pointer',
-                transition: 'all 0.3s cubic-bezier(0.16,1,0.3,1)',
-                boxShadow: '0 4px 20px rgba(0,232,122,0.3)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-2px)';
-                e.currentTarget.style.boxShadow = '0 8px 28px rgba(0,232,122,0.45)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,232,122,0.3)';
-              }}
-            >
-              <FileSVG /> View Resume
-            </button>
-            <button
-              className="hero-btn-secondary"
-              onClick={handleExplore}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '0.45rem',
-                background: 'rgba(20, 27, 45, 0.85)',
-                backdropFilter: 'blur(12px)',
-                WebkitBackdropFilter: 'blur(12px)',
-                border: '1px solid rgba(255,255,255,0.25)',
-                borderRadius: 8,
-                padding: '0.72rem 1.45rem',
-                color: '#f8fafc',
-                fontFamily: 'JetBrains Mono, monospace',
-                fontSize: '0.6875rem',
-                fontWeight: 600,
-                letterSpacing: '0.06em',
-                cursor: 'pointer',
-                boxShadow: '0 4px 16px rgba(0,0,0,0.5)',
-                transition: 'all 0.3s cubic-bezier(0.16,1,0.3,1)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.45)';
-                e.currentTarget.style.color = '#00e87a';
-                e.currentTarget.style.transform = 'translateY(-2px)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
-                e.currentTarget.style.color = '#f8fafc';
-                e.currentTarget.style.transform = 'translateY(0)';
-              }}
-            >
-              Explore Work <ArrowDownSVG />
-            </button>
-          </motion.div>
-
-          {/* Social icons cleanly positioned below buttons */}
-          <motion.div
-            className="hero-social-links"
-            {...fadeUp(0.25)}
-            style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', marginTop: '0.1rem' }}
-          >
-            {[
-              { href: 'https://github.com/AabhasKatiyar', icon: <GithubSVG />, label: 'GitHub' },
-              { href: 'https://linkedin.com/in/aabhaskatiyar', icon: <LinkedinSVG />, label: 'LinkedIn' },
-              { href: 'mailto:aabhas.katiyar.dev@gmail.com', icon: <MailSVG />, label: 'Email' },
-            ].map(({ href, icon, label }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noreferrer"
-                title={label}
+                <FileSVG /> View Resume
+              </button>
+              <button
+                className="hero-btn-secondary"
+                onClick={handleExplore}
                 style={{
-                  color: '#94a3b8',
-                  transition: 'color 0.25s ease, transform 0.25s ease',
-                  display: 'flex',
+                  display: 'inline-flex',
                   alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.45rem',
+                  background: 'rgba(20, 27, 45, 0.85)',
+                  backdropFilter: 'blur(12px)',
+                  WebkitBackdropFilter: 'blur(12px)',
+                  border: '1px solid rgba(255,255,255,0.25)',
+                  borderRadius: 8,
+                  padding: '0.72rem 1.45rem',
+                  color: '#f8fafc',
+                  fontFamily: 'JetBrains Mono, monospace',
+                  fontSize: '0.6875rem',
+                  fontWeight: 600,
+                  letterSpacing: '0.06em',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 16px rgba(0,0,0,0.5)',
+                  transition: 'all 0.3s cubic-bezier(0.16,1,0.3,1)',
                 }}
                 onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.45)';
                   e.currentTarget.style.color = '#00e87a';
                   e.currentTarget.style.transform = 'translateY(-2px)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.color = '#94a3b8';
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
+                  e.currentTarget.style.color = '#f8fafc';
                   e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
-                {icon}
-              </a>
-            ))}
-          </motion.div>
+                Explore Work <ArrowDownSVG />
+              </button>
+            </motion.div>
+
+            {/* Social icons */}
+            <motion.div
+              className="hero-social-links"
+              {...fadeUp(0.25)}
+              style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}
+            >
+              {[
+                { href: 'https://github.com/AabhasKatiyar', icon: <GithubSVG />, label: 'GitHub' },
+                { href: 'https://linkedin.com/in/aabhaskatiyar', icon: <LinkedinSVG />, label: 'LinkedIn' },
+                { href: 'mailto:aabhas.katiyar.dev@gmail.com', icon: <MailSVG />, label: 'Email' },
+              ].map(({ href, icon, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  title={label}
+                  style={{
+                    color: '#94a3b8',
+                    transition: 'color 0.25s ease, transform 0.25s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = '#00e87a';
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = '#94a3b8';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                  }}
+                >
+                  {icon}
+                </a>
+              ))}
+            </motion.div>
+          </div>
         </div>
 
         {/* ── RIGHT COLUMN: Quick Profile Card (Tighter, cleaner profile card) ── */}

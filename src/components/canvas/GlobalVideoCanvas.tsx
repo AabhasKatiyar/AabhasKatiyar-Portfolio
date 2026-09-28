@@ -98,32 +98,18 @@ export const GlobalVideoCanvas = () => {
     let drawX: number;
     let drawY: number;
 
-    const isMobilePortrait = displayWidth < 768 && displayWidth < displayHeight;
-
-    // Universal cover geometry with mobile portrait refinement:
-    // On desktop / landscape: full cover geometry ensures video canvas stays rock-solid
-    // On mobile portrait: scale down by ~13% and move slightly upward so the portrait
-    // sits naturally behind the hero rather than overwhelming the typography
+    // Universal 100% full-screen cover geometry:
+    // Ensures video canvas fills the entire screen edge-to-edge with zero letterboxing or dark bars
     if (canvasRatio > imgRatio) {
       drawW = displayWidth;
       drawH = displayWidth / imgRatio;
       drawX = 0;
       drawY = (displayHeight - drawH) / 2;
     } else {
-      if (isMobilePortrait) {
-        // Mobile portrait: scale to 0.85 and position face perfectly in the open viewing window
-        // (eyes at ~y: 480px, mouth at ~y: 580px, chin at ~y: 630px) completely clear of all text and cards
-        const mobileScale = 0.85;
-        drawH = Math.round(displayHeight * mobileScale);
-        drawW = Math.round(drawH * imgRatio);
-        drawX = Math.round((displayWidth - drawW) / 2);
-        drawY = Math.round(displayHeight * 0.25);
-      } else {
-        drawH = displayHeight;
-        drawW = displayHeight * imgRatio;
-        drawX = (displayWidth - drawW) / 2;
-        drawY = 0;
-      }
+      drawH = displayHeight;
+      drawW = displayHeight * imgRatio;
+      drawX = (displayWidth - drawW) / 2;
+      drawY = 0;
     }
 
     metricsRef.current = {
@@ -178,11 +164,7 @@ export const GlobalVideoCanvas = () => {
     if (!img || !img.complete || img.naturalWidth === 0) return;
     lastDrawnImgRef.current = img;
 
-    const { drawX, drawY, drawW, drawH, targetWidth, targetHeight } = metricsRef.current;
-    if (window.innerWidth < 768) {
-      ctx.fillStyle = '#070a13';
-      ctx.fillRect(0, 0, targetWidth, targetHeight);
-    }
+    const { drawX, drawY, drawW, drawH } = metricsRef.current;
     ctx.drawImage(img, drawX, drawY, drawW, drawH);
   }, []);
 
