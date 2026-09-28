@@ -98,18 +98,30 @@ export const GlobalVideoCanvas = () => {
     let drawX: number;
     let drawY: number;
 
-    // Universal 100% full-screen cover geometry:
-    // Ensures video canvas stays rock-solid in place without upward shifts or jumps on mobile
+    const isMobilePortrait = displayWidth < 768 && displayWidth < displayHeight;
+
+    // Universal cover geometry with mobile portrait refinement:
+    // On desktop / landscape: full cover geometry ensures video canvas stays rock-solid
+    // On mobile portrait: scale down by ~13% and move slightly upward so the portrait
+    // sits naturally behind the hero rather than overwhelming the typography
     if (canvasRatio > imgRatio) {
       drawW = displayWidth;
       drawH = displayWidth / imgRatio;
       drawX = 0;
       drawY = (displayHeight - drawH) / 2;
     } else {
-      drawH = displayHeight;
-      drawW = displayHeight * imgRatio;
-      drawX = (displayWidth - drawW) / 2;
-      drawY = 0;
+      if (isMobilePortrait) {
+        const mobileScale = 0.87;
+        drawH = displayHeight * mobileScale;
+        drawW = drawH * imgRatio;
+        drawX = (displayWidth - drawW) / 2;
+        drawY = -Math.round(displayHeight * 0.05);
+      } else {
+        drawH = displayHeight;
+        drawW = displayHeight * imgRatio;
+        drawX = (displayWidth - drawW) / 2;
+        drawY = 0;
+      }
     }
 
     metricsRef.current = {
@@ -164,7 +176,11 @@ export const GlobalVideoCanvas = () => {
     if (!img || !img.complete || img.naturalWidth === 0) return;
     lastDrawnImgRef.current = img;
 
-    const { drawX, drawY, drawW, drawH } = metricsRef.current;
+    const { drawX, drawY, drawW, drawH, targetWidth, targetHeight } = metricsRef.current;
+    if (window.innerWidth < 768) {
+      ctx.fillStyle = '#070a13';
+      ctx.fillRect(0, 0, targetWidth, targetHeight);
+    }
     ctx.drawImage(img, drawX, drawY, drawW, drawH);
   }, []);
 

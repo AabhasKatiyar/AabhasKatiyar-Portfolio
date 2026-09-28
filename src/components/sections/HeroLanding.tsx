@@ -221,11 +221,12 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
             </p>
           </motion.div>
 
-          {/* Tech stack tags - compact single line row */}
-          <motion.div {...fadeUp(0.15)} style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
+          {/* Tech stack tags - 2 balanced rows on mobile, compact single row on desktop */}
+          <motion.div {...fadeUp(0.15)} className="hero-tech-pills">
             {TECH_STACK.map((tech) => (
               <span
                 key={tech}
+                className="hero-tech-pill-item"
                 style={{
                   fontFamily: 'JetBrains Mono, monospace',
                   fontSize: '0.62rem',
@@ -258,11 +259,11 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
             ))}
           </motion.div>
 
-          {/* CTA Buttons & Social Links */}
+          {/* CTA Buttons */}
           <motion.div
             className="hero-cta-group"
             {...fadeUp(0.2)}
-            style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '1rem', marginTop: '0.25rem' }}
+            style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.85rem', marginTop: '0.15rem' }}
           >
             <button
               className="hero-btn-primary"
@@ -332,42 +333,43 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
             >
               Explore Work <ArrowDownSVG />
             </button>
+          </motion.div>
 
-            {/* Social icons */}
-            <div
-              className="hero-social-links"
-              style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginLeft: '0.5rem' }}
-            >
-              {[
-                { href: 'https://github.com/AabhasKatiyar', icon: <GithubSVG />, label: 'GitHub' },
-                { href: 'https://linkedin.com/in/aabhaskatiyar', icon: <LinkedinSVG />, label: 'LinkedIn' },
-                { href: 'mailto:aabhas.katiyar.dev@gmail.com', icon: <MailSVG />, label: 'Email' },
-              ].map(({ href, icon, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer"
-                  title={label}
-                  style={{
-                    color: '#94a3b8',
-                    transition: 'color 0.25s ease, transform 0.25s ease',
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.color = '#00e87a';
-                    e.currentTarget.style.transform = 'translateY(-2px)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.color = '#94a3b8';
-                    e.currentTarget.style.transform = 'translateY(0)';
-                  }}
-                >
-                  {icon}
-                </a>
-              ))}
-            </div>
+          {/* Social icons cleanly positioned below buttons */}
+          <motion.div
+            className="hero-social-links"
+            {...fadeUp(0.25)}
+            style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', marginTop: '0.1rem' }}
+          >
+            {[
+              { href: 'https://github.com/AabhasKatiyar', icon: <GithubSVG />, label: 'GitHub' },
+              { href: 'https://linkedin.com/in/aabhaskatiyar', icon: <LinkedinSVG />, label: 'LinkedIn' },
+              { href: 'mailto:aabhas.katiyar.dev@gmail.com', icon: <MailSVG />, label: 'Email' },
+            ].map(({ href, icon, label }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noreferrer"
+                title={label}
+                style={{
+                  color: '#94a3b8',
+                  transition: 'color 0.25s ease, transform 0.25s ease',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = '#00e87a';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = '#94a3b8';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                }}
+              >
+                {icon}
+              </a>
+            ))}
           </motion.div>
         </div>
 
@@ -479,6 +481,7 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
           {/* Profile Avatar + Identity */}
           <div style={{ display: 'flex', gap: '0.85rem', alignItems: 'center' }}>
             <div
+              className="hero-avatar"
               style={{
                 width: 48,
                 height: 48,
@@ -559,6 +562,7 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
 
           {/* Specs List */}
           <div
+            className="hero-card-specs"
             style={{
               display: 'flex',
               flexDirection: 'column',
@@ -583,10 +587,11 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
                 EDUCATION
               </span>
               <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.78rem', color: '#f1f5f9', fontWeight: 500 }}>
-                B.Tech IT — KIET (2024–28, 2nd Year)
+                <span className="hero-edu-desktop">B.Tech IT — KIET (2024–28, 2nd Year)</span>
+                <span className="hero-edu-mobile">B.Tech IT — KIET</span>
               </span>
             </div>
-            <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'baseline' }}>
+            <div className="hero-card-location-row" style={{ display: 'flex', gap: '0.75rem', alignItems: 'baseline' }}>
               <span
                 style={{
                   fontFamily: 'JetBrains Mono, monospace',
@@ -606,8 +611,8 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
             </div>
           </div>
 
-          {/* Live Systems */}
-          <div>
+          {/* Desktop Live Systems (Full detailed cards) */}
+          <div className="hero-card-live-desktop">
             <p
               style={{
                 fontFamily: 'JetBrains Mono, monospace',
@@ -669,6 +674,60 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
                   </div>
                 </a>
               ))}
+            </div>
+          </div>
+
+          {/* Mobile Live Systems / Projects (Sleek compact row) */}
+          <div className="hero-card-live-mobile">
+            <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+              <span
+                style={{
+                  fontFamily: 'JetBrains Mono, monospace',
+                  fontSize: '0.58rem',
+                  color: '#94a3b8',
+                  letterSpacing: '0.08em',
+                  fontWeight: 700,
+                  minWidth: '65px',
+                  flexShrink: 0,
+                }}
+              >
+                PROJECTS
+              </span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <a
+                  href="#gymlane"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                    color: '#00e87a',
+                    fontFamily: 'var(--font-display)',
+                    fontSize: '0.76rem',
+                    fontWeight: 700,
+                    textDecoration: 'none',
+                  }}
+                >
+                  <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#00e87a', boxShadow: '0 0 6px #00e87a' }} />
+                  GymLane
+                </a>
+                <span style={{ color: 'rgba(255,255,255,0.25)', fontSize: '0.75rem' }}>·</span>
+                <a
+                  href="#yappr"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                    color: '#ff3d6e',
+                    fontFamily: 'var(--font-display)',
+                    fontSize: '0.76rem',
+                    fontWeight: 700,
+                    textDecoration: 'none',
+                  }}
+                >
+                  <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#ff3d6e', boxShadow: '0 0 6px #ff3d6e' }} />
+                  Yappr
+                </a>
+              </div>
             </div>
           </div>
         </motion.div>
