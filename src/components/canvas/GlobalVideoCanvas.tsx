@@ -111,11 +111,13 @@ export const GlobalVideoCanvas = () => {
       drawY = (displayHeight - drawH) / 2;
     } else {
       if (isMobilePortrait) {
-        const mobileScale = 0.87;
-        drawH = displayHeight * mobileScale;
-        drawW = drawH * imgRatio;
-        drawX = (displayWidth - drawW) / 2;
-        drawY = -Math.round(displayHeight * 0.05);
+        // Mobile portrait: scale to 0.85 and position face perfectly in the open viewing window
+        // (eyes at ~y: 480px, mouth at ~y: 580px, chin at ~y: 630px) completely clear of all text and cards
+        const mobileScale = 0.85;
+        drawH = Math.round(displayHeight * mobileScale);
+        drawW = Math.round(drawH * imgRatio);
+        drawX = Math.round((displayWidth - drawW) / 2);
+        drawY = Math.round(displayHeight * 0.25);
       } else {
         drawH = displayHeight;
         drawW = displayHeight * imgRatio;

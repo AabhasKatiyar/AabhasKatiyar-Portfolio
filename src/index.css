@@ -667,49 +667,56 @@
 
   /* Hero section: capped mobile height (~100-120vh), clean spacing */
   #hero-landing {
-    padding-top: 3.8rem !important;
-    padding-bottom: 2rem !important;
+    padding-top: 2.6rem !important;
+    padding-bottom: 2.5rem !important;
     padding-left: 1.15rem !important;
     padding-right: 1.15rem !important;
-    min-height: auto !important;
+    min-height: 110svh !important;
     display: flex !important;
+    flex-direction: column !important;
     align-items: center !important;
-    justify-content: center !important;
+    justify-content: flex-start !important;
   }
 
   .hero-grid-container {
-    gap: 1.25rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
     max-width: 480px !important;
+    width: 100% !important;
   }
 
   .hero-identity-col {
-    gap: 0.85rem !important;
+    gap: 0.55rem !important;
+    width: 100% !important;
+    position: relative !important;
+    z-index: 2 !important;
   }
 
   /* Status badge: compact tech badge */
   .hero-status-badge {
-    padding: 0.22rem 0.65rem !important;
-    gap: 0.4rem !important;
+    padding: 0.18rem 0.55rem !important;
+    gap: 0.35rem !important;
     border-radius: 999px !important;
     max-width: 100% !important;
   }
   .hero-status-badge span:last-child {
-    font-size: 0.54rem !important;
+    font-size: 0.5rem !important;
     letter-spacing: 0.08em !important;
   }
 
   /* Hero Name Title */
   .hero-name-title {
-    font-size: clamp(2.2rem, 8.5vw, 2.75rem) !important;
-    line-height: 1.05 !important;
+    font-size: clamp(1.9rem, 7.5vw, 2.3rem) !important;
+    line-height: 1.03 !important;
   }
 
   /* Tech stack pills: exactly 2 balanced rows on mobile (3 items each) */
   .hero-tech-pills {
     display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important;
-    max-width: 330px !important;
-    gap: 0.35rem !important;
+    max-width: 300px !important;
+    gap: 0.25rem !important;
     width: 100% !important;
   }
   .hero-tech-pill-item {
@@ -717,8 +724,8 @@
     justify-content: center !important;
     display: flex !important;
     align-items: center !important;
-    padding: 0.22rem 0.35rem !important;
-    font-size: 0.58rem !important;
+    padding: 0.18rem 0.28rem !important;
+    font-size: 0.55rem !important;
     white-space: nowrap !important;
     box-sizing: border-box !important;
   }
@@ -728,15 +735,15 @@
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
-    gap: 0.65rem !important;
+    gap: 0.55rem !important;
     width: 100% !important;
-    max-width: 360px !important;
+    max-width: 310px !important;
   }
   .hero-btn-primary,
   .hero-btn-secondary {
     flex: 1 1 0 !important;
-    padding: 0.72rem 0.5rem !important;
-    font-size: 0.6875rem !important;
+    padding: 0.62rem 0.4rem !important;
+    font-size: 0.64rem !important;
     justify-content: center !important;
     white-space: nowrap !important;
     box-sizing: border-box !important;
@@ -744,17 +751,20 @@
 
   /* Social links below buttons */
   .hero-social-links {
-    gap: 1.35rem !important;
-    margin-top: 0.15rem !important;
+    gap: 1.25rem !important;
+    margin-top: 0.05rem !important;
   }
 
-  /* Profile Card: streamlined mobile reduction */
+  /* Profile Card: positioned below the face showcase window on mobile */
   .hero-profile-card {
+    margin-top: clamp(13rem, 27vh, 17rem) !important;
     padding: 0.85rem 1.05rem !important;
     gap: 0.55rem !important;
     border-radius: 16px !important;
     max-width: 100% !important;
     width: 100% !important;
+    position: relative !important;
+    z-index: 2 !important;
   }
   .hero-avatar {
     width: 38px !important;
