@@ -32,6 +32,7 @@ export const GlobalVideoCanvas = () => {
     drawH: 0,
   });
   const lastWidthRef = useRef(0);
+  const lastHeightRef = useRef(0);
 
   // Fast frame path resolver (uses 77% lighter WebP frames with JPG fallback)
   const getFrameUrl = useCallback((index: number) => {
@@ -61,12 +62,16 @@ export const GlobalVideoCanvas = () => {
       canvas.height = targetHeight;
     }
 
-    // Keep canvas 100% mapped to fixed viewport container on all devices
+    // Set canvas CSS to EXACT pixel dimensions matching the buffer.
+    // 'width: 100%' / 'height: 100%' on mobile resolves to 100vw/100vh which can differ from
+    // window.innerWidth/innerHeight (e.g. when the address bar is visible, 100vh > window.innerHeight).
+    // That mismatch produces different X vs Y scale factors when the browser maps the buffer to CSS,
+    // causing visible vertical stretching of the portrait image.
     canvas.style.position = 'absolute';
     canvas.style.top = '0px';
     canvas.style.left = '0px';
-    canvas.style.width = '100%';
-    canvas.style.height = '100%';
+    canvas.style.width = displayWidth + 'px';
+    canvas.style.height = displayHeight + 'px';
 
     const imgWidth = 1920;
     const imgHeight = 1080;
@@ -285,16 +290,18 @@ export const GlobalVideoCanvas = () => {
   useEffect(() => {
     let timeoutId: number;
     const handleResize = () => {
-      // On mobile touch devices, vertical scrolling collapses/expands the browser URL bar,
-      // firing window resize events that change height only. The width NEVER changes during scroll!
-      // We ignore these height-only resizes to prevent sudden jumps, zooms, and redraw glitches.
       const currentWidth = window.innerWidth;
-      const isTouch = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
-      
-      if (isTouch && lastWidthRef.current > 0 && Math.abs(currentWidth - lastWidthRef.current) < 15) {
-        return;
-      }
+      const currentHeight = window.innerHeight;
+      const widthChanged = Math.abs(currentWidth - lastWidthRef.current) >= 15;
+      // Also respond to address-bar hide/show (height change ≥ 40px) to keep canvas CSS in sync.
+      // Without this, the canvas CSS pixel height stays at the old window.innerHeight while the
+      // viewport grows, causing the buffer to be CSS-stretched on the vertical axis.
+      const heightChanged = Math.abs(currentHeight - lastHeightRef.current) >= 40;
+
+      if (!widthChanged && !heightChanged) return;
+
       lastWidthRef.current = currentWidth;
+      lastHeightRef.current = currentHeight;
 
       clearTimeout(timeoutId);
       timeoutId = window.setTimeout(() => {
@@ -304,11 +311,13 @@ export const GlobalVideoCanvas = () => {
     };
 
     lastWidthRef.current = window.innerWidth;
+    lastHeightRef.current = window.innerHeight;
     updateCanvasMetrics();
     window.addEventListener('resize', handleResize, { passive: true });
     window.addEventListener('orientationchange', () => {
       setTimeout(() => {
         lastWidthRef.current = window.innerWidth;
+        lastHeightRef.current = window.innerHeight;
         updateCanvasMetrics();
         renderFrameToCanvas(Math.round(currentFrameRef.current));
       }, 150);
