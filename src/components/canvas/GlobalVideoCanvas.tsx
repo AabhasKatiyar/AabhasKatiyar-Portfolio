@@ -134,31 +134,40 @@ export const GlobalVideoCanvas = () => {
     lastDrawnFrameRef.current = -1;
   }, []);
 
-  // Blazing-fast 0.1ms canvas draw call (Zero layout math, zero context recreation)
+  // In-flight request tracker to guarantee ZERO redundant network requests
+  const inFlightRef = useRef<Set<number>>(new Set());
+
+  // Blazing-fast 0.1ms canvas draw call with bidirectional expanding search fallback
   const renderFrameToCanvas = useCallback((frameIdx: number) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
     if (!ctx) return;
 
-    // Pick target image or fallback to the closest loaded frame in the entire array
+    // 1. Exact frame match
     let img = imagesRef.current[frameIdx];
+    // 2. If not ready, search outward bidirectionally (1 frame away, 2 frames away...)
     if (!img || !img.complete || img.naturalWidth === 0) {
-      let bestDist = Infinity;
-      let bestImg: HTMLImageElement | null = null;
-      const images = imagesRef.current;
-      for (let i = 0; i < TOTAL_FRAMES; i++) {
-        const candidate = images[i];
-        if (candidate && candidate.complete && candidate.naturalWidth > 0) {
-          const dist = Math.abs(i - frameIdx);
-          if (dist < bestDist) {
-            bestDist = dist;
-            bestImg = candidate;
-            if (dist === 0) break;
+      let fallbackImg: HTMLImageElement | null = null;
+      for (let d = 1; d < TOTAL_FRAMES; d++) {
+        const right = frameIdx + d;
+        const left = frameIdx - d;
+        if (right < TOTAL_FRAMES) {
+          const cand = imagesRef.current[right];
+          if (cand && cand.complete && cand.naturalWidth > 0) {
+            fallbackImg = cand;
+            break;
+          }
+        }
+        if (left >= 0) {
+          const cand = imagesRef.current[left];
+          if (cand && cand.complete && cand.naturalWidth > 0) {
+            fallbackImg = cand;
+            break;
           }
         }
       }
-      img = bestImg || lastDrawnImgRef.current;
+      img = fallbackImg || lastDrawnImgRef.current;
     }
 
     if (!img || !img.complete || img.naturalWidth === 0) return;
@@ -168,98 +177,98 @@ export const GlobalVideoCanvas = () => {
     ctx.drawImage(img, drawX, drawY, drawW, drawH);
   }, []);
 
-  // Robust image loader with WebP -> JPG automatic fallback
-  const loadAndDecodeImage = useCallback(async (idx: number): Promise<HTMLImageElement | null> => {
-    if (idx < 0 || idx >= TOTAL_FRAMES) return null;
-    if (imagesRef.current[idx]) {
-      return imagesRef.current[idx];
+  // High-throughput deduplicated frame loader (zero CPU decode lock, instant frame registration)
+  const loadImage = useCallback((idx: number): Promise<HTMLImageElement | null> => {
+    if (idx < 0 || idx >= TOTAL_FRAMES) return Promise.resolve(null);
+    const existing = imagesRef.current[idx];
+    if (existing && existing.complete && existing.naturalWidth > 0) {
+      return Promise.resolve(existing);
     }
-    const img = new Image();
-    img.src = getFrameUrl(idx);
-    img.onerror = () => {
-      // Auto-fallback to JPG if WebP fails on legacy client
-      const frameNum = Math.max(1, Math.min(TOTAL_FRAMES, idx + 1));
-      img.onerror = null;
-      img.src = `/frames/frame_${String(frameNum).padStart(4, '0')}.jpg`;
-    };
-
-    try {
-      await img.decode();
-    } catch {
-      // Decode fallback
+    if (inFlightRef.current.has(idx)) {
+      return Promise.resolve(null);
     }
 
-    imagesRef.current[idx] = img;
+    inFlightRef.current.add(idx);
 
-    if (idx === 0) {
-      setIsInitialLoaded(true);
-      updateCanvasMetrics();
-      renderFrameToCanvas(0);
-    }
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = getFrameUrl(idx);
 
-    return img;
+      img.onload = () => {
+        imagesRef.current[idx] = img;
+        inFlightRef.current.delete(idx);
+
+        if (idx === 0) {
+          setIsInitialLoaded(true);
+          updateCanvasMetrics();
+          renderFrameToCanvas(0);
+        }
+
+        // If the current viewport is waiting on or near this frame, refresh canvas immediately!
+        const cur = Math.round(currentFrameRef.current);
+        if (Math.abs(cur - idx) <= 2) {
+          renderFrameToCanvas(cur);
+        }
+
+        resolve(img);
+      };
+
+      img.onerror = () => {
+        // Instant automatic fallback to JPG
+        const frameNum = Math.max(1, Math.min(TOTAL_FRAMES, idx + 1));
+        const fallback = new Image();
+        fallback.src = `/frames/frame_${String(frameNum).padStart(4, '0')}.jpg`;
+        fallback.onload = () => {
+          imagesRef.current[idx] = fallback;
+          inFlightRef.current.delete(idx);
+          const cur = Math.round(currentFrameRef.current);
+          if (Math.abs(cur - idx) <= 2) {
+            renderFrameToCanvas(cur);
+          }
+          resolve(fallback);
+        };
+        fallback.onerror = () => {
+          inFlightRef.current.delete(idx);
+          resolve(null);
+        };
+      };
+    });
   }, [getFrameUrl, updateCanvasMetrics, renderFrameToCanvas]);
 
-  // High-performance progressive preloader:
-  // Immediately loads coarse keyframes across the whole site so scrolling NEVER stays stuck on one image!
+  // Immediate-play progressive preloader:
+  // Preloads the hero section first so scrolling starts playing video instantly without waiting!
   useEffect(() => {
     let isCancelled = false;
 
     async function preloadPipeline() {
-      // 1. Immediate first frame
-      await loadAndDecodeImage(0);
+      // 1. Immediate priority: First frame (Hero initial view)
+      await loadImage(0);
       if (isCancelled) return;
 
-      // 2. High-priority first 6 frames + last frame
-      await Promise.allSettled([
-        loadAndDecodeImage(TOTAL_FRAMES - 1),
-        loadAndDecodeImage(1),
-        loadAndDecodeImage(2),
-        loadAndDecodeImage(3),
-        loadAndDecodeImage(4),
-        loadAndDecodeImage(5),
-      ]);
-      if (isCancelled) return;
-
-      // 3. Coarse mesh across the entire site (every 8th frame: 8, 16, 24, ... 232)
-      // Only 28 frames total! At 38KB each, total is ~1 MB and downloads in <1s.
-      // Once this completes, scrolling anywhere immediately plays video!
-      const coarseKeyframes: number[] = [];
-      for (let i = 8; i < TOTAL_FRAMES - 1; i += 8) {
-        coarseKeyframes.push(i);
-      }
-      for (let i = 0; i < coarseKeyframes.length; i += 6) {
+      // 2. High-priority Hero zone: Load frames 1 through 24 sequentially in fast parallel batches of 6!
+      // When the user opens the page and starts scrolling down through the hero,
+      // all hero frames are already loaded and video plays instantly!
+      for (let i = 1; i <= 24; i += 6) {
         if (isCancelled) return;
-        const chunk = coarseKeyframes.slice(i, i + 6);
-        await Promise.allSettled(chunk.map((idx) => loadAndDecodeImage(idx)));
-        await new Promise((r) => setTimeout(r, 10));
-      }
-
-      // 4. Medium mesh (every 4th frame: 4, 12, 20, 28...)
-      const mediumKeyframes: number[] = [];
-      for (let i = 4; i < TOTAL_FRAMES - 1; i += 4) {
-        if (!imagesRef.current[i]) mediumKeyframes.push(i);
-      }
-      for (let i = 0; i < mediumKeyframes.length; i += 6) {
-        if (isCancelled) return;
-        const chunk = mediumKeyframes.slice(i, i + 6);
-        await Promise.allSettled(chunk.map((idx) => loadAndDecodeImage(idx)));
-        await new Promise((r) => setTimeout(r, 12));
-      }
-
-      // 5. Stream in all remaining in-between frames concurrently in batches of 6
-      const remaining: number[] = [];
-      for (let i = 1; i < TOTAL_FRAMES; i++) {
-        if (!imagesRef.current[i]) {
-          remaining.push(i);
+        const batch = [];
+        for (let j = i; j < Math.min(i + 6, 25); j++) {
+          batch.push(loadImage(j));
         }
+        await Promise.all(batch);
       }
+      if (isCancelled) return;
 
-      for (let i = 0; i < remaining.length; i += 6) {
+      // 3. Fast streaming for the rest of the page (Frames 25 to 239)
+      // Stream in chunks of 8 concurrent requests so network is fully utilized without bottleneck
+      for (let i = 25; i < TOTAL_FRAMES; i += 8) {
         if (isCancelled) return;
-        const chunk = remaining.slice(i, i + 6);
-        await Promise.allSettled(chunk.map((idx) => loadAndDecodeImage(idx)));
-        await new Promise((r) => setTimeout(r, 15));
+        const batch = [];
+        for (let j = i; j < Math.min(i + 8, TOTAL_FRAMES); j++) {
+          if (!imagesRef.current[j]) {
+            batch.push(loadImage(j));
+          }
+        }
+        await Promise.all(batch);
       }
     }
 
@@ -268,7 +277,7 @@ export const GlobalVideoCanvas = () => {
     return () => {
       isCancelled = true;
     };
-  }, [loadAndDecodeImage]);
+  }, [loadImage]);
 
   // Window resize & orientation change handler
   useEffect(() => {
@@ -322,12 +331,12 @@ export const GlobalVideoCanvas = () => {
       const target = clamped * (TOTAL_FRAMES - 1);
       targetFrameRef.current = target;
 
-      // On-demand priority: immediately trigger load for exact frame and immediate neighbours
+      // On-demand priority: immediately trigger load for exact frame and lookahead neighbours
       const center = Math.round(target);
-      const priorityIndices = [center, center - 1, center + 1, center - 2, center + 2];
+      const priorityIndices = [center, center + 1, center + 2, center + 3, center + 4, center + 5, center - 1, center - 2];
       for (const idx of priorityIndices) {
         if (idx >= 0 && idx < TOTAL_FRAMES && !imagesRef.current[idx]) {
-          loadAndDecodeImage(idx);
+          loadImage(idx);
         }
       }
     };
@@ -369,7 +378,7 @@ export const GlobalVideoCanvas = () => {
       window.removeEventListener('scroll', handleNativeScroll);
       if (unbindLenis) unbindLenis();
     };
-  }, [loadAndDecodeImage]);
+  }, [loadImage]);
 
   // Silky 60fps/120fps Animation Loop with Adaptive Continuous Lerp
   useEffect(() => {
@@ -471,7 +480,7 @@ export const GlobalVideoCanvas = () => {
       const curIdx = Math.round(nextFrame);
       for (let i = curIdx; i <= Math.min(TOTAL_FRAMES - 1, curIdx + 16); i++) {
         if (!imagesRef.current[i]) {
-          loadAndDecodeImage(i);
+          loadImage(i);
         }
       }
 
@@ -483,7 +492,7 @@ export const GlobalVideoCanvas = () => {
     return () => {
       cancelAnimationFrame(animId);
     };
-  }, [isPlaying, loadAndDecodeImage]);
+  }, [isPlaying, loadImage]);
 
   // Pause auto-scroll on manual user interaction
   useEffect(() => {
