@@ -563,13 +563,23 @@
    MOBILE & TABLET RESPONSIVE FIXES
    ================================================ */
 
-/* Responsive adjustments for left-anchored hero profile card */
-@media (max-width: 768px) {
-  .hero-profile-card {
-    max-width: 100% !important;
+/* Responsive adjustments for 2-column hybrid hero layout */
+@media (max-width: 1023px) {
+  .hero-grid-container {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 2.5rem !important;
+    max-width: 580px !important;
+    margin: 0 auto !important;
   }
   .hero-identity-col {
     max-width: 100% !important;
+    width: 100% !important;
+  }
+  .hero-profile-card {
+    max-width: 100% !important;
+    width: 100% !important;
+    flex: none !important;
   }
 }
 
