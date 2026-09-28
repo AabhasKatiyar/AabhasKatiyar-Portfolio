@@ -98,6 +98,41 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
         }}
       />
 
+      {/* Selective face lighting - 5-10% subtle local lift to eyes, nose bridge, cheekbones, and jaw area */}
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          top: '40%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 'clamp(240px, 22vw, 340px)',
+          height: 'clamp(260px, 25vw, 380px)',
+          borderRadius: '50%',
+          background:
+            'radial-gradient(ellipse 50% 55% at 50% 48%, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.05) 50%, transparent 80%)',
+          mixBlendMode: 'soft-light',
+          pointerEvents: 'none',
+          zIndex: 1,
+        }}
+      />
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          top: '39%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 'clamp(160px, 15vw, 220px)',
+          height: 'clamp(180px, 16vw, 240px)',
+          borderRadius: '50%',
+          background: 'radial-gradient(ellipse at 50% 46%, rgba(255, 255, 255, 0.08) 0%, transparent 75%)',
+          mixBlendMode: 'screen',
+          pointerEvents: 'none',
+          zIndex: 1,
+        }}
+      />
+
       <div
         className="hero-grid-container"
         style={{
@@ -118,46 +153,46 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
           style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: '1.5rem',
-            maxWidth: 480,
+            gap: '1.4rem',
+            maxWidth: 490,
             width: '100%',
             flex: '1 1 420px',
           }}
         >
-          {/* Status badge */}
+          {/* Status badge - slightly smaller for optimal visual hierarchy */}
           <motion.div {...fadeUp(0)} style={{ display: 'flex', alignItems: 'center' }}>
             <div
               className="hero-status-badge"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '0.6rem',
-                background: 'rgba(0, 232, 122, 0.12)',
-                border: '1px solid rgba(0, 232, 122, 0.35)',
-                padding: '0.35rem 0.85rem',
+                gap: '0.45rem',
+                background: 'rgba(0, 232, 122, 0.08)',
+                border: '1px solid rgba(0, 232, 122, 0.25)',
+                padding: '0.22rem 0.65rem',
                 borderRadius: 999,
                 backdropFilter: 'blur(12px)',
                 WebkitBackdropFilter: 'blur(12px)',
-                boxShadow: '0 0 20px rgba(0, 232, 122, 0.15)',
+                boxShadow: '0 0 14px rgba(0, 232, 122, 0.08)',
               }}
             >
               <span
                 style={{
                   display: 'inline-block',
-                  width: 7,
-                  height: 7,
+                  width: 5,
+                  height: 5,
                   borderRadius: '50%',
                   background: '#00e87a',
-                  boxShadow: '0 0 10px #00e87a',
+                  boxShadow: '0 0 8px #00e87a',
                   animation: 'pulse-dot 2s ease-in-out infinite',
                 }}
               />
               <span
                 style={{
                   fontFamily: 'JetBrains Mono, monospace',
-                  fontSize: '0.625rem',
+                  fontSize: '0.5625rem',
                   fontWeight: 600,
-                  letterSpacing: '0.12em',
+                  letterSpacing: '0.08em',
                   textTransform: 'uppercase',
                   color: '#00e87a',
                 }}
@@ -204,42 +239,43 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
                 textShadow: '0 2px 10px rgba(0,0,0,0.9)',
               }}
             >
-              Full-Stack Software Developer
+              Software Developer &amp; IT Student
             </p>
             <p
               style={{
                 fontFamily: 'Inter, sans-serif',
-                fontSize: 'clamp(0.9rem, 1.6vw, 1.02rem)',
+                fontSize: 'clamp(0.9rem, 1.5vw, 1rem)',
                 color: '#cbd5e1',
                 margin: 0,
                 lineHeight: 1.65,
-                maxWidth: '44ch',
+                maxWidth: '46ch',
                 textShadow: '0 2px 12px rgba(0,0,0,0.95)',
               }}
             >
-              I build production web systems — from multi-tenant Supabase SaaS architectures to real-time interactive web applications.
+              I build modern web experiences while exploring AI, software engineering, and emerging technologies.
             </p>
           </motion.div>
 
-          {/* Tech stack tags */}
-          <motion.div {...fadeUp(0.15)} style={{ display: 'flex', flexWrap: 'wrap', gap: '0.45rem' }}>
+          {/* Tech stack tags - compact single line row */}
+          <motion.div {...fadeUp(0.15)} style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
             {TECH_STACK.map((tech) => (
               <span
                 key={tech}
                 style={{
                   fontFamily: 'JetBrains Mono, monospace',
-                  fontSize: '0.65rem',
+                  fontSize: '0.62rem',
                   fontWeight: 600,
                   color: '#f8fafc',
                   border: '1px solid rgba(255,255,255,0.2)',
-                  padding: '0.3rem 0.7rem',
+                  padding: '0.24rem 0.52rem',
                   borderRadius: 6,
                   background: 'rgba(15, 23, 42, 0.75)',
                   backdropFilter: 'blur(12px)',
                   WebkitBackdropFilter: 'blur(12px)',
-                  letterSpacing: '0.03em',
+                  letterSpacing: '0.02em',
                   boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
                   transition: 'all 0.25s ease',
+                  whiteSpace: 'nowrap',
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.color = '#00e87a';
@@ -370,7 +406,7 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
           </motion.div>
         </div>
 
-        {/* ── RIGHT COLUMN: Quick Profile Card (New smaller, cleaner card styling!) ── */}
+        {/* ── RIGHT COLUMN: Quick Profile Card (Tighter, cleaner profile card) ── */}
         <motion.div
           className="hero-profile-card hero-wave-card"
           initial={{ opacity: 0, x: 25 }}
@@ -384,13 +420,13 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
             background: 'rgba(9, 14, 24, 0.42)',
             border: '1px solid rgba(255, 255, 255, 0.12)',
             borderRadius: '20px',
-            padding: '1.25rem 1.4rem',
+            padding: '1.15rem 1.35rem',
             backdropFilter: 'blur(16px) saturate(180%)',
             WebkitBackdropFilter: 'blur(16px) saturate(180%)',
             boxShadow: '0 16px 48px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.12)',
             display: 'flex',
             flexDirection: 'column',
-            gap: '1rem',
+            gap: '0.85rem',
           }}
         >
           {/* ── Animated Laser Wave-Cut SVG along the left contour facing center ── */}
@@ -514,7 +550,7 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
                   fontWeight: 600,
                 }}
               >
-                Full-Stack Software Developer
+                Software Developer &amp; IT Student
               </p>
             </div>
           </div>
@@ -615,7 +651,7 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
                 fontWeight: 600,
-                margin: '0 0 0.5rem 0',
+                margin: '0 0 0.45rem 0',
               }}
             >
               LIVE SYSTEMS //
@@ -669,28 +705,6 @@ export const HeroLanding = ({ onViewResume }: HeroLandingProps) => {
                 </a>
               ))}
             </div>
-          </div>
-
-          {/* Scroll cue */}
-          <div
-            style={{
-              borderTop: '1px solid rgba(255,255,255,0.08)',
-              paddingTop: '0.55rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.45rem',
-            }}
-          >
-            <span
-              style={{
-                fontFamily: 'JetBrains Mono, monospace',
-                fontSize: '0.58rem',
-                color: '#94a3b8',
-                letterSpacing: '0.08em',
-              }}
-            >
-              Scroll to explore full portfolio ↓
-            </span>
           </div>
         </motion.div>
       </div>
