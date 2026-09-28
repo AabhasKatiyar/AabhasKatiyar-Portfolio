@@ -163,19 +163,43 @@ export const FloatingNav = () => {
           <a
             href="#hero-landing"
             style={{
-              fontFamily: 'var(--font-display)',
-              fontWeight: 800,
-              fontSize: '0.875rem',
-              letterSpacing: '-0.02em',
-              color: activeColor,
-              transition: 'color 0.4s ease, text-shadow 0.4s ease',
-              textShadow: `0 0 14px ${activeColor}66`,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.35rem',
               textDecoration: 'none',
               flexShrink: 0,
-              padding: '0.15rem 0.35rem',
+              padding: '0.12rem 0.25rem',
             }}
+            title="Aabhas Katiyar — Home"
           >
-            AK
+            <div
+              style={{
+                width: 20,
+                height: 20,
+                borderRadius: 5,
+                overflow: 'hidden',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: `0 0 10px ${activeColor}55`,
+                transition: 'box-shadow 0.3s ease',
+              }}
+            >
+              <img src="/favicon.svg" alt="AK" width="20" height="20" style={{ display: 'block' }} />
+            </div>
+            <span
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontWeight: 800,
+                fontSize: '0.85rem',
+                letterSpacing: '-0.02em',
+                color: activeColor,
+                transition: 'color 0.4s ease, text-shadow 0.4s ease',
+                textShadow: `0 0 14px ${activeColor}66`,
+              }}
+            >
+              AK
+            </span>
           </a>
 
           {/* Micro divider */}
